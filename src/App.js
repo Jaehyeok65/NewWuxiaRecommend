@@ -5,7 +5,6 @@ import Detail from './pages/Detail/Container';
 import List from './pages/List';
 import SearchList from './pages/SearchList';
 import { getSessionCheck } from './api/LoginAPI';
-import Submit from './Submit';
 import Community from './pages/Community/Container';
 import CommentWrite from './pages/CommentWrite/WriteContainer';
 import Comment from './pages/Comment/CommentContainer';
@@ -84,7 +83,6 @@ function App() {
                 />
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/mypage" element={<MyPage loginstate={loginstate} />} />
-                <Route exact path="/save" element={<Submit />} />
             </Routes>
         </Router>
     );
