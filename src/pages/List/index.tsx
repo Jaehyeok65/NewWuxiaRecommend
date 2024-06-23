@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import MainFrame from '../MainFrame';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { FaArrowUp } from 'react-icons/fa';
 import Loading from '../../module/Loading';
 import Error from '../../module/Error';
 import ListView from '../../module/ListView';
-import useThrottling from '../../hook/useThrottling';
-import { SubmitList } from '../../api/WuxiaAPI';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getWuxiaListByTitle } from '../../api/WuxiaAPI.tsx';
+import useObserver from '../../hook/useObserver.tsx';
+import useScroll from '../../hook/useScroll.tsx';
 
 const Btn = styled.button`
     position: fixed;
@@ -63,54 +64,61 @@ const cardinfostyle = {
 
 const List = () => {
     const { title } = useParams(); //title에 맞게 서버에 데이터 요청할 것
+    const {
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading,
+        data,
+        isError,
+        error,
+    } = useInfiniteQuery({
+        queryKey: ['webtoon', title],
+        queryFn: ({ pageParam = 1 }) => {
+            return getWuxiaListByTitle(pageParam, title);
+        },
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage?.length < 12) {
+                return undefined;
+            } else {
+                return allPages.length + 1;
+            }
+        },
+        initialPageParam: 1,
+        refetchOnWindowFocus: false,
+        refetchIntervalInBackground: false,
+        staleTime: 600000,
+    });
 
+    const ref = useObserver(hasNextPage, fetchNextPage);
+
+    const scroll = useScroll(); //스크롤 높이 저장용
 
     useEffect(() => {
-        
-    }, [])
-   
-
-    //const scroll = useThrottling();
-    const [bottom, setBottom] = useState(null);
-
-
-
-
-    const option = { threshold: 0.25, rootMargin: '80px' };
-
-    /*useEffect(() => {
-        //const observer = new IntersectionObserver(observerCallback, option);
-        if (bottom) {
-            //observer.observe(bottom);
-        }
-        return () => {
-            if (bottom) {
-                //observer.unobserve(bottom);
-            }
-        };
-    }, [bottom]);*/
-
-    /*useEffect(() => {
         //쓰로틀링 훅으로 스크롤 위치 저장함
-        window.sessionStorage.setItem(
-            `${callbacktitle.current}_scroll`,
-            scroll
+        window.sessionStorage.setItem(`${title}_scroll`, String(scroll));
+    }, [scroll, title]);
+
+    useEffect(() => {
+        const scrolly = window.sessionStorage.getItem(`${title}_scroll`);
+        if (scrolly) {
+            window.scrollTo({
+                top: Number(scrolly),
+            });
+        }
+    }, [title]);
+
+    if (isLoading)
+        return (
+            <Loading
+                height={'5%'}
+                width={'3%'}
+                marginBottom={'5%'}
+                marginTop={'5%'}
+            />
         );
-    }, [scroll]);*/
 
-
-    /*const handleScroll = useCallback((title) => {
-        window.scrollTo({
-            top: window.sessionStorage.getItem(`${title}_scroll`),
-        });
-    }, []);*/
-
-   const data = undefined;
-   const error = undefined;
-   const loading = undefined;
-
-    if (error) return <Error error={error} />;
-    if (!data) return null;
+    if (isError) return <Error error={error} />;
 
     return (
         <MainFrame>
@@ -122,10 +130,15 @@ const List = () => {
                 cardstyle={cardstyle}
                 cardinfostyle={cardinfostyle}
             />
-            <div ref={setBottom} />
-            <Btn>
-                <FaArrowUp />
-            </Btn>
+            <div ref={ref} />
+            {isFetchingNextPage && (
+                <Loading
+                    height={'5%'}
+                    width={'3%'}
+                    marginBottom={'2%'}
+                    marginTop={'2%'}
+                />
+            )}
         </MainFrame>
     );
 };

@@ -3,10 +3,10 @@ import MainFrame from '../MainFrame';
 import MainCarousel from '../../organism/MainCarousel';
 import MainList from '../../organism/MainList';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getMain } from '../../redux/action';
 import Error from '../../module/Error';
 import Loading from '../../module/Loading';
+import { useQuery } from '@tanstack/react-query';
+import { getMainList } from '../../api/WuxiaAPI.tsx';
 
 const liststyle = {
     pcgrid: 'repeat(6,1fr)',
@@ -16,36 +16,26 @@ const liststyle = {
 };
 
 const Main = () => {
-    const { data, loading, error } = useSelector(
-        (state) => state.wuxia.main
-    ) || {
-        loading: false,
-        data: null,
-        error: null,
-    };
-    const dispatch = useDispatch();
-    const memoizedDispatch = useCallback(dispatch, []);
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ['main'],
+        queryFn: getMainList,
+    });
 
     const handleScroll = useCallback(() => {
         if (window.scrollY > 0) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         handleScroll();
     }, []);
 
-    useEffect(() => {
-        if (data) return;
-        memoizedDispatch(getMain());
-    }, [memoizedDispatch, data]);
-
-    if (loading && performance.timing.loadEventEnd - performance.timing.navigationStart > 1000) return <Loading />;
-    if (error) return <Error error={error} />;
+    if (isLoading) return <Loading />;
+    if (isError) return <Error error={error} />;
     if (!data) return null;
 
     return (
