@@ -72,7 +72,16 @@ export const setWuxiaProductLikes = async (wuxia: Wuxia) => {
     }
 };
 
-export const getWuxiaListByView = async (page) => {
+export const getWuxiaListByTitle = async (page : number, title : string | undefined) => {
+    try {
+        const data = await axios.get(`${API}/page?pg=${page}&sz=${12}&title=${title}`);
+        return data.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getWuxiaListByView = async (page : number) => {
     try {
         const data = await axios.post(`${API}/pagebyview`, {
             pg: page,
@@ -111,7 +120,7 @@ export const getWuxiaListByLikes = async (page: number) => {
     }
 };
 
-export const SubmitMyPage = async (title) => {
+export const getWuxiaMyPage = async (title) => {
     let data;
     if (title === '좋아요') {
         data = await axios.get(`${API}/mylike`);
