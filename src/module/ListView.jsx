@@ -26,14 +26,12 @@ const Lists = styled.div`
     }
 `;
 
-const ListView = ( { data, cardstyle, cardinfostyle }) => {
-
-
-
-    return(
+const ListView = ({ data, cardstyle, cardinfostyle }) => {
+    return (
         <Lists>
-                {data ? (
-                    data.map((item) => (
+            {data ? (
+                data.pages.map((page) =>
+                    page.map((item) => (
                         <Grids key={item.id}>
                             <Card
                                 url={item.url}
@@ -43,12 +41,12 @@ const ListView = ( { data, cardstyle, cardinfostyle }) => {
                             <CardInfo product={item} styled={cardinfostyle} />
                         </Grids>
                     ))
-                ) : (
-                    <div style={{ height: '100vh' }} />
-                )}
-            </Lists>
-    )
-}
-
+                )
+            ) : (
+                <div style={{ height: '100vh' }} />
+            )}
+        </Lists>
+    );
+};
 
 export default React.memo(ListView);

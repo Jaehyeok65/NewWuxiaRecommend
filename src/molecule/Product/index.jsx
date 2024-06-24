@@ -28,8 +28,6 @@ const Product = ({
     clicked,
     init,
 }) => {
-    console.log(clicked);
-
     return (
         <React.Fragment>
             <img src={product.url} alt={product.title} />
@@ -49,7 +47,7 @@ const Product = ({
                 </Button>
                 <br />
                 <Icon
-                    styled={{ fontSize: '15px', color: 'red' }}
+                    styled={{ fontSize: '18px', color: 'red' }}
                     icon={icon}
                     setIcon={setIcon}
                 >

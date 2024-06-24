@@ -55,7 +55,7 @@ const Detail = ({
 }) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
-    if (error) return <Error error={error} />
+    if (error) return <Error error={error} />;
     if (!data) return null;
 
     return (

@@ -1,14 +1,20 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, lazy } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { getProduct } from '../../redux/action';
-import { StarSubmit, LikeSubmit } from '../../redux/action';
-import { SubmitView } from '../../api/WuxiaAPI';
 import { useNavigate } from 'react-router-dom';
 import { setRecentView } from '../../module/RecentView';
-import Detail from '.';
+import { Suspense } from 'react';
+import {
+    getWuxiaProduct,
+    setWuxiaProductLikes,
+    setWuxiaProductRate,
+    setWuxiaProductView,
+} from '../../api/WuxiaAPI.tsx';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+const Detail = lazy(() => import('./index.jsx'));
 
 const Container = ({ loginstate }) => {
+    const queryClient = useQueryClient();
     const { title } = useParams();
     const [ratetoggle, setRateToggle] = useState(false); //별점용 토글
     const [handleclicked, setHandleClicked] = useState([
@@ -20,33 +26,47 @@ const Container = ({ loginstate }) => {
     ]); //별점부여용 State
     const [clicked, setClicked] = useState([false, false, false, false, false]); //상품 별점 State
     const [view, setView] = useState(false);
-    const { data, loading, error } = useSelector(
-        (state) => state.wuxia.product[title]
-    ) || {
-        data: null,
-        loading: false,
-        error: null,
-    };
-    const dispatch = useDispatch();
-    const memoizedDispatch = useCallback(dispatch, []);
+    const { data, isError, error } = useQuery({
+        queryKey: ['product', title],
+        queryFn: () => getWuxiaProduct(title),
+        option: {
+            suspense: true,
+        },
+    });
+
+    const LikeMutation = useMutation({
+        mutationFn: (data) => {
+            return setWuxiaProductLikes(data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries('product');
+        },
+    });
+    const RateMutation = useMutation({
+        mutationFn: (data) => {
+            return setWuxiaProductRate(data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries('product');
+        },
+    });
+    const ViewMutation = useMutation({
+        mutationFn: (data) => {
+            return setWuxiaProductView(data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries('product');
+        },
+    });
+
     const navigate = useNavigate();
     const memoizedNavigate = useCallback(navigate, []);
 
     useEffect(() => {
-        if (data) {
-            setRecentView(data);
-            return;
-        }
-        memoizedDispatch(getProduct(title));
-    }, [title, memoizedDispatch, data]);
-
-    useEffect(() => {
-        if (!view && data) { //중복 방문을 방지하기 위함
-            SubmitView(data);
+        if (!view && data) {
+            //중복 방문을 방지하기 위함
+            ViewMutation.mutate(data); // 컴포넌트가 처음 렌더링될 때만 호출
             setView(true);
-        }
-        if(data) { //data가 변경될 때 별점도 변경하기 위함
-            init();
         }
     }, [data, view]);
 
@@ -58,13 +78,16 @@ const Container = ({ loginstate }) => {
         setRateToggle((prev) => !prev);
     }, []);
 
-    const handleSubmit = useCallback(async() => {
+    const handleSubmit = () => {
         const rate = handleclicked.filter((item) => item === true).length;
-        await memoizedDispatch(
-            StarSubmit(title, rate, data, () => setRateToggle((prev) => !prev))
-        );
-    }, [handleclicked, memoizedDispatch, setRateToggle, title, data]);
 
+        RateMutation.mutate({
+            ...data,
+            rate,
+        });
+        handleRate(rate);
+        handleClose();
+    };
 
     const handleRate = useCallback((rate) => {
         setClicked(
@@ -74,14 +97,15 @@ const Container = ({ loginstate }) => {
         );
     }, []);
 
-    const onLikeClick = useCallback(async () => {
+    const onLikeClick = () => {
         if (!loginstate) {
             window.alert('로그인이 필요한 기능입니다.');
             memoizedNavigate('/login');
             return;
         }
-        memoizedDispatch(LikeSubmit(title, data));
-    }, [title, data]);
+
+        LikeMutation.mutate(data);
+    };
 
     const onRateToggle = useCallback(() => {
         if (!loginstate) {
@@ -105,20 +129,22 @@ const Container = ({ loginstate }) => {
 
     return (
         <React.Fragment>
-            <Detail
-                data={data}
-                error={error}
-                ratetoggle={ratetoggle}
-                handleStar={handleStar}
-                handleSubmit={handleSubmit}
-                handleClose={handleClose}
-                handleRate={handleRate}
-                onLikeClick={onLikeClick}
-                onRateToggle={onRateToggle}
-                init={init}
-                clicked={clicked}
-                handleclicked={handleclicked}
-            />
+            <Suspense fallback={<div>로딩...</div>}>
+                <Detail
+                    data={data}
+                    error={error}
+                    ratetoggle={ratetoggle}
+                    handleStar={handleStar}
+                    handleSubmit={handleSubmit}
+                    handleClose={handleClose}
+                    handleRate={handleRate}
+                    onLikeClick={onLikeClick}
+                    onRateToggle={onRateToggle}
+                    init={init}
+                    clicked={clicked}
+                    handleclicked={handleclicked}
+                />
+            </Suspense>
         </React.Fragment>
     );
 };
