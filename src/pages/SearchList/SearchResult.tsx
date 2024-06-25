@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react';
-import MainFrame from '../MainFrame';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import Card from '../../molecule/Card';
-import CardInfo from '../../molecule/CardInfo';
-import { useSelector, useDispatch } from 'react-redux';
-import { getSearch } from '../../redux/action';
-import Error from '../../module/Error';
+import MainFrame from '../MainFrame';
+import Card from '../../molecule/Card/index';
+import CardInfo from '../../molecule/CardInfo/index';
 
 const Lists = styled.div`
     display: grid;
@@ -64,42 +59,20 @@ const cardinfostyle = {
     },
 };
 
-const SearchList = () => {
-    const { title, input } = useParams(); //title에 맞게 서버에 데이터 요청할 것
-    const { data, loading, error } = useSelector(
-        (state) => state.wuxia.list[title]
-    ) || {
-        loading: false,
-        data: null,
-        error: null,
-    };
-    const dispatch = useDispatch();
+const SearchResult = ({
+    data,
+    input,
+    title,
+}: {
+    data: any;
+    input: string | undefined;
+    title: string | undefined;
+}) => {
+    if (!input || !title) {
+        return <h2>검색 중 오류가 발생했습니다. 다시 검색해주세요!</h2>;
+    }
 
-    const handleScroll = () => {
-        if (!window.scrollY) return;
-        // 현재 위치가 이미 최상단일 경우 return
-
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
-    };
-
-    useEffect(() => {
-        handleScroll();
-    }, [title]);
-
-    //console.log(input);
-
-    useEffect(() => {
-        //검색 전용
-        dispatch(getSearch(title, input));
-    }, [input]); //input이 변경될 때만 dispatch하도록 input만 의존성 추가
-
-    //if (loading) return <div>로딩중...</div>;
-    if (error) return <Error error={error} />;
-    if (!data) return null;
-
+    console.log(data);
     if (data && data.length === 0)
         return (
             <MainFrame>
@@ -117,18 +90,21 @@ const SearchList = () => {
 
     return (
         <MainFrame>
-            <h2 style={{ fontSize: '20px', marginTop: '2%' }}>
-                {input ? `"${input}" ` : null}
-                {title}
-            </h2>
+            {data && (
+                <h2 style={{ fontSize: '20px', marginTop: '2%' }}>
+                    {input ? `"${input}" ` : null}
+                    {title + ' ' + data.length + '개'}
+                </h2>
+            )}
             <Lists>
                 {data &&
-                    data.map((item, index) => (
+                    data.map((item: any, index: number) => (
                         <Grids key={index}>
                             <Card
                                 url={item.url}
                                 title={item.title}
                                 styled={cardstyle}
+                                writer={item.writer}
                             />
                             <CardInfo product={item} styled={cardinfostyle} />
                         </Grids>
@@ -138,4 +114,4 @@ const SearchList = () => {
     );
 };
 
-export default React.memo(SearchList);
+export default SearchResult;

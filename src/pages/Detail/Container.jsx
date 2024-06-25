@@ -9,7 +9,7 @@ import {
     setWuxiaProductLikes,
     setWuxiaProductRate,
     setWuxiaProductView,
-} from '../../api/WuxiaAPI.tsx';
+} from '../../api/WuxiaAPI';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Detail = lazy(() => import('./index.jsx'));
@@ -30,13 +30,13 @@ const Container = ({ loginstate }) => {
     const { data, isError, error } = useQuery({
         queryKey: ['product', title],
         queryFn: () => getWuxiaProduct(title),
-        option: {
-            suspense: true,
-        },
+        option : {
+            suspense : true
+        }
     });
 
     const LikeMutation = useMutation({
-        mutationFn: (data) => {
+        mutationFn: () => {
             return setWuxiaProductLikes(data);
         },
         onSuccess: () => {
@@ -44,7 +44,7 @@ const Container = ({ loginstate }) => {
         },
     });
     const RateMutation = useMutation({
-        mutationFn: (data) => {
+        mutationFn: () => {
             return setWuxiaProductRate(data);
         },
         onSuccess: (data) => {
@@ -53,7 +53,7 @@ const Container = ({ loginstate }) => {
         },
     });
     const ViewMutation = useMutation({
-        mutationFn: (data) => {
+        mutationFn: () => {
             return setWuxiaProductView(data);
         },
         onSuccess: () => {
@@ -128,8 +128,8 @@ const Container = ({ loginstate }) => {
         });
     };
 
-    if(isError) {
-        return <Error error={error}/>
+    if (isError) {
+        return <Error error={error} />;
     }
 
     //console.log(window.sessionStorage.getItem('view'));
@@ -144,7 +144,6 @@ const Container = ({ loginstate }) => {
                     handleStar={handleStar}
                     handleSubmit={handleSubmit}
                     handleClose={handleClose}
-                    handleRate={handleRate}
                     onLikeClick={onLikeClick}
                     onRateToggle={onRateToggle}
                     init={init}

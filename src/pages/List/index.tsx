@@ -6,9 +6,9 @@ import Loading from '../../module/Loading';
 import Error from '../../module/Error';
 import ListView from '../../module/ListView';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getWuxiaListByTitle } from '../../api/WuxiaAPI.tsx';
-import useObserver from '../../hook/useObserver.tsx';
-import useScroll from '../../hook/useScroll.tsx';
+import { getWuxiaListByTitle } from '../../api/WuxiaAPI';
+import useObserver from '../../hook/useObserver';
+import useScroll from '../../hook/useScroll';
 
 const Btn = styled.button`
     position: fixed;
