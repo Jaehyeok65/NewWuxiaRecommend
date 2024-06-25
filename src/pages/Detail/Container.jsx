@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { setRecentView } from '../../module/RecentView';
+import Error from '../../module/Error.jsx';
 import { Suspense } from 'react';
 import {
     getWuxiaProduct,
@@ -46,8 +47,9 @@ const Container = ({ loginstate }) => {
         mutationFn: (data) => {
             return setWuxiaProductRate(data);
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries('product');
+            handleRate(data?.rate);
         },
     });
     const ViewMutation = useMutation({
@@ -66,6 +68,7 @@ const Container = ({ loginstate }) => {
         if (!view && data) {
             //중복 방문을 방지하기 위함
             ViewMutation.mutate(data); // 컴포넌트가 처음 렌더링될 때만 호출
+            setRecentView(data);
             setView(true);
         }
     }, [data, view]);
@@ -85,7 +88,7 @@ const Container = ({ loginstate }) => {
             ...data,
             rate,
         });
-        handleRate(rate);
+
         handleClose();
     };
 
@@ -124,6 +127,10 @@ const Container = ({ loginstate }) => {
             return clickStates;
         });
     };
+
+    if(isError) {
+        return <Error error={error}/>
+    }
 
     //console.log(window.sessionStorage.getItem('view'));
 
