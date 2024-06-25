@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from '../../atoms/Icon';
-import { Text } from '../../atoms/Text';
+import Text from '../../atoms/Text';
 import { FaBars } from 'react-icons/fa';
 import Button from '../../atoms/Button';
 import { AiOutlineMedium } from 'react-icons/ai';
@@ -16,9 +16,8 @@ const HeadTexts = styled.div`
         width: ${(props) => props.styled.head.mobilewidth};
     }
 
-
     @media screen and (min-width: 1200px) {
-        margin-left : 45%;
+        margin-left: 45%;
     }
 `;
 
@@ -29,7 +28,7 @@ const Container = styled.div`
 
 const SidebarBtn = styled.div`
     @media screen and (min-width: 1200px) {
-        display : none;
+        display: none;
     }
 `;
 
@@ -54,11 +53,11 @@ const HeadText = ({ styled, onClick }) => {
     return (
         <HeadTexts styled={styled}>
             <SidebarBtn>
-            <Button onClick={onClick} styled={btnstyle}>
-                <Icon styled={{ fontSize: '30px' }}>
-                    <FaBars data-testid="side" />
-                </Icon>
-            </Button>
+                <Button onClick={onClick} styled={btnstyle}>
+                    <Icon styled={{ fontSize: '30px' }}>
+                        <FaBars data-testid="side" />
+                    </Icon>
+                </Button>
             </SidebarBtn>
             <Container>
                 <StyledLink to="/">

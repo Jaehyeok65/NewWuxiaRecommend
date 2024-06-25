@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Button from '../../atoms/Button';
 import { Input } from '../../atoms/Input';
 import { getLogin } from '../../api/LoginAPI';
-import { Text } from '../../atoms/Text';
+import  Text  from '../../atoms/Text';
 import useDebounce from '../../hook/useDebounce';
 import { CheckEmail, CheckPassword } from '../../module/CheckValidation';
 import { useNavigate } from 'react-router-dom';

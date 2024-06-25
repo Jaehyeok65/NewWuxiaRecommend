@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Title from '../../atoms/Title';
 import Icon from '../../atoms/Icon';
-import { Text } from '../../atoms/Text';
+import Text from '../../atoms/Text';
 import { FaHeart } from 'react-icons/fa';
 import StarRate from '../StarRate';
 
-const CardInfo = ({ product, styled }) => {
+const CardInfo = ({ product, styled } : { product : any, styled : any}) => {
     const [clicked, setClicked] = useState([false, false, false, false, false]);
 
     const init = () => {
