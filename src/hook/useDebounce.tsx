@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-const useDebounce = (value, delay = 500) => {
-    const [debounceValue, setDebounceValue] = useState(null); //초기 디바운스는 null
+const useDebounce = (value : any, delay = 500) => {
+    const [debounceValue, setDebounceValue] = useState(value); 
 
     //디바운스의 원리 == 값이 들어오면 처음 요청들을 무시하고 마지막 요청만 리턴한다.
     useEffect(() => {

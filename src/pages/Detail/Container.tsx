@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import Error from '../../module/Error';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { setRecentView } from '../../module/RecentView';
@@ -15,6 +14,7 @@ import {
     useSuspenseQuery,
 } from '@tanstack/react-query';
 import Detail from './Presentation';
+import useDebounce from '../../hook/useDebounceFuntion';
 
 const Container = ({ loginstate }: any) => {
     const queryClient = useQueryClient();
@@ -117,6 +117,8 @@ const Container = ({ loginstate }: any) => {
         LikeMutation.mutate(data);
     };
 
+    const onDebounceLikeClick = useDebounce(onLikeClick);
+
     const onRateToggle = useCallback(() => {
         if (!loginstate) {
             window.alert('로그인이 필요한 기능입니다.');
@@ -141,7 +143,7 @@ const Container = ({ loginstate }: any) => {
                 data={data}
                 init={init}
                 onRateToggle={onRateToggle}
-                onLikeClick={onLikeClick}
+                onLikeClick={onDebounceLikeClick}
                 handleClose={handleClose}
                 handleSubmit={handleSubmit}
                 handleStar={handleStar}
