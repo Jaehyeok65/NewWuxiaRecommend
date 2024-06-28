@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ReactLoading from 'react-loading';
 
@@ -10,6 +10,18 @@ const Spinner = styled.div`
 `;
 
 const Loading = ({ height, width, marginTop, marginBottom }) => {
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setLoading(true);
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    if (!loading) {
+        return null;
+    }
     return (
         <Spinner marginTop={marginTop} marginBottom={marginBottom}>
             <ReactLoading

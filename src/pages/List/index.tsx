@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import Loading from '../../module/Loading';
+import Loading from 'module/Loading';
 
 const Container = lazy(() => import('./Container'));
 

@@ -32,7 +32,7 @@ const StarRate: React.FC<StarRateProps> = ({
         if (init) {
             init();
         }
-    }, [init]);
+    }, []);
 
     return (
         <Star data-testid="star" styled={styled}>

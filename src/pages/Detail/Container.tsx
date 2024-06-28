@@ -1,20 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { setRecentView } from '../../module/RecentView';
+import { setRecentView } from 'module/RecentView';
 import {
     getWuxiaProduct,
     setWuxiaProductLikes,
     setWuxiaProductRate,
     setWuxiaProductView,
-} from '../../api/WuxiaAPI';
+} from 'api/WuxiaAPI';
 import {
     useMutation,
     useQueryClient,
     useSuspenseQuery,
 } from '@tanstack/react-query';
 import Detail from './Presentation';
-import useDebounce from '../../hook/useDebounceFuntion';
+import useDebounce from 'hook/useDebounceFuntion';
 
 const Container = ({ loginstate }: any) => {
     const queryClient = useQueryClient();

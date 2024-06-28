@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { getWuxiaListByTitle } from '../../api/WuxiaAPI';
-import useObserver from '../../hook/useObserver';
-import useScroll from '../../hook/useScroll';
+import { getWuxiaListByTitle } from 'api/WuxiaAPI';
+import useObserver from 'hook/useObserver';
+import useScroll from 'hook/useScroll';
 import Presentation from './Presentation';
 
 const List = () => {
@@ -40,7 +40,9 @@ const List = () => {
 
     useEffect(() => {
         //쓰로틀링 훅으로 스크롤 위치 저장함
-        window.sessionStorage.setItem(`${title}_scroll`, String(scroll));
+        if (scroll > 0) {
+            window.sessionStorage.setItem(`${title}_scroll`, String(scroll));
+        }
     }, [scroll, title]);
 
     useEffect(() => {

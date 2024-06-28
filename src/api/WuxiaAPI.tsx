@@ -8,7 +8,7 @@ export const getWuxiaListByTitle = async (
 ) => {
     try {
         if (!title) {
-            return;
+            throw new Error('no Title');
         }
         const data = await axios.get(
             `${API}/page?pg=${page}&sz=${12}&title=${title}`
@@ -29,14 +29,12 @@ export const getSearchWuxiaList = async (input: string) => {
     } catch (error) {
         console.log(error);
     }
-
-    //await sleep(500); //부드러운 화면 전환을 위해 0.5초 쉬었다가 데이터 반환
 };
 
 export const getWuxiaProduct = async (title: string | undefined) => {
     try {
-        if(!title) {
-            return;
+        if (!title) {
+            throw new Error('no Title');
         }
         const data = await axios.post(`${API}/product`, {
             title: title,
@@ -68,10 +66,9 @@ export const setWuxiaProductView = async (wuxia: Wuxia) => {
 export const setWuxiaProductLikes = async (wuxia: Wuxia) => {
     try {
         const response = await axios.post(`${API}/likes`, wuxia);
-        return response.data; // 이 부분을 추가하여 데이터를 반환하도록 수정
+        return response.data; 
     } catch (error) {
-        console.error('좋아요 설정 중 오류 발생:', error);
-        throw new Error('Failed to set likes');
+        console.error(error);
     }
 };
 
