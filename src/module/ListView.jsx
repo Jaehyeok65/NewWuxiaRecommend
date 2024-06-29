@@ -30,8 +30,24 @@ const ListView = ({ data, cardstyle, cardinfostyle }) => {
     return (
         <Lists>
             {data ? (
-                data.pages.map((page) =>
-                    page.map((item) => (
+                data.pages ? (
+                    data.pages.map((page) =>
+                        page.map((item) => (
+                            <Grids key={item.id}>
+                                <Card
+                                    url={item.url}
+                                    title={item.title}
+                                    styled={cardstyle}
+                                />
+                                <CardInfo
+                                    product={item}
+                                    styled={cardinfostyle}
+                                />
+                            </Grids>
+                        ))
+                    )
+                ) : (
+                    data.map((item) => (
                         <Grids key={item.id}>
                             <Card
                                 url={item.url}
