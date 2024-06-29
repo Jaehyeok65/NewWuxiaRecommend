@@ -55,7 +55,7 @@ const SubmitButton = styled.input`
     }
 `;
 
-const CommentWrite = ({ comment, onSubmit, onChange }) => {
+const CommentWrite = ({ comment, onSubmit, onChange } : any) => {
     return (
         <MainFrame>
             <form onSubmit={onSubmit}>

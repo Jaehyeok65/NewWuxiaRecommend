@@ -5,9 +5,7 @@ import styled from 'styled-components';
 import Icon from '../../atoms/Icon';
 import { FaPen } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import Loading from '../../module/Loading';
 import Pagination from '../../molecule/Pagination';
-import Error from '../../module/Error';
 
 const Navi = styled.div`
     display: flex;
@@ -36,10 +34,8 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const Community = ({
+const CommunityPresentation = ({
     data,
-    loading,
-    error,
     loginstate,
     selectList,
     Selected,
@@ -49,9 +45,7 @@ const Community = ({
     limit,
     page,
     setPage,
-}) => {
-    if (loading && performance.timing.loadEventEnd - performance.timing.navigationStart > 1000) return <Loading width="5%" height="5%" marginTop="5%" />;
-    if (error) return <Error error={error} />;
+}: any) => {
     if (!data) return null;
 
     return (
@@ -59,7 +53,7 @@ const Community = ({
             <Navi>
                 <select onChange={handleSelect} value={Selected}>
                     {selectList &&
-                        selectList.map((item) => (
+                        selectList.map((item: any) => (
                             <option value={item} key={item}>
                                 {item}
                             </option>
@@ -78,7 +72,7 @@ const Community = ({
                 )}
             </Navi>
             {data &&
-                data.slice(offset, offset + limit).map((item) => (
+                data.slice(offset, offset + limit).map((item: any) => (
                     <StyledLink to={`/comment/${item.id}`} key={item.id}>
                         <CommentLists
                             title={item.title}
@@ -103,4 +97,4 @@ const Community = ({
     );
 };
 
-export default React.memo(Community);
+export default React.memo(CommunityPresentation);

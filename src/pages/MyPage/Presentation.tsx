@@ -64,7 +64,7 @@ const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
                     styled={{
                         border: 'none',
                         fontWeight: title === '방문' ? 'bold' : 'normal',
-                        fontSize : title === '방문' ? '15px' : '12px'
+                        fontSize: title === '방문' ? '15px' : '12px',
                     }}
                     onClick={() => setTitle('방문')}
                 >
@@ -74,7 +74,7 @@ const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
                     styled={{
                         border: 'none',
                         fontWeight: title === '좋아요' ? 'bold' : 'normal',
-                        fontSize : title === '좋아요' ? '15px' : '12px'
+                        fontSize: title === '좋아요' ? '15px' : '12px',
                     }}
                     onClick={() => setTitle('좋아요')}
                 >
@@ -84,7 +84,7 @@ const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
                     styled={{
                         border: 'none',
                         fontWeight: title === '별점' ? 'bold' : 'normal',
-                        fontSize : title === '별점' ? '15px' : '12px'
+                        fontSize: title === '별점' ? '15px' : '12px',
                     }}
                     onClick={() => setTitle('별점')}
                 >

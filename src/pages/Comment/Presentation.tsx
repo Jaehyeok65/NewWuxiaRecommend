@@ -8,8 +8,6 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Icon from '../../atoms/Icon';
 import { FaPen } from 'react-icons/fa';
-import Loading from '../../module/Loading';
-import Error from '../../module/Error';
 
 const Content = styled.div`
     margin-bottom: 10%;
@@ -50,18 +48,12 @@ const Pre = styled.pre`
     }
 `;
 
-const Comment = ({
+const CommentPresentation = ({
     data,
-    loading,
-    error,
     nickname,
     onRemoveClick,
     onRecommendClick,
-}) => {
-    if (loading && performance.timing.loadEventEnd - performance.timing.navigationStart > 1000) return <Loading width="5%" height="5%" marginTop="5%" />;
-    if (error) return <Error error={error} />
-    if (!data) return null;
-
+}: any) => {
     return (
         <MainFrame>
             {data && (
@@ -115,4 +107,4 @@ const Comment = ({
     );
 };
 
-export default React.memo(Comment);
+export default React.memo(CommentPresentation);
