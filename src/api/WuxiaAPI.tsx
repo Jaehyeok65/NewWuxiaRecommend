@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Wuxia } from '../type/type';
 import { API } from './LoginAPI';
+import { getRecentView } from 'module/RecentView';
 
 export const getWuxiaListByTitle = async (
     page: number,
@@ -66,7 +67,7 @@ export const setWuxiaProductView = async (wuxia: Wuxia) => {
 export const setWuxiaProductLikes = async (wuxia: Wuxia) => {
     try {
         const response = await axios.post(`${API}/likes`, wuxia);
-        return response.data; 
+        return response.data;
     } catch (error) {
         console.error(error);
     }
@@ -82,7 +83,9 @@ export const setWuxiaProductRate = async (wuxia: Wuxia) => {
 };
 
 export const getWuxiaMyPage = async (title: string) => {
-    if (title === '좋아요') {
+    if (title === '방문') {
+        return getRecentView();
+    } else if (title === '좋아요') {
         const data = await axios.get(`${API}/mylike`);
         return data.data;
     } else if (title === '별점') {
