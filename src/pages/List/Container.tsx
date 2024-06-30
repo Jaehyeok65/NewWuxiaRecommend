@@ -43,7 +43,7 @@ const List = () => {
         if (scroll > 0) {
             window.sessionStorage.setItem(`${title}_scroll`, String(scroll));
         }
-    }, [scroll, title]);
+    }, [scroll]);
 
     useEffect(() => {
         const scrolly = window.sessionStorage.getItem(`${title}_scroll`);
