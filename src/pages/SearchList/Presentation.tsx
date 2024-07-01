@@ -59,7 +59,7 @@ const cardinfostyle = {
     },
 };
 
-const SearchResult = ({
+const SearchListPresentation = ({
     data,
     input,
     title,
@@ -114,4 +114,4 @@ const SearchResult = ({
     );
 };
 
-export default SearchResult;
+export default SearchListPresentation;
