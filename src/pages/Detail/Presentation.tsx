@@ -21,26 +21,29 @@ interface DetailProps {
     handleClose: () => void;
     error: any;
     isPending: boolean;
+    onWriteClick : () => void;
 }
 
 const Details = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 20px;
-    width: 50%;
-    margin: 0 auto;
+    grid-template-columns: 1fr 3fr;
+    gap: 60px;
     margin-top: 3%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 
     > img {
         width: 100%;
         height: 100%;
-        max-width: 280px;
+        max-width : 220px;
+        max-height : 400px;
+        border-radius : 8px;
+
     }
 
     @media screen and (max-width: 1000px) {
-        width: 80%;
-        margin-bottom: 50%;
+        grid-template-columns: 1fr 1fr;
+        gap : 20px;
+        margin-bottom: 10%;
         margin-top: 20%;
     }
 `;
@@ -50,7 +53,7 @@ const productstyle = {
         marginBottom: '5%',
     },
     text: {
-        marginBottom: '5%',
+        marginBottom: '2%',
         fontSize: '12px',
     },
 };
@@ -68,6 +71,7 @@ const Detail = ({
     handleClose,
     isPending,
     error,
+    onWriteClick
 }: DetailProps) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
@@ -92,8 +96,10 @@ const Detail = ({
                                 }
                                 clicked={clicked}
                                 init={init}
+                                onWriteClick={onWriteClick}
                             />
                         </Details>
+                        <div>댓글 예정</div>
                     </MainFrame>
                     <Modal toggle={ratetoggle}>
                         <Text
