@@ -3,10 +3,14 @@ import styled from 'styled-components';
 import Footer from '../organism/Footer';
 
 const Body = styled.div`
-    width: 80%;
+    width: 60%;
     margin: 0 auto;
     height: auto;
     min-height: 60vh;
+
+    @media screen and (max-width: 768px) {
+        width: 90%;
+    }
 `;
 
 const MainFrame = ({ children }) => {
