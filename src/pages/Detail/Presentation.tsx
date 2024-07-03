@@ -7,6 +7,7 @@ import StarRate from '../../molecule/StarRate';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import Error from '../../module/Error';
+import CommentBox from 'molecule/CommentBox';
 
 interface DetailProps {
     data: any;
@@ -21,7 +22,10 @@ interface DetailProps {
     handleClose: () => void;
     error: any;
     isPending: boolean;
-    onWriteClick : () => void;
+    onWriteClick: () => void;
+    wuxiacomment: any;
+    setWuxiaComment: any;
+    onWuxiaCommentSubmit: any;
 }
 
 const Details = styled.div`
@@ -34,15 +38,14 @@ const Details = styled.div`
     > img {
         width: 100%;
         height: 100%;
-        max-width : 220px;
-        max-height : 400px;
-        border-radius : 8px;
-
+        max-width: 220px;
+        max-height: 400px;
+        border-radius: 8px;
     }
 
     @media screen and (max-width: 1000px) {
         grid-template-columns: 1fr 1fr;
-        gap : 20px;
+        gap: 20px;
         margin-bottom: 10%;
         margin-top: 20%;
     }
@@ -71,7 +74,10 @@ const Detail = ({
     handleClose,
     isPending,
     error,
-    onWriteClick
+    onWriteClick,
+    wuxiacomment,
+    setWuxiaComment,
+    onWuxiaCommentSubmit,
 }: DetailProps) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
@@ -99,7 +105,11 @@ const Detail = ({
                                 onWriteClick={onWriteClick}
                             />
                         </Details>
-                        <div>댓글 예정</div>
+                        <CommentBox
+                            wuxiacomment={wuxiacomment}
+                            setWuxiaComment={setWuxiaComment}
+                            onWuxiaCommentSubmit={onWuxiaCommentSubmit}
+                        />
                     </MainFrame>
                     <Modal toggle={ratetoggle}>
                         <Text
