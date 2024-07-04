@@ -3,7 +3,7 @@ import Loading from 'module/Loading';
 
 const Container = lazy(() => import('./Container'));
 
-const DetailIndex = ({ loginstate }: any) => {
+const DetailIndex = ({ loginstate, nickname }: any) => {
     return (
         <Suspense
             fallback={
@@ -15,7 +15,7 @@ const DetailIndex = ({ loginstate }: any) => {
                 />
             }
         >
-            <Container loginstate={loginstate} />
+            <Container loginstate={loginstate} nickname={nickname} />
         </Suspense>
     );
 };

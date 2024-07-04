@@ -9,14 +9,21 @@ import {
     setWuxiaProductView,
 } from 'api/WuxiaAPI';
 import {
+    Formatting,
+    saveWuxiaComment,
+    getWuxiaComment,
+    deleteWuxiaComment,
+} from 'api/CommentAPI';
+import {
     useMutation,
     useQueryClient,
     useSuspenseQuery,
 } from '@tanstack/react-query';
 import Detail from './Presentation';
 import useDebounce from 'hook/useDebounceFuntion';
+import { getuserId } from 'api/LoginAPI';
 
-const Container = ({ loginstate }: any) => {
+const Container = ({ loginstate, nickname }: any) => {
     const queryClient = useQueryClient();
     const { title } = useParams();
     const [ratetoggle, setRateToggle] = useState(false); //별점용 토글
@@ -32,6 +39,18 @@ const Container = ({ loginstate }: any) => {
     const { data, isPending, error } = useSuspenseQuery({
         queryKey: ['product', title],
         queryFn: () => getWuxiaProduct(title),
+    });
+
+    const { data: commentdata } = useSuspenseQuery({
+        queryKey: ['productcomment', title],
+        queryFn: () => getWuxiaComment(title),
+    });
+
+    const [wuxiacomment, setWuxiaComment] = useState<any>({
+        wuxia_id: data?.id,
+        user_id: getuserId(),
+        comment_text: '',
+        created_at: Formatting(new Date()),
     });
 
     const LikeMutation = useMutation({
@@ -68,6 +87,38 @@ const Container = ({ loginstate }: any) => {
         },
     });
 
+    const WuxiaCommentMutation = useMutation({
+        mutationFn: () => {
+            return saveWuxiaComment(wuxiacomment);
+        },
+        onSettled: async () => {
+            return await queryClient.invalidateQueries({
+                queryKey: ['productcomment'],
+            });
+        },
+        onSuccess: () => {
+            setWuxiaComment((prev: any) => ({
+                ...prev,
+                comment_text: '', // 빈 문자열로 설정
+            }));
+        },
+    });
+
+    const DeleteWuxiaCommentMutation = useMutation({
+        mutationFn: (commentId: number) => {
+            return deleteWuxiaComment(commentId);
+        },
+        onSuccess: (data) => {
+            queryClient.setQueryData(['productcomment'], data);
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
+        },
+    });
+
     const navigate = useNavigate();
     const memoizedNavigate = useCallback(navigate, []);
 
@@ -99,6 +150,21 @@ const Container = ({ loginstate }: any) => {
         handleClose();
     };
 
+    const onWuxiaCommentSubmit = (e: any) => {
+        e.preventDefault();
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
+        WuxiaCommentMutation.mutate(wuxiacomment);
+    };
+
+    const onRemoveComment = (commentId: number) => {
+        DeleteWuxiaCommentMutation.mutate(commentId);
+    };
+
     const handleRate = useCallback((rate: number) => {
         setClicked(
             Array(5)
@@ -118,6 +184,16 @@ const Container = ({ loginstate }: any) => {
     };
 
     const onDebounceLikeClick = useDebounce(onLikeClick);
+
+    const onWriteClick = () => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
+        memoizedNavigate(`/commentwrite/${title}`);
+    };
 
     const onRateToggle = useCallback(() => {
         if (!loginstate) {
@@ -152,6 +228,14 @@ const Container = ({ loginstate }: any) => {
                 ratetoggle={ratetoggle}
                 isPending={isPending}
                 error={error}
+                onWriteClick={onWriteClick}
+                onWuxiaCommentSubmit={onWuxiaCommentSubmit}
+                wuxiacomment={wuxiacomment}
+                setWuxiaComment={setWuxiaComment}
+                commentdata={commentdata}
+                loginstate={loginstate}
+                nickname={nickname}
+                onRemoveComment={onRemoveComment}
             />
         </React.Fragment>
     );

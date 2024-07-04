@@ -8,6 +8,7 @@ import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import Error from '../../module/Error';
 import CommentBox from 'molecule/CommentBox';
+import WuxiaComment from 'molecule/WuxiaComment';
 
 interface DetailProps {
     data: any;
@@ -26,6 +27,10 @@ interface DetailProps {
     wuxiacomment: any;
     setWuxiaComment: any;
     onWuxiaCommentSubmit: any;
+    commentdata : any;
+    loginstate : boolean;
+    nickname : string;
+    onRemoveComment : (key: number) => void;
 }
 
 const Details = styled.div`
@@ -38,7 +43,7 @@ const Details = styled.div`
     > img {
         width: 100%;
         height: 100%;
-        max-width: 220px;
+        max-width: 300px;
         max-height: 400px;
         border-radius: 8px;
     }
@@ -78,6 +83,10 @@ const Detail = ({
     wuxiacomment,
     setWuxiaComment,
     onWuxiaCommentSubmit,
+    commentdata,
+    loginstate,
+    nickname,
+    onRemoveComment
 }: DetailProps) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
@@ -109,7 +118,9 @@ const Detail = ({
                             wuxiacomment={wuxiacomment}
                             setWuxiaComment={setWuxiaComment}
                             onWuxiaCommentSubmit={onWuxiaCommentSubmit}
+                            loginstate={loginstate}
                         />
+                        <WuxiaComment data={commentdata} nickname={nickname} onRemoveComment={onRemoveComment}/>
                     </MainFrame>
                     <Modal toggle={ratetoggle}>
                         <Text

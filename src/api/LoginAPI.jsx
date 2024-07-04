@@ -105,3 +105,17 @@ export const getNicknameCheck = async(Nickname) => {
 
     return data.data;
 };
+
+export const getuserId = () => {
+    let name = "login=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let cookieArray = decodedCookie.split(';');
+
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}

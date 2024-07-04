@@ -1,4 +1,4 @@
-import { API } from './LoginAPI';
+import { API, getuserId } from './LoginAPI';
 import axios from 'axios';
 import { Comment } from 'type/type';
 
@@ -17,6 +17,8 @@ export const saveComment = async (comment: Comment) => {
         date: comment.date,
         view: comment.view,
         recommend: comment.recommend,
+        wuxia: comment.wuxia,
+        url: comment.url,
     });
     return data.data;
 };
@@ -29,11 +31,11 @@ export const deleteComment = async (id: string) => {
 };
 
 export const updateComment = async (comment: Comment | undefined) => {
-    if(!comment) {
+    if (!comment) {
         return;
     }
     const data = await axios.post(`${API}/commentsave`, {
-        id : comment.id,
+        id: comment.id,
         title: comment.title,
         content: comment.content,
         writer: comment.writer,
@@ -76,9 +78,42 @@ export const Formatting = (source: any, delimiter = '-') => {
     if (parseInt(minutes) < 10 && parseInt(minutes) > 0) {
         minutes = '0' + minutes;
     }
-    let second = source.getSeconds();
-    if (parseInt(second) < 10 && parseInt(second) > 0) {
-        second = '0' + second;
-    }
-    return [year, month, day, hour, minutes, second].join(delimiter);
+    return [year, month, day].join(delimiter) + " " +  [hour,minutes].join(":");
 };
+
+export const saveWuxiaComment = async (wuxiacomment: any) => {
+    const data = await axios.post(`${API}/wuxiacommentsave`, {
+        wuxiaId : wuxiacomment.wuxia_id,
+        userId : wuxiacomment.user_id,
+        commentText : wuxiacomment.comment_text,
+        createdAt : wuxiacomment.created_at
+    });
+    return data.data;
+};
+
+
+export const getWuxiaComment = async (title: string | undefined) => {
+    try {
+        if (!title) {
+            throw new Error('no Title');
+        }
+        const data = await axios.post(`${API}/wuxiacomment`, {
+            title: title,
+        });
+        return data.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteWuxiaComment = async (commentId : number) => {
+    try {
+        const data = await axios.post(`${API}/wuxiacommentdelete`, {
+            commentId : commentId
+        })
+        return data.data;
+    }
+    catch(error) {
+        console.log(error);
+    }
+} 
