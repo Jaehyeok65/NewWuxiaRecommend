@@ -1,7 +1,7 @@
 import React from 'react';
 import WuxiaCommentList from 'molecule/WuxiaCommentList';
 
-const WuxiaComment = ({ data, nickname, onRemoveComment }: any) => {
+const WuxiaComment = ({ data, nickname, onRemoveComment, onRecommendComment }: any) => {
     
     return (
         <React.Fragment>
@@ -9,11 +9,13 @@ const WuxiaComment = ({ data, nickname, onRemoveComment }: any) => {
                 <WuxiaCommentList
                     key={index}
                     user={item?.user}
-                    commentText={item?.commentText}
+                    commentText={item?.contentText}
                     createdAt={item?.createdAt}
                     nickname={nickname}
-                    commentId={item?.commentId}
+                    commentId={item?.wuxiaCommentId}
                     onRemoveComment={onRemoveComment}
+                    onRecommendComment={onRecommendComment}
+                    recommendation={item?.recommendationcount}
                 />
             ))}
         </React.Fragment>

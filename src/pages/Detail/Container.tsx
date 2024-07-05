@@ -11,8 +11,9 @@ import {
 import {
     Formatting,
     saveWuxiaComment,
-    getWuxiaComment,
+    getWuxiaCommentList,
     deleteWuxiaComment,
+    recommendWuxiaComment,
 } from 'api/CommentAPI';
 import {
     useMutation,
@@ -43,7 +44,7 @@ const Container = ({ loginstate, nickname }: any) => {
 
     const { data: commentdata } = useSuspenseQuery({
         queryKey: ['productcomment', title],
-        queryFn: () => getWuxiaComment(title),
+        queryFn: () => getWuxiaCommentList(title),
     });
 
     const [wuxiacomment, setWuxiaComment] = useState<any>({
@@ -87,7 +88,7 @@ const Container = ({ loginstate, nickname }: any) => {
         },
     });
 
-    const WuxiaCommentMutation = useMutation({
+    const SaveWuxiaCommentMutation = useMutation({
         mutationFn: () => {
             return saveWuxiaComment(wuxiacomment);
         },
@@ -108,11 +109,14 @@ const Container = ({ loginstate, nickname }: any) => {
         mutationFn: (commentId: number) => {
             return deleteWuxiaComment(commentId);
         },
-        onSuccess: (data) => {
-            queryClient.setQueryData(['productcomment'], data);
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
         },
-        onError: (error) => {
-            console.error(error);
+    });
+
+    const RecommendWuxiaCommentMutation = useMutation({
+        mutationFn: (commentId: number) => {
+            return recommendWuxiaComment(commentId);
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ['productcomment'] });
@@ -158,11 +162,15 @@ const Container = ({ loginstate, nickname }: any) => {
             return;
         }
 
-        WuxiaCommentMutation.mutate(wuxiacomment);
+        SaveWuxiaCommentMutation.mutate(wuxiacomment);
     };
 
     const onRemoveComment = (commentId: number) => {
         DeleteWuxiaCommentMutation.mutate(commentId);
+    };
+
+    const onRecommendComment = (commentId : number) => {
+        RecommendWuxiaCommentMutation.mutate(commentId);
     };
 
     const handleRate = useCallback((rate: number) => {
@@ -236,6 +244,7 @@ const Container = ({ loginstate, nickname }: any) => {
                 loginstate={loginstate}
                 nickname={nickname}
                 onRemoveComment={onRemoveComment}
+                onRecommendComment={onRecommendComment}
             />
         </React.Fragment>
     );

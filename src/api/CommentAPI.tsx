@@ -85,21 +85,22 @@ export const saveWuxiaComment = async (wuxiacomment: any) => {
     const data = await axios.post(`${API}/wuxiacommentsave`, {
         wuxiaId : wuxiacomment.wuxia_id,
         userId : wuxiacomment.user_id,
-        commentText : wuxiacomment.comment_text,
+        content : wuxiacomment.comment_text,
         createdAt : wuxiacomment.created_at
     });
     return data.data;
 };
 
 
-export const getWuxiaComment = async (title: string | undefined) => {
+export const getWuxiaCommentList = async (title: string | undefined) => {
     try {
         if (!title) {
             throw new Error('no Title');
         }
-        const data = await axios.post(`${API}/wuxiacomment`, {
+        const data = await axios.post(`${API}/wuxiacommentlist`, {
             title: title,
         });
+        console.log(data.data);
         return data.data;
     } catch (error) {
         console.log(error);
@@ -109,7 +110,19 @@ export const getWuxiaComment = async (title: string | undefined) => {
 export const deleteWuxiaComment = async (commentId : number) => {
     try {
         const data = await axios.post(`${API}/wuxiacommentdelete`, {
-            commentId : commentId
+            wuxiaCommentId : commentId
+        })
+        return data.data;
+    }
+    catch(error) {
+        console.log(error);
+    }
+}
+
+export const recommendWuxiaComment = async (commentId : number) => {
+    try {
+        const data = await axios.post(`${API}/wuxiacommentrecommend`, {
+            wuxiaCommentId : commentId
         })
         return data.data;
     }

@@ -27,10 +27,11 @@ interface DetailProps {
     wuxiacomment: any;
     setWuxiaComment: any;
     onWuxiaCommentSubmit: any;
-    commentdata : any;
-    loginstate : boolean;
-    nickname : string;
-    onRemoveComment : (key: number) => void;
+    commentdata: any;
+    loginstate: boolean;
+    nickname: string;
+    onRemoveComment: (key: number) => void;
+    onRecommendComment: (key: number) => void;
 }
 
 const Details = styled.div`
@@ -86,7 +87,8 @@ const Detail = ({
     commentdata,
     loginstate,
     nickname,
-    onRemoveComment
+    onRemoveComment,
+    onRecommendComment,
 }: DetailProps) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
@@ -120,7 +122,12 @@ const Detail = ({
                             onWuxiaCommentSubmit={onWuxiaCommentSubmit}
                             loginstate={loginstate}
                         />
-                        <WuxiaComment data={commentdata} nickname={nickname} onRemoveComment={onRemoveComment}/>
+                        <WuxiaComment
+                            data={commentdata}
+                            nickname={nickname}
+                            onRemoveComment={onRemoveComment}
+                            onRecommendComment={onRecommendComment}
+                        />
                     </MainFrame>
                     <Modal toggle={ratetoggle}>
                         <Text
