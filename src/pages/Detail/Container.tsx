@@ -23,10 +23,13 @@ import {
 import Detail from './Presentation';
 import useDebounce from 'hook/useDebounceFuntion';
 import { getuserId } from 'api/LoginAPI';
+import  { showAlert }from 'redux/action';
+import { useDispatch } from 'react-redux';
 
 const Container = ({ loginstate, nickname }: any) => {
     const queryClient = useQueryClient();
     const { title } = useParams();
+    const dispatch = useDispatch();
     const [ratetoggle, setRateToggle] = useState(false); //별점용 토글
     const [handleclicked, setHandleClicked] = useState([
         false,
@@ -63,6 +66,9 @@ const Container = ({ loginstate, nickname }: any) => {
                 queryKey: ['product'],
             });
         },
+        onSuccess : () => {
+            dispatch(showAlert("좋아요 표시 완료!", "좋아요", 5000));
+        }
     });
     const RateMutation = useMutation({
         mutationFn: (data: any) => {
@@ -70,6 +76,7 @@ const Container = ({ loginstate, nickname }: any) => {
         },
         onSuccess: (data) => {
             handleRate(data?.rate);
+            dispatch(showAlert("별점 표시 완료!", "별점", 5000));
         },
         onSettled: async () => {
             return await queryClient.invalidateQueries({
@@ -166,10 +173,22 @@ const Container = ({ loginstate, nickname }: any) => {
     };
 
     const onRemoveComment = (commentId: number) => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
         DeleteWuxiaCommentMutation.mutate(commentId);
     };
 
     const onRecommendComment = (commentId : number) => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
         RecommendWuxiaCommentMutation.mutate(commentId);
     };
 
