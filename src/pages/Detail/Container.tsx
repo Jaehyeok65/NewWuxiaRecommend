@@ -25,6 +25,7 @@ import useDebounce from 'hook/useDebounceFuntion';
 import { getuserId } from 'api/LoginAPI';
 import  { showAlert }from 'redux/action';
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
 const Container = ({ loginstate, nickname }: any) => {
     const queryClient = useQueryClient();
@@ -67,7 +68,7 @@ const Container = ({ loginstate, nickname }: any) => {
             });
         },
         onSuccess : () => {
-            dispatch(showAlert("좋아요 표시 완료!", "좋아요", 5000));
+            dispatch(showAlert("좋아요 표시 완료!", uuidv4(), 4000));
         }
     });
     const RateMutation = useMutation({
@@ -76,7 +77,7 @@ const Container = ({ loginstate, nickname }: any) => {
         },
         onSuccess: (data) => {
             handleRate(data?.rate);
-            dispatch(showAlert("별점 표시 완료!", "별점", 5000));
+            dispatch(showAlert("별점 표시 완료!", uuidv4(), 4000));
         },
         onSettled: async () => {
             return await queryClient.invalidateQueries({
@@ -109,6 +110,7 @@ const Container = ({ loginstate, nickname }: any) => {
                 ...prev,
                 comment_text: '', // 빈 문자열로 설정
             }));
+            dispatch(showAlert("댓글 등록 완료!", uuidv4(), 4000));
         },
     });
 
@@ -119,6 +121,9 @@ const Container = ({ loginstate, nickname }: any) => {
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ['productcomment'] });
         },
+        onSuccess: () => {
+            dispatch(showAlert("댓글 삭제 완료!", uuidv4(), 4000));
+        }
     });
 
     const RecommendWuxiaCommentMutation = useMutation({
@@ -128,6 +133,9 @@ const Container = ({ loginstate, nickname }: any) => {
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ['productcomment'] });
         },
+        onSuccess: () => {
+            dispatch(showAlert("댓글 좋아요 완료!", uuidv4(), 4000));
+        }
     });
 
     const navigate = useNavigate();

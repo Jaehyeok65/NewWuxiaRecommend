@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { hideAlert } from 'redux/action';
 import styled from 'styled-components';
 
-const NotificationBox = styled.div`
+const NotificationBox = styled.div<{ height: number }>`
     position: fixed;
     bottom: 10%;
     left: 50%;
@@ -15,29 +15,34 @@ const NotificationBox = styled.div`
     color: white;
     z-index: 1000;
     transition: opacity 0.3s ease-in-out;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    margin-bottom: ${(props) => `${props.height}px`};
 `;
 
 const AlertBox = ({
-    title,
     message,
     duration,
+    height,
+    id,
 }: {
-    title: string;
     message: string;
     duration: number;
+    height: number;
+    id: string;
 }) => {
     const dispatch = useDispatch();
-    console.log(title);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            dispatch(hideAlert(title));
-        }, duration || 3000);
+            dispatch(hideAlert(id));
+        }, duration || 4000);
 
         return () => clearTimeout(timer);
-    }, [dispatch, title, duration]);
+    }, [id, dispatch, duration]);
 
-    return <NotificationBox>{message}</NotificationBox>;
+    return <NotificationBox height={height}>{message}</NotificationBox>;
 };
 
-export default AlertBox;
+export default React.memo(AlertBox);
