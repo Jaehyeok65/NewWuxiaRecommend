@@ -19,31 +19,6 @@ const cardstyle = {
     mobileheight: '100%',
 };
 
-const cardinfostyle = {
-    title: {
-        marginBottom: '5%',
-        fontSize: '14px',
-    },
-    subtext: {
-        marginBottom: '5%',
-        fontSize: '12px',
-        color: 'gray',
-    },
-    icon: {
-        fontSize: '15px',
-        color: 'red',
-    },
-    span: {
-        fontSize: '14px',
-        verticalAlign: 'top',
-        marginLeft: '8px',
-    },
-    text: {
-        fontSize: '12px',
-        marginTop: '5%',
-    },
-};
-
 const ListPresentation = React.forwardRef<HTMLDivElement, ListProps>(
     (
         {
@@ -77,11 +52,7 @@ const ListPresentation = React.forwardRef<HTMLDivElement, ListProps>(
                 >
                     {title}
                 </h2>
-                <ListView
-                    data={data}
-                    cardstyle={cardstyle}
-                    cardinfostyle={cardinfostyle}
-                />
+                <ListView data={data} cardstyle={cardstyle} />
                 <div ref={ref} />
                 {isFetchingNextPage && (
                     <Loading

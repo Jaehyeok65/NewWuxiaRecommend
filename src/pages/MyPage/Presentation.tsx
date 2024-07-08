@@ -30,30 +30,7 @@ const cardstyle = {
     mobileheight: '100%',
 };
 
-const cardinfostyle = {
-    title: {
-        marginBottom: '5%',
-        fontSize: '14px',
-    },
-    subtext: {
-        marginBottom: '5%',
-        fontSize: '12px',
-        color: 'gray',
-    },
-    icon: {
-        fontSize: '15px',
-        color: 'red',
-    },
-    span: {
-        fontSize: '14px',
-        verticalAlign: 'top',
-        marginLeft: '8px',
-    },
-    text: {
-        fontSize: '12px',
-        marginTop: '5%',
-    },
-};
+
 
 const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
     return (
@@ -104,7 +81,6 @@ const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
                 <ListView
                     data={data}
                     cardstyle={cardstyle}
-                    cardinfostyle={cardinfostyle}
                 />
             )}
         </MainFrame>

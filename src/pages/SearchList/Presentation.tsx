@@ -1,33 +1,6 @@
 import styled from 'styled-components';
 import MainFrame from '../MainFrame';
-import Card from '../../molecule/Card/index';
-import CardInfo from '../../molecule/CardInfo/index';
-
-const Lists = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px 40px;
-    margin-top: 5%;
-    margin-bottom: 10%;
-
-    @media screen and (max-width: 1200px) {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    @media screen and (max-width: 800px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-`;
-
-const Grids = styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 20px;
-
-    > div {
-        align-self: center;
-    }
-`;
+import ListView from 'module/ListView';
 
 const cardstyle = {
     height: '100%',
@@ -96,20 +69,12 @@ const SearchListPresentation = ({
                     {title + ' ' + data.length + '개'}
                 </h2>
             )}
-            <Lists>
-                {data &&
-                    data.map((item: any, index: number) => (
-                        <Grids key={index}>
-                            <Card
-                                url={item.url}
-                                title={item.title}
-                                styled={cardstyle}
-                                writer={item.writer}
-                            />
-                            <CardInfo product={item} styled={cardinfostyle} />
-                        </Grids>
-                    ))}
-            </Lists>
+            {data && (
+                <ListView
+                    data={data}
+                    cardstyle={cardstyle}
+                />
+            )}
         </MainFrame>
     );
 };
