@@ -9,8 +9,6 @@ const AlertBoxContainer = () => {
     const alerts = useSelector((state: any) => state.alertbox.alerts);
     const interval = 60;
 
-    console.log(alerts);
-
     return (
         <Container>
             {alerts?.map((alert: any, index: number) => (
