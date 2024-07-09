@@ -24,9 +24,8 @@ const CommentBox = ({
     wuxiacomment,
     setWuxiaComment,
     onWuxiaCommentSubmit,
+    loginstate,
 }: any) => {
-    const loginstate = false;
-
     const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setWuxiaComment((prev: any) => ({
@@ -34,8 +33,6 @@ const CommentBox = ({
             comment_text: value,
         }));
     };
-
-    console.log(wuxiacomment);
 
     return (
         <FormBox onSubmit={onWuxiaCommentSubmit}>
@@ -45,6 +42,7 @@ const CommentBox = ({
                         ? '댓글을 입력하세요...'
                         : '댓글을 입력하려면 로그인이 필요합니다...'
                 }
+                value={wuxiacomment?.comment_text}
                 onChange={onCommentChange}
             />
             <ButtonContainer>

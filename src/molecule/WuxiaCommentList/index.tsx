@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FaTrashAlt, FaThumbsUp } from 'react-icons/fa';
 
 const List = styled.div`
-    overflow: hidden;
     height: 100%;
     width: 100%;
     max-height: 100px;
@@ -42,8 +41,9 @@ const WuxiaCommentList = ({
     commentId,
     recommendation,
     onRecommendComment,
+    onToggleShowReplyArea,
 }: any) => {
-    
+
     return (
         <List>
             <ListTitle>
@@ -55,9 +55,11 @@ const WuxiaCommentList = ({
             <Content>{commentText}</Content>
             <Created>{createdAt}</Created>
             <ListTitle>
-                <button>답글</button>
+                <button onClick={() => onToggleShowReplyArea(commentId)}>
+                    답글
+                </button>
                 <div>
-                    <FaThumbsUp onClick={() => onRecommendComment(commentId)}/>
+                    <FaThumbsUp onClick={() => onRecommendComment(commentId)} />
                     {' ' + recommendation}
                 </div>
             </ListTitle>

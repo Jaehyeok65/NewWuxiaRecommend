@@ -1,6 +1,6 @@
 import React from 'react';
 import Title from '../../atoms/Title';
-import { Text } from '../../atoms/Text';
+import  Text  from '../../atoms/Text';
 import { FaHeart } from 'react-icons/fa';
 import Icon from '../../atoms/Icon';
 import Button from '../../atoms/Button';
@@ -27,6 +27,7 @@ const Product = ({
     setTextToggle,
     clicked,
     init,
+    onWriteClick
 }) => {
     return (
         <React.Fragment>
@@ -39,7 +40,7 @@ const Product = ({
                     onClick={setTextToggle}
                     styled={{
                         width: '100px',
-                        marginBottom: '5%',
+                        marginBottom: '2%',
                         borderRadius: '4px',
                     }}
                 >
@@ -62,7 +63,7 @@ const Product = ({
                 >
                     {product.likes}
                 </span>
-                <Text styled={{ ...styled.text, marginTop: '5%' }}>
+                <Text styled={{ ...styled.text, marginTop: '2%' }}>
                     조회수 : {product.view}
                 </Text>
                 {clicked && (
@@ -77,16 +78,15 @@ const Product = ({
                     onClick={setRateToggle}
                     styled={{
                         width: '100px',
-                        marginBottom: '5%',
+                        marginBottom: '2%',
                         borderRadius: '4px',
                     }}
                 >
                     별점주기
                 </Button>
-                <br />
                 <a
                     href={`${product.link}`}
-                    style={{ display: 'block', marginTop: '5%' }}
+                    style={{ display: 'block', marginTop: '2%' }}
                 >
                     바로가기 링크
                 </a>
