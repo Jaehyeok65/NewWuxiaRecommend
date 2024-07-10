@@ -9,21 +9,13 @@ import {
     setWuxiaProductView,
 } from 'api/WuxiaAPI';
 import {
-    Formatting,
-    saveWuxiaComment,
-    getWuxiaCommentList,
-    deleteWuxiaComment,
-    recommendWuxiaComment,
-} from 'api/CommentAPI';
-import {
     useMutation,
     useQueryClient,
     useSuspenseQuery,
 } from '@tanstack/react-query';
 import Detail from './Presentation';
 import useDebounce from 'hook/useDebounceFuntion';
-import { getuserId } from 'api/LoginAPI';
-import  { showAlert }from 'redux/action';
+import { showAlert } from 'redux/action';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -46,18 +38,6 @@ const Container = ({ loginstate, nickname }: any) => {
         queryFn: () => getWuxiaProduct(title),
     });
 
-    const { data: commentdata } = useSuspenseQuery({
-        queryKey: ['productcomment', title],
-        queryFn: () => getWuxiaCommentList(title),
-    });
-
-    const [wuxiacomment, setWuxiaComment] = useState<any>({
-        wuxia_id: data?.id,
-        user_id: getuserId(),
-        comment_text: '',
-        created_at: Formatting(new Date()),
-    });
-
     const LikeMutation = useMutation({
         mutationFn: () => {
             return setWuxiaProductLikes(data);
@@ -67,9 +47,9 @@ const Container = ({ loginstate, nickname }: any) => {
                 queryKey: ['product'],
             });
         },
-        onSuccess : () => {
-            dispatch(showAlert("좋아요 표시 완료!", uuidv4(), 4000));
-        }
+        onSuccess: () => {
+            dispatch(showAlert('좋아요 표시 완료!', uuidv4(), 4000));
+        },
     });
     const RateMutation = useMutation({
         mutationFn: (data: any) => {
@@ -77,7 +57,7 @@ const Container = ({ loginstate, nickname }: any) => {
         },
         onSuccess: (data) => {
             handleRate(data?.rate);
-            dispatch(showAlert("별점 표시 완료!", uuidv4(), 4000));
+            dispatch(showAlert('별점 표시 완료!', uuidv4(), 4000));
         },
         onSettled: async () => {
             return await queryClient.invalidateQueries({
@@ -94,48 +74,6 @@ const Container = ({ loginstate, nickname }: any) => {
                 queryKey: ['product'],
             });
         },
-    });
-
-    const SaveWuxiaCommentMutation = useMutation({
-        mutationFn: () => {
-            return saveWuxiaComment(wuxiacomment);
-        },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['productcomment'],
-            });
-        },
-        onSuccess: () => {
-            setWuxiaComment((prev: any) => ({
-                ...prev,
-                comment_text: '', // 빈 문자열로 설정
-            }));
-            dispatch(showAlert("댓글 등록 완료!", uuidv4(), 4000));
-        },
-    });
-
-    const DeleteWuxiaCommentMutation = useMutation({
-        mutationFn: (commentId: number) => {
-            return deleteWuxiaComment(commentId);
-        },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
-        },
-        onSuccess: () => {
-            dispatch(showAlert("댓글 삭제 완료!", uuidv4(), 4000));
-        }
-    });
-
-    const RecommendWuxiaCommentMutation = useMutation({
-        mutationFn: (commentId: number) => {
-            return recommendWuxiaComment(commentId);
-        },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
-        },
-        onSuccess: () => {
-            dispatch(showAlert("댓글 좋아요 완료!", uuidv4(), 4000));
-        }
     });
 
     const navigate = useNavigate();
@@ -169,37 +107,6 @@ const Container = ({ loginstate, nickname }: any) => {
         handleClose();
     };
 
-    const onWuxiaCommentSubmit = (e: any) => {
-        e.preventDefault();
-        if (!loginstate) {
-            window.alert('로그인이 필요한 기능입니다.');
-            memoizedNavigate('/login');
-            return;
-        }
-
-        SaveWuxiaCommentMutation.mutate(wuxiacomment);
-    };
-
-    const onRemoveComment = (commentId: number) => {
-        if (!loginstate) {
-            window.alert('로그인이 필요한 기능입니다.');
-            memoizedNavigate('/login');
-            return;
-        }
-
-        DeleteWuxiaCommentMutation.mutate(commentId);
-    };
-
-    const onRecommendComment = (commentId : number) => {
-        if (!loginstate) {
-            window.alert('로그인이 필요한 기능입니다.');
-            memoizedNavigate('/login');
-            return;
-        }
-
-        RecommendWuxiaCommentMutation.mutate(commentId);
-    };
-
     const handleRate = useCallback((rate: number) => {
         setClicked(
             Array(5)
@@ -219,16 +126,6 @@ const Container = ({ loginstate, nickname }: any) => {
     };
 
     const onDebounceLikeClick = useDebounce(onLikeClick);
-
-    const onWriteClick = () => {
-        if (!loginstate) {
-            window.alert('로그인이 필요한 기능입니다.');
-            memoizedNavigate('/login');
-            return;
-        }
-
-        memoizedNavigate(`/commentwrite/${title}`);
-    };
 
     const onRateToggle = useCallback(() => {
         if (!loginstate) {
@@ -263,15 +160,9 @@ const Container = ({ loginstate, nickname }: any) => {
                 ratetoggle={ratetoggle}
                 isPending={isPending}
                 error={error}
-                onWriteClick={onWriteClick}
-                onWuxiaCommentSubmit={onWuxiaCommentSubmit}
-                wuxiacomment={wuxiacomment}
-                setWuxiaComment={setWuxiaComment}
-                commentdata={commentdata}
                 loginstate={loginstate}
                 nickname={nickname}
-                onRemoveComment={onRemoveComment}
-                onRecommendComment={onRecommendComment}
+                title={title}
             />
         </React.Fragment>
     );

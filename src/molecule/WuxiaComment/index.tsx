@@ -1,39 +1,126 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import CommentContainer from 'organism/CommentContainer';
+import {
+    useQueryClient,
+    useMutation,
+    useSuspenseQuery
+} from '@tanstack/react-query';
+import { getWuxiaCommentList, Formatting } from 'api/CommentAPI';
+import { getuserId } from 'api/LoginAPI';
+import {
+    saveWuxiaComment,
+    deleteWuxiaComment,
+    recommendWuxiaComment,
+} from 'api/CommentAPI';
+import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { showAlert } from 'redux/action';
+import { useNavigate } from 'react-router-dom';
 
-const WuxiaComment = ({
-    commentdata,
-    nickname,
-    onRemoveComment,
-    onRecommendComment,
-    wuxiacomment,
-    setWuxiaComment,
-    onWuxiaCommentSubmit,
-    loginstate,
-    wuxiarecomment,
-    setWuxiaReComment,
-    recommentdata,
-    onWuxiaReCommentSubmit,
-}: any) => {
+const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
+    const queryClient = useQueryClient();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const memoizedNavigate = useCallback(navigate, []);
+
+    const { data: commentdata } = useSuspenseQuery({
+        queryKey: ['productcomment', title],
+        queryFn: () => getWuxiaCommentList(title),
+    });
+
+    const [wuxiacomment, setWuxiaComment] = useState<any>({
+        wuxia_id: data?.id,
+        user_id: getuserId(),
+        comment_text: '',
+        created_at: Formatting(new Date()),
+    });
+
     const [isShowReplyArea, setIsShowReplyArea] = useState<{
         [key: number]: {
             show: boolean;
-            data: [];
         };
     }>({}); //각각의 Id를 통해 state 관리
 
+    const SaveWuxiaCommentMutation = useMutation({
+        mutationFn: () => {
+            return saveWuxiaComment(wuxiacomment);
+        },
+        onSettled: async () => {
+            return await queryClient.invalidateQueries({
+                queryKey: ['productcomment'],
+            });
+        },
+        onSuccess: () => {
+            setWuxiaComment((prev: any) => ({
+                ...prev,
+                comment_text: '', // 빈 문자열로 설정
+            }));
+            dispatch(showAlert('댓글 등록 완료!', uuidv4(), 4000));
+        },
+    });
+
+    const DeleteWuxiaCommentMutation = useMutation({
+        mutationFn: (commentId: number) => {
+            return deleteWuxiaComment(commentId);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
+        },
+        onSuccess: () => {
+            dispatch(showAlert('댓글 삭제 완료!', uuidv4(), 4000));
+        },
+    });
+
+    const RecommendWuxiaCommentMutation = useMutation({
+        mutationFn: (commentId: number) => {
+            return recommendWuxiaComment(commentId);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
+        },
+        onSuccess: () => {
+            dispatch(showAlert('댓글 좋아요 완료!', uuidv4(), 4000));
+        },
+    });
+
+    const onWuxiaCommentSubmit = (e: any) => {
+        e.preventDefault();
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+        SaveWuxiaCommentMutation.mutate(wuxiacomment);
+    };
+
+    const onRemoveComment = (commentId: number) => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
+        DeleteWuxiaCommentMutation.mutate(commentId);
+    };
+
+    const onRecommendComment = (commentId: number) => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
+        RecommendWuxiaCommentMutation.mutate(commentId);
+    };
+
     const onToggleShowReplyArea = (wuxiaCommentId: number) => {
-        //여기서 추가 로직 === 답글 버튼을 누르면 해당하는 CommentId에 대한 RecommentData를 서버에서 가져와야함
         setIsShowReplyArea((prev) => {
-            // 현재 상태 객체에서 해당 ID의 show 값을 토글하거나, 해당 ID가 존재하지 않으면 기본값을 설정
             const isShowReply = prev[wuxiaCommentId] || {
                 show: false,
-                data: [],
             };
             return {
                 ...prev,
                 [wuxiaCommentId]: {
-                    ...isShowReply,
                     show: !isShowReply.show,
                 },
             };
@@ -53,9 +140,6 @@ const WuxiaComment = ({
                 loginstate={loginstate}
                 isShowReplyArea={isShowReplyArea}
                 onToggleShowReplyArea={onToggleShowReplyArea}
-                wuxiarecomment={wuxiarecomment}
-                setWuxiaReComment={setWuxiaReComment}
-                onWuxiaReCommentSubmit={onWuxiaReCommentSubmit}
             />
         </React.Fragment>
     );

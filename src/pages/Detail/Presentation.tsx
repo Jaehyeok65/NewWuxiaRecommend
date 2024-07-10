@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import MainFrame from '../MainFrame';
 import styled from 'styled-components';
 import Product from '../../molecule/Product';
@@ -7,8 +7,9 @@ import StarRate from '../../molecule/StarRate';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
 import Error from '../../module/Error';
-import CommentBox from 'molecule/CommentBox';
-import WuxiaComment from 'molecule/WuxiaComment';
+import Loading from 'module/Loading';
+
+const WuxiaComment = lazy(() => import('molecule/WuxiaComment'));
 
 interface DetailProps {
     data: any;
@@ -23,15 +24,9 @@ interface DetailProps {
     handleClose: () => void;
     error: any;
     isPending: boolean;
-    onWriteClick: () => void;
-    wuxiacomment: any;
-    setWuxiaComment: any;
-    onWuxiaCommentSubmit: any;
-    commentdata: any;
     loginstate: boolean;
     nickname: string;
-    onRemoveComment: (key: number) => void;
-    onRecommendComment: (key: number) => void;
+    title: string | undefined;
 }
 
 const Details = styled.div`
@@ -80,15 +75,9 @@ const Detail = ({
     handleClose,
     isPending,
     error,
-    onWriteClick,
-    wuxiacomment,
-    setWuxiaComment,
-    onWuxiaCommentSubmit,
-    commentdata,
     loginstate,
     nickname,
-    onRemoveComment,
-    onRecommendComment,
+    title,
 }: DetailProps) => {
     const [texttoggle, setTextToggle] = useState(false); //본문용 토글 UI와 관련된 기능이기 때문에 프리젠테이셔널 컴포넌트에 둠
 
@@ -113,21 +102,25 @@ const Detail = ({
                                 }
                                 clicked={clicked}
                                 init={init}
-                                onWriteClick={onWriteClick}
                             />
                         </Details>
-                        <CommentBox
-                            wuxiacomment={wuxiacomment}
-                            setWuxiaComment={setWuxiaComment}
-                            onWuxiaCommentSubmit={onWuxiaCommentSubmit}
-                            loginstate={loginstate}
-                        />
-                        <WuxiaComment
-                            data={commentdata}
-                            nickname={nickname}
-                            onRemoveComment={onRemoveComment}
-                            onRecommendComment={onRecommendComment}
-                        />
+                        <Suspense
+                            fallback={
+                                <Loading
+                                    width="3%"
+                                    height="3%"
+                                    marginBottom="3%"
+                                    marginTop="3%"
+                                />
+                            }
+                        >
+                            <WuxiaComment
+                                data={data}
+                                nickname={nickname}
+                                loginstate={loginstate}
+                                title={title}
+                            />
+                        </Suspense>
                     </MainFrame>
                     <Modal toggle={ratetoggle}>
                         <Text

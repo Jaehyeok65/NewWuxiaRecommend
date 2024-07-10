@@ -52,16 +52,22 @@ const WuxiaCommentList = ({
                     <FaTrashAlt onClick={() => onRemoveComment(commentId)} />
                 )}
             </ListTitle>
-            <Content>{commentText}</Content>
-            <Created>{createdAt}</Created>
+            <Content>{commentText && commentText}</Content>
+            <Created>{createdAt && createdAt}</Created>
             <ListTitle>
-                <button onClick={() => onToggleShowReplyArea(commentId)}>
-                    답글
-                </button>
-                <div>
-                    <FaThumbsUp onClick={() => onRecommendComment(commentId)} />
-                    {' ' + recommendation}
-                </div>
+                {onToggleShowReplyArea && (
+                    <button onClick={() => onToggleShowReplyArea(commentId)}>
+                        답글
+                    </button>
+                )}
+                {recommendation !== undefined && (
+                    <div>
+                        <FaThumbsUp
+                            onClick={() => onRecommendComment(commentId)}
+                        />
+                        {' ' + recommendation}
+                    </div>
+                )}
             </ListTitle>
             <hr />
         </List>
