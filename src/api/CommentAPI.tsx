@@ -97,7 +97,7 @@ export const getWuxiaCommentList = async (title: string | undefined) => {
         const data = await axios.post(`${API}/wuxiacommentlist`, {
             title: title,
         });
-        return data.data;
+        return TransComment(data.data);
     } catch (error) {
         console.log(error);
     }
@@ -144,7 +144,8 @@ export const getWuxiaReCommentList = async (commentId: number | undefined) => {
         const data = await axios.post(`${API}/wuxiarecommentlist`, {
             wuxiaCommentId: commentId,
         });
-        return data.data;
+        return TransComment(data.data);
+
     } catch (error) {
         console.log(error);
     }
@@ -171,3 +172,15 @@ export const recommendWuxiaReComment = async (commentId: number) => {
         console.log(error);
     }
 };
+
+const TransComment = (data : any[]) => {
+   const transedData = data?.map((item : any) => {
+    return {
+        id : item?.replyId || item?.wuxiaCommentId,
+        content : item?.content || item?.contentText,
+        ...item
+    }
+   });
+
+   return transedData;
+}
