@@ -11,6 +11,7 @@ import {
     Formatting,
     saveWuxiaReComment,
     deleteWuxiaReComment,
+    recommendWuxiaReComment,
 } from 'api/CommentAPI';
 import { getuserId } from 'api/LoginAPI';
 import { useNavigate } from 'react-router-dom';
@@ -73,6 +74,18 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         },
     });
 
+    const RecommendWuxiaReCommentMutation = useMutation({
+        mutationFn: (commentId: number) => {
+            return recommendWuxiaReComment(commentId);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['productrecomment'] });
+        },
+        onSuccess: () => {
+            dispatch(showAlert('답글 좋아요 완료!', uuidv4(), 4000));
+        },
+    });
+
     const onWuxiaReCommentSubmit = (e: any) => {
         e.preventDefault();
         if (!loginstate) {
@@ -95,6 +108,16 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         DeleteWuxiaReCommentMutation.mutate(commentId);
     };
 
+    const onRecommendReComment = (commentId: number) => {
+        if (!loginstate) {
+            window.alert('로그인이 필요한 기능입니다.');
+            memoizedNavigate('/login');
+            return;
+        }
+
+        RecommendWuxiaReCommentMutation.mutate(commentId);
+    };
+
     return (
         <Container>
             <CommentContainer
@@ -105,6 +128,7 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
                 setWuxiaComment={setWuxiaReComment}
                 onWuxiaCommentSubmit={onWuxiaReCommentSubmit}
                 onRemoveComment={onRemoveReComment}
+                onRecommendComment={onRecommendReComment}
             />
         </Container>
     );
