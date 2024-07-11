@@ -14,8 +14,11 @@ const CommentContainer = ({ loginstate, nickname }) => {
     const { data } = useSuspenseQuery({
         queryKey: ['comment', id],
         queryFn: () => getComment(id),
+        staleTime : 600000,
     });
     const navigate = useNavigate();
+
+    console.log(data);
 
     const CommentDeleteMutation = useMutation({
         mutationFn: () => {

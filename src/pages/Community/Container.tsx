@@ -9,6 +9,7 @@ const Container = ({ loginstate }: any) => {
     const { data } = useSuspenseQuery({
         queryKey: ['commentlist', Selected],
         queryFn: () => getCommentList(Selected),
+        staleTime : 600000,
     });
 
     const [limit, setLimit] = useState(10);

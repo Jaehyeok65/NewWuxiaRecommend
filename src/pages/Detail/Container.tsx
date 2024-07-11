@@ -36,6 +36,7 @@ const Container = ({ loginstate, nickname }: any) => {
     const { data, isPending, error } = useSuspenseQuery({
         queryKey: ['product', title],
         queryFn: () => getWuxiaProduct(title),
+        staleTime : 600000,
     });
 
     const LikeMutation = useMutation({

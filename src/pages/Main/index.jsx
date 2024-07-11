@@ -9,9 +9,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getMainList } from '../../api/WuxiaAPI.tsx';
 
 const liststyle = {
-    pcgrid: 'repeat(6,1fr)',
-    tabletgrid: 'repeat(4,1fr)',
-    mobilegrid: 'repeat(3,1fr)',
+    pcgrid: 'repeat(4,1fr)',
+    tabletgrid: 'repeat(3,1fr)',
+    mobilegrid: 'repeat(2,1fr)',
     gap: '20px 40px',
 };
 
@@ -19,6 +19,7 @@ const Main = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ['main'],
         queryFn: getMainList,
+        staleTime : 600000,
     });
 
     const handleScroll = useCallback(() => {

@@ -11,6 +11,7 @@ const CommentUpdate = ({ loginstate }: any) => {
     const { data } = useSuspenseQuery({
         queryKey: ['comment', id],
         queryFn: () => getComment(id),
+        staleTime : 600000,
     });
 
     const UpdateMutation = useMutation({

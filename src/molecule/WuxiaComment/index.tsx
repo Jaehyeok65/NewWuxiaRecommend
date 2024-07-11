@@ -5,7 +5,7 @@ import {
     useMutation,
     useSuspenseQuery
 } from '@tanstack/react-query';
-import { getWuxiaCommentList, Formatting } from 'api/CommentAPI';
+import { getWuxiaCommentList, Formatting, TransComment } from 'api/CommentAPI';
 import { getuserId } from 'api/LoginAPI';
 import {
     saveWuxiaComment,
@@ -26,6 +26,7 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
     const { data: commentdata } = useSuspenseQuery({
         queryKey: ['productcomment', title],
         queryFn: () => getWuxiaCommentList(title),
+        staleTime : 600000,
     });
 
     const [wuxiacomment, setWuxiaComment] = useState<any>({
@@ -70,6 +71,7 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
             dispatch(showAlert('댓글 삭제 완료!', uuidv4(), 4000));
         },
     });
+    console.log(commentdata);
 
     const RecommendWuxiaCommentMutation = useMutation({
         mutationFn: (commentId: number) => {
