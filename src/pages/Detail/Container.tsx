@@ -43,12 +43,8 @@ const Container = ({ loginstate, nickname }: any) => {
         mutationFn: () => {
             return setWuxiaProductLikes(data);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['product'],
-            });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(['product', title], data);
             dispatch(showAlert('좋아요 표시 완료!', uuidv4(), 4000));
         },
     });
@@ -57,23 +53,17 @@ const Container = ({ loginstate, nickname }: any) => {
             return setWuxiaProductRate(data);
         },
         onSuccess: (data) => {
+            queryClient.setQueryData(['product', title], data);
             handleRate(data?.rate);
             dispatch(showAlert('별점 표시 완료!', uuidv4(), 4000));
-        },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['product'],
-            });
         },
     });
     const ViewMutation = useMutation({
         mutationFn: () => {
             return setWuxiaProductView(data);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['product'],
-            });
+        onSuccess : (data) => {
+            queryClient.setQueryData(['product', title], data);
         },
     });
 

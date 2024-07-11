@@ -12,6 +12,7 @@ import {
     saveWuxiaReComment,
     deleteWuxiaReComment,
     recommendWuxiaReComment,
+    TransComment
 } from 'api/CommentAPI';
 import { getuserId } from 'api/LoginAPI';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +32,7 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
     const { data: recommentdata } = useSuspenseQuery({
         queryKey: ['productrecomment', wuxiaCommentId],
         queryFn: () => getWuxiaReCommentList(wuxiaCommentId),
+        staleTime: 600000,
     });
 
     const [wuxiarecomment, setWuxiaReComment] = useState<any>({
@@ -48,12 +50,11 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         mutationFn: (wuxiarecomment: any) => {
             return saveWuxiaReComment(wuxiarecomment);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['productrecomment'],
-            });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productrecomment', wuxiaCommentId],
+                TransComment(data)
+            );
             setWuxiaReComment((prev: any) => ({
                 ...prev,
                 comment_text: '', // 빈 문자열로 설정
@@ -66,10 +67,11 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         mutationFn: (commentId: number) => {
             return deleteWuxiaReComment(commentId);
         },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productrecomment'] });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productrecomment', wuxiaCommentId],
+                TransComment(data)
+            );
             dispatch(showAlert('답글 삭제 완료!', uuidv4(), 4000));
         },
     });
@@ -78,10 +80,11 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         mutationFn: (commentId: number) => {
             return recommendWuxiaReComment(commentId);
         },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productrecomment'] });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productrecomment', wuxiaCommentId],
+                TransComment(data)
+            );
             dispatch(showAlert('답글 좋아요 완료!', uuidv4(), 4000));
         },
     });
@@ -103,7 +106,6 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
             memoizedNavigate('/login');
             return;
         }
-        console.log(commentId);
 
         DeleteWuxiaReCommentMutation.mutate(commentId);
     };

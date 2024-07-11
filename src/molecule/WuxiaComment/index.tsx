@@ -3,7 +3,7 @@ import CommentContainer from 'organism/CommentContainer';
 import {
     useQueryClient,
     useMutation,
-    useSuspenseQuery
+    useSuspenseQuery,
 } from '@tanstack/react-query';
 import { getWuxiaCommentList, Formatting, TransComment } from 'api/CommentAPI';
 import { getuserId } from 'api/LoginAPI';
@@ -26,7 +26,7 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
     const { data: commentdata } = useSuspenseQuery({
         queryKey: ['productcomment', title],
         queryFn: () => getWuxiaCommentList(title),
-        staleTime : 600000,
+        staleTime: 600000,
     });
 
     const [wuxiacomment, setWuxiaComment] = useState<any>({
@@ -46,12 +46,11 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
         mutationFn: () => {
             return saveWuxiaComment(wuxiacomment);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['productcomment'],
-            });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productcomment', title],
+                TransComment(data)
+            );
             setWuxiaComment((prev: any) => ({
                 ...prev,
                 comment_text: '', // 빈 문자열로 설정
@@ -64,23 +63,24 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
         mutationFn: (commentId: number) => {
             return deleteWuxiaComment(commentId);
         },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productcomment', title],
+                TransComment(data)
+            );
             dispatch(showAlert('댓글 삭제 완료!', uuidv4(), 4000));
         },
     });
-    console.log(commentdata);
 
     const RecommendWuxiaCommentMutation = useMutation({
         mutationFn: (commentId: number) => {
             return recommendWuxiaComment(commentId);
         },
-        onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: ['productcomment'] });
-        },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            queryClient.setQueryData(
+                ['productcomment', title],
+                TransComment(data)
+            );
             dispatch(showAlert('댓글 좋아요 완료!', uuidv4(), 4000));
         },
     });
