@@ -22,17 +22,17 @@ const ListView = ({ data, cardstyle }) => {
             {data ? (
                 data.pages ? (
                     data.pages.map((page) =>
-                        page.map((item, index) => (
+                        page.map((item) => (
                             <Card
-                                key={index}
+                                key={item.id}
                                 styled={cardstyle}
                                 product={item}
                             />
                         ))
                     )
                 ) : (
-                    data.map((item, index) => (
-                        <Card key={index} styled={cardstyle} product={item} />
+                    data.map((item) => (
+                        <Card key={item.id} styled={cardstyle} product={item} />
                     ))
                 )
             ) : (

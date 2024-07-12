@@ -30,8 +30,6 @@ const cardstyle = {
     mobileheight: '100%',
 };
 
-
-
 const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
     return (
         <MainFrame>
@@ -77,12 +75,7 @@ const MyPagePresentation = ({ data, nickname, title, setTitle }: any) => {
             {data && data.length === 0 && title === '별점' && (
                 <None>아직 별점을 표시한 작품이 없습니다.</None>
             )}
-            {data && (
-                <ListView
-                    data={data}
-                    cardstyle={cardstyle}
-                />
-            )}
+            {data && <ListView data={data} cardstyle={cardstyle} />}
         </MainFrame>
     );
 };
