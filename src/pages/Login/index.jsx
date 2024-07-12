@@ -2,6 +2,22 @@ import React from 'react';
 import Title from '../../atoms/Title';
 import LoginForm from '../../molecule/LoginForm';
 import MainFrame from '../MainFrame';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import Text from 'atoms/Text';
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: inherit;
+
+    &:focus,
+    &:hover,
+    &:visited,
+    &:link,
+    &:active {
+        text-decoration: none;
+    }
+`;
 
 const LoginFormstyle = {
     input1: {
@@ -48,6 +64,17 @@ const Login = ({ setLoginstate, setNickname }) => {
                 setLoginstate={setLoginstate}
                 setNickname={setNickname}
             />
+            <StyledLink to="/signup">
+                <Text
+                    styled={{
+                        textAlign: 'center',
+                        fontSize: '14px',
+                        marginTop: '3%',
+                    }}
+                >
+                    회원가입 하러가기
+                </Text>
+            </StyledLink>
         </MainFrame>
     );
 };

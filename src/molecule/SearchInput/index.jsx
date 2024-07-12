@@ -5,22 +5,20 @@ import Icon from '../../atoms/Icon';
 import styled from 'styled-components';
 
 const Form = styled.form`
-    width: ${(props) => props.styled.div.pcwidth};
+    width: 100%;
     text-align: ${(props) => props.styled.div.textAlign};
 
     > span {
         display: inline-block;
-        margin-top: 20px;
+        margin-right : 12px;
     }
 
-    @media screen and (max-width: 1000px) {
-        width: ${(props) => props.styled.div.mobilewidth};
-    }
+   
 `;
 
 const SearchInput = ({ styled, name, values, onChange, onClear }) => {
     const [toggle, setToggle] = useState(true);
-    const inputstyles = { ...styled.input, width: '50%' };
+    const inputstyles = { ...styled.input, width: '80%'};
 
     const searchref = useRef();
 

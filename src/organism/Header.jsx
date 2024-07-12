@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import HeadText from '../molecule/HeadText';
 import SearchInput from '../molecule/SearchInput';
 import Button from '../atoms/Button';
+import Icon from 'atoms/Icon';
 import { getLogout } from '../api/LoginAPI';
 import useDebounce from '../hook/useDebounce';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { getMyPageLogout } from '../redux/action';
+import { FaBars } from 'react-icons/fa';
+import { AiOutlineMedium } from 'react-icons/ai';
 
 const Head = styled.div`
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     position: sticky;
     top: 0;
     z-index: 20000;
+    align-items: center;
     background-color: white;
+    margin: 0 auto;
+    width: 100%;
+    @media screen and (min-width: 1200px) {
+        width: 80%;
+    }
 `;
 
 const StyledLink = styled(Link)`
@@ -32,9 +38,32 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const LoginHead = styled.div`
+const LoginContainer = styled.div`
+    margin-left: 10px;
+`;
+
+const FirstGridContainer = styled.div`
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-left: 4%;
+`;
+
+const SecondGridContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin: 5px 10px;
+`;
+const ThirdGridContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 95%;
+    height: 100%;
 `;
 
 const loginbtnstyle = {
@@ -93,7 +122,6 @@ const Header = (
     ref
 ) => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const [input, setInput] = useState('');
 
     const debounceVal = useDebounce(input);
@@ -116,42 +144,51 @@ const Header = (
     const onLogoutClick = () => {
         setLoginstate();
         setNickname();
-        dispatch(getMyPageLogout('좋아요'));
-        dispatch(getMyPageLogout('별점'));
         window.sessionStorage.clear();
     };
 
     return (
         <Head>
-            <HeadText styled={HeadTextstyle} onClick={onClick} ref={ref} />
-            <SearchInput
-                styled={SearchInputstyle}
-                values={input}
-                name="search"
-                onChange={onChange}
-                onClear={onClear}
-            />
-            <LoginHead>
-                {loginstate ? (
-                    <Button onClick={onClickLoginModal} styled={loginbtnstyle}>
-                    <StyledLink to='/login'> 
-                        로그인
-                    </StyledLink>
-                    </Button>
-                ) : (
-                    <Button
-                        onClick={() => getLogout(onLogoutClick)}
-                        styled={loginbtnstyle}
-                    >
-                        로그아웃
-                    </Button>
-                )}
-                <Button onClick={onClickSignUpModal} styled={loginbtnstyle}>
-                <StyledLink to='/signup'>
-                    회원가입
-                </StyledLink>
+            <FirstGridContainer>
+                <Button onClick={onClick} styled={loginbtnstyle}>
+                    <Icon styled={{ fontSize: '30px' }}>
+                        <FaBars data-testid="side" />
+                    </Icon>
                 </Button>
-            </LoginHead>
+            </FirstGridContainer>
+            <SecondGridContainer>
+                <StyledLink to="/">
+                    <Icon styled={{ fontSize: '55px' }}>
+                        <AiOutlineMedium />
+                    </Icon>
+                </StyledLink>
+            </SecondGridContainer>
+            <ThirdGridContainer>
+                <SearchInput
+                    styled={SearchInputstyle}
+                    values={input}
+                    name="search"
+                    onChange={onChange}
+                    onClear={onClear}
+                />
+                <LoginContainer>
+                    {loginstate ? (
+                        <Button
+                            onClick={onClickLoginModal}
+                            styled={loginbtnstyle}
+                        >
+                            <StyledLink to="/login">로그인</StyledLink>
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={() => getLogout(onLogoutClick)}
+                            styled={loginbtnstyle}
+                        >
+                            로그아웃
+                        </Button>
+                    )}
+                </LoginContainer>
+            </ThirdGridContainer>
         </Head>
     );
 };
