@@ -109,26 +109,8 @@ export const styleds = {
     },
 };
 
-export const list = [
-    {
-        name: '조회순',
-        path: '/menu/조회순',
-    },
-    {
-        name: '좋아요순',
-        path: '/menu/좋아요순',
-    },
-    {
-        name: '별점순',
-        path: '/menu/별점순',
-    },
-    {
-        name: '커뮤니티',
-        path: '/community',
-    },
-];
 
-const Sidebar = ({ onClick, toggle }) => {
+const Sidebar = ({ onClick, toggle, list }) => {
     const [animate, setAnimate] = useState(false);
     const [localvisible, setLocalvisible] = useState(toggle);
 
