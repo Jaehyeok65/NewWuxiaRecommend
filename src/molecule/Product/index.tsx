@@ -1,11 +1,12 @@
 import React from 'react';
 import Title from '../../atoms/Title';
-import  Text  from '../../atoms/Text';
+import Text from '../../atoms/Text';
 import { FaHeart } from 'react-icons/fa';
 import Icon from '../../atoms/Icon';
 import Button from '../../atoms/Button';
 import StarRate from '../StarRate';
 import styled from 'styled-components';
+import { Wuxia } from 'type/type';
 
 const Content = styled.p`
     font-size: 13px;
@@ -18,6 +19,17 @@ const Content = styled.p`
     -webkit-box-orient: vertical;
 `;
 
+interface ProductProps {
+    product: Wuxia;
+    styled: any;
+    icon: boolean;
+    setIcon: any;
+    setRateToggle: () => void;
+    setTextToggle: () => void;
+    clicked: any;
+    init: any;
+}
+
 const Product = ({
     product,
     styled,
@@ -27,14 +39,12 @@ const Product = ({
     setTextToggle,
     clicked,
     init,
-    onWriteClick
-}) => {
+}: ProductProps) => {
     return (
         <React.Fragment>
             <img src={product.url} alt={product.title} />
             <div>
                 <Title styled={styled.title}>{product.title}</Title>
-                <Text styled={styled.text}>{product.subtitle}</Text>
                 <Content>{product.content}</Content>
                 <Button
                     onClick={setTextToggle}
