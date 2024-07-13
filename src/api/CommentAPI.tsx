@@ -1,8 +1,8 @@
-import { API, getuserId } from './LoginAPI';
+import { API } from './LoginAPI';
 import axios from 'axios';
-import { Comment } from 'type/type';
+import { Comment, WuxiaComment } from 'type/type';
 
-export const getCommentList = async (title: string) => {
+export const getCommentList = async (title: string): Promise<Comment[]> => {
     const data = await axios.post(`${API}/commentlist`, {
         title: title,
     });
@@ -79,17 +79,21 @@ export const Formatting = (source: any, delimiter = '-') => {
     return [year, month, day].join(delimiter) + ' ' + [hour, minutes].join(':');
 };
 
-export const saveWuxiaComment = async (wuxiacomment: any) => {
+export const saveWuxiaComment = async (
+    wuxiacomment: WuxiaComment
+): Promise<WuxiaComment[]> => {
     const data = await axios.post(`${API}/wuxiacommentsave`, {
-        wuxiaId: wuxiacomment.wuxia_id,
+        wuxiaId: wuxiacomment.wuxia?.id,
         userId: wuxiacomment.user_id,
-        content: wuxiacomment.comment_text,
-        createdAt: wuxiacomment.created_at,
+        content: wuxiacomment.content,
+        createdAt: wuxiacomment.createdAt,
     });
     return data.data;
 };
 
-export const getWuxiaCommentList = async (title: string | undefined) => {
+export const getWuxiaCommentList = async (
+    title: string | undefined
+): Promise<WuxiaComment[]> => {
     try {
         if (!title) {
             throw new Error('no Title');
@@ -100,10 +104,13 @@ export const getWuxiaCommentList = async (title: string | undefined) => {
         return TransComment(data.data);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 };
 
-export const deleteWuxiaComment = async (commentId: number) => {
+export const deleteWuxiaComment = async (
+    commentId: number
+): Promise<WuxiaComment[]> => {
     try {
         const data = await axios.post(`${API}/wuxiacommentdelete`, {
             wuxiaCommentId: commentId,
@@ -111,10 +118,13 @@ export const deleteWuxiaComment = async (commentId: number) => {
         return data.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 };
 
-export const recommendWuxiaComment = async (commentId: number) => {
+export const recommendWuxiaComment = async (
+    commentId: number
+): Promise<WuxiaComment[]> => {
     try {
         const data = await axios.post(`${API}/wuxiacommentrecommend`, {
             wuxiaCommentId: commentId,
@@ -122,21 +132,26 @@ export const recommendWuxiaComment = async (commentId: number) => {
         return data.data;
     } catch (error) {
         console.log(error);
+        console.log(error);
+        throw error;
     }
 };
 
-export const saveWuxiaReComment = async (wuxiarecomment: any) => {
-    console.log(wuxiarecomment.comment_id);
+export const saveWuxiaReComment = async (
+    wuxiarecomment: WuxiaComment
+): Promise<WuxiaComment[]> => {
     const data = await axios.post(`${API}/wuxiarecommentsave`, {
         commentId: wuxiarecomment.comment_id,
         userId: wuxiarecomment.user_id,
-        content: wuxiarecomment.comment_text,
-        createdAt: wuxiarecomment.created_at,
+        content: wuxiarecomment.content,
+        createdAt: wuxiarecomment.createdAt,
     });
     return data.data;
 };
 
-export const getWuxiaReCommentList = async (commentId: number | undefined) => {
+export const getWuxiaReCommentList = async (
+    commentId: number | undefined
+): Promise<WuxiaComment[]> => {
     try {
         if (!commentId) {
             throw new Error('no commentId');
@@ -145,13 +160,15 @@ export const getWuxiaReCommentList = async (commentId: number | undefined) => {
             wuxiaCommentId: commentId,
         });
         return TransComment(data.data);
-
     } catch (error) {
         console.log(error);
+        throw error;
     }
 };
 
-export const deleteWuxiaReComment = async (commentId: number) => {
+export const deleteWuxiaReComment = async (
+    commentId: number
+): Promise<WuxiaComment[]> => {
     try {
         const data = await axios.post(`${API}/wuxiarecommentdelete`, {
             replyId: commentId,
@@ -159,10 +176,13 @@ export const deleteWuxiaReComment = async (commentId: number) => {
         return data.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 };
 
-export const recommendWuxiaReComment = async (commentId: number) => {
+export const recommendWuxiaReComment = async (
+    commentId: number
+): Promise<WuxiaComment[]> => {
     try {
         const data = await axios.post(`${API}/wuxiarecommentrecommend`, {
             replyId: commentId,
@@ -170,17 +190,18 @@ export const recommendWuxiaReComment = async (commentId: number) => {
         return data.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 };
 
-const TransComment = (data : any[]) => {
-   const transedData = data?.map((item : any) => {
-    return {
-        id : item?.replyId || item?.wuxiaCommentId,
-        content : item?.content || item?.contentText,
-        ...item
-    }
-   });
+export const TransComment = (data: any[]): WuxiaComment[] => {
+    const transedData = data?.map((item: any) => {
+        return {
+            id: item?.replyId || item?.wuxiaCommentId,
+            content: item?.content || item?.contentText,
+            ...item,
+        };
+    });
 
-   return transedData;
-}
+    return transedData;
+};

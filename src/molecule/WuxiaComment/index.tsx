@@ -16,8 +16,17 @@ import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { showAlert } from 'redux/action';
 import { useNavigate } from 'react-router-dom';
+import { WuxiaComment, Wuxia } from 'type/type';
 
-const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
+
+interface WuxiaCommentProps {
+    title : string | undefined;
+    data : Wuxia;
+    nickname : string;
+    loginstate : boolean;
+}
+
+const WuxiaComments = ({ title, data, nickname, loginstate }: WuxiaCommentProps) => {
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,11 +38,11 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
         staleTime: 600000,
     });
 
-    const [wuxiacomment, setWuxiaComment] = useState<any>({
-        wuxia_id: data?.id,
+    const [wuxiacomment, setWuxiaComment] = useState<WuxiaComment>({
+        wuxia: data,
         user_id: getuserId(),
-        comment_text: '',
-        created_at: Formatting(new Date()),
+        content: '',
+        createdAt: Formatting(new Date()),
     });
 
     const [isShowReplyArea, setIsShowReplyArea] = useState<{
@@ -43,7 +52,7 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
     }>({}); //각각의 Id를 통해 state 관리
 
     const SaveWuxiaCommentMutation = useMutation({
-        mutationFn: () => {
+        mutationFn: (wuxiacomment : WuxiaComment) => {
             return saveWuxiaComment(wuxiacomment);
         },
         onSuccess: (data) => {
@@ -147,4 +156,4 @@ const WuxiaComment = ({ title, data, nickname, loginstate }: any) => {
     );
 };
 
-export default React.memo(WuxiaComment);
+export default React.memo(WuxiaComments);

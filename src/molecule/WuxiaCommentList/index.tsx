@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaTrashAlt, FaThumbsUp } from 'react-icons/fa';
+import { User } from 'type/type';
 
 const List = styled.div`
     height: 100%;
@@ -32,6 +33,18 @@ const Created = styled.div`
     margin-bottom: 6px;
 `;
 
+interface WuxiaCommentListProps {
+    user: User;
+    commentText: string;
+    createdAt: string;
+    onRemoveComment: (key: number) => void;
+    nickname: string;
+    commentId: number;
+    recommendation: number;
+    onRecommendComment: (key: number) => void;
+    onToggleShowReplyArea: (key: number) => void;
+}
+
 const WuxiaCommentList = ({
     user,
     commentText,
@@ -42,8 +55,7 @@ const WuxiaCommentList = ({
     recommendation,
     onRecommendComment,
     onToggleShowReplyArea,
-}: any) => {
-
+}: WuxiaCommentListProps) => {
     return (
         <List>
             <ListTitle>

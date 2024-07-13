@@ -2,8 +2,22 @@ import React, { Suspense, lazy } from 'react';
 import WuxiaCommentList from 'molecule/WuxiaCommentList';
 import Loading from 'module/Loading';
 import CommentBox from 'molecule/CommentBox';
+import { WuxiaComment } from 'type/type';
 
 const WuxiaReComment = lazy(() => import('molecule/WuxiaReComment'));
+
+interface CommentContainerProps {
+    data : WuxiaComment[],
+    nickname : string;
+    onRemoveComment : (key : number) => void;
+    onRecommendComment : (key : number) => void;
+    onToggleShowReplyArea?: any;
+    isShowReplyArea?: any;
+    wuxiacomment : WuxiaComment;
+    setWuxiaComment : React.Dispatch<React.SetStateAction<WuxiaComment>>;
+    onWuxiaCommentSubmit : any;
+    loginstate : boolean;
+}
 
 const CommentContainer = ({
     data,
@@ -16,7 +30,7 @@ const CommentContainer = ({
     setWuxiaComment,
     onWuxiaCommentSubmit,
     loginstate,
-}: any) => {
+}: CommentContainerProps) => {
     return (
         <React.Fragment>
             <CommentBox

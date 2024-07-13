@@ -12,20 +12,28 @@ import {
     saveWuxiaReComment,
     deleteWuxiaReComment,
     recommendWuxiaReComment,
-    TransComment
+    TransComment,
 } from 'api/CommentAPI';
 import { getuserId } from 'api/LoginAPI';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { showAlert } from 'redux/action';
 import { v4 as uuidv4 } from 'uuid';
+import { WuxiaComment } from 'type/type';
 
 const Container = styled.div`
     width: 90%;
     margin-left: 10%;
 `;
 
-const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
+
+interface WuxiaReCommentProps {
+    wuxiaCommentId : number;
+    loginstate : boolean;
+    nickname : string;
+}
+
+const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: WuxiaReCommentProps) => {
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
 
@@ -35,11 +43,11 @@ const WuxiaReComment = ({ wuxiaCommentId, loginstate, nickname }: any) => {
         staleTime: 600000,
     });
 
-    const [wuxiarecomment, setWuxiaReComment] = useState<any>({
+    const [wuxiarecomment, setWuxiaReComment] = useState<WuxiaComment>({
         //reply에 필요한것
         user_id: getuserId(),
-        comment_text: '',
-        created_at: Formatting(new Date()),
+        content: '',
+        createdAt: Formatting(new Date()),
         comment_id: wuxiaCommentId,
     });
 

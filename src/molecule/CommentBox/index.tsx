@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from 'atoms/Button';
+import { WuxiaComment } from 'type/type';
 
 const Comment = styled.textarea`
     width: 99%;
@@ -20,17 +21,24 @@ const ButtonContainer = styled.div`
     width: 100%;
 `;
 
+interface CommentBoxProps {
+    wuxiacomment: WuxiaComment;
+    setWuxiaComment: React.Dispatch<React.SetStateAction<WuxiaComment>>;
+    onWuxiaCommentSubmit: any;
+    loginstate: boolean;
+}
+
 const CommentBox = ({
     wuxiacomment,
     setWuxiaComment,
     onWuxiaCommentSubmit,
     loginstate,
-}: any) => {
+}: CommentBoxProps) => {
     const onCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target;
         setWuxiaComment((prev: any) => ({
             ...prev,
-            comment_text: value,
+            content: value,
         }));
     };
 
@@ -42,7 +50,7 @@ const CommentBox = ({
                         ? '댓글을 입력하세요...'
                         : '댓글을 입력하려면 로그인이 필요합니다...'
                 }
-                value={wuxiacomment?.comment_text}
+                value={wuxiacomment?.content}
                 onChange={onCommentChange}
             />
             <ButtonContainer>
