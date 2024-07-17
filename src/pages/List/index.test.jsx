@@ -254,4 +254,55 @@ describe('List Component Test', () => {
             expect(screen.getByAltText('비뢰도')).toBeInTheDocument();
         });
     });
+
+    it('title의 값이 조회순일 경우 조회순 Text가 정상적으로 렌더링된다.', async() => {
+        const mockdata1 = list;
+        mock.onGet(`${API}/page?pg=1&sz=12&title=조회순`).reply(200, mockdata1);
+
+        render(
+            <RenderWithProviders route="/menu/조회순">
+                <Routes>
+                    <Route path="/menu/:title" element={<List />} />
+                </Routes>
+            </RenderWithProviders>
+        );
+
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+        await waitFor(() => expect(screen.getByText('조회순')));
+    });
+
+    it('title의 값이 별점순일 경우 별점순 Text가 정상적으로 렌더링된다.', async() => {
+        const mockdata1 = list;
+        mock.onGet(`${API}/page?pg=1&sz=12&title=별점순`).reply(200, mockdata1);
+
+        render(
+            <RenderWithProviders route="/menu/별점순">
+                <Routes>
+                    <Route path="/menu/:title" element={<List />} />
+                </Routes>
+            </RenderWithProviders>
+        );
+
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+        await waitFor(() => expect(screen.getByText('별점순')));
+    });
+
+    it('title의 값이 좋아요순일 경우 좋아요순 Text가 정상적으로 렌더링된다.', async() => {
+        const mockdata1 = list;
+        mock.onGet(`${API}/page?pg=1&sz=12&title=좋아요순`).reply(200, mockdata1);
+
+        render(
+            <RenderWithProviders route="/menu/좋아요순">
+                <Routes>
+                    <Route path="/menu/:title" element={<List />} />
+                </Routes>
+            </RenderWithProviders>
+        );
+
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+        await waitFor(() => expect(screen.getByText('좋아요순')));
+    })
 });
