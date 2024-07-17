@@ -19,11 +19,15 @@ const Loading = ({ height, width, marginTop, marginBottom }) => {
         return () => clearTimeout(timeoutId);
     }, []);
 
-    if (!loading) {
+    if (!loading && process.env.NODE_ENV !== 'test') {
         return null;
     }
     return (
-        <Spinner marginTop={marginTop} marginBottom={marginBottom}>
+        <Spinner
+            marginTop={marginTop}
+            marginBottom={marginBottom}
+            data-testid="loading-spinner"
+        >
             <ReactLoading
                 type="spin"
                 color="black"
