@@ -1,61 +1,69 @@
-import { fireEvent, screen, render } from "../../util/test";
-import Detail from ".";
+import Detail from './index';
+import { waitFor, screen, fireEvent, render } from '@testing-library/react';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import { Route, Routes } from 'react-router-dom';
+import { API } from 'api/LoginAPI';
 
+const product = {
+    id  : 1,
+    title : '화산귀환',
+    writer : '비가',
+    content : '비가 작품임',
+    url : '/image/img2.jpg',
+    view : 10,
+    likes : 0,
+    rate : 0,
+    people : 0,
+    link : ''
+};
 
+const comment = [{
+    id : 11,
+    wuxia : product,
+    content : '안뇽하세요',
+    createdAt : '2024-07-18:20:16',
+    user : null,
+    user_id : "14",
+    comment_id : 12,
+}]
 
-describe('Presentational Component Test' , () => {
+describe('Detail 컴포넌트 테스트', () => {
+    const mock = new MockAdapter(axios);
 
-    const data = {
-        id : 3,
-        title : '검술명가 막내아들',
-        writer : '황제펭귄',
-        content : '진 룬칸델',
-        view : 20,
-        likes : 2,
-        rate : 5,
-        url : '/image/img1.jpg',
-        link : 'www.naver.com'
-      }; // props로 전달될 데이터
-
-      const clicked = [false, false, false, false, false];
-
-    
-    it('data Props가 있다면, Product 정보가 화면에 보인다', () => {
-        render(<Detail data={data} />);
-        screen.getByText('검술명가 막내아들');
+    afterEach(() => {
+        mock.reset(); //테스트 케이스를 수행 후 mock 데이터를 초기화함
     });
 
-    it('data Props가 있으며, 별점 클릭 정보가 있으면 별점 정보가 화면에 보인다', () => {
-        render(<Detail data={data} clicked={clicked} />);
-        screen.getByTestId('star');
+    it('Detail 컴포넌트 초기 로드 시 데이터가 정상적으로 로드된다.', async () => {
+        const mockdata1 = product;
+        const mockdata2 = comment;
+        mock.onPost(`${API}/product`, { title : "화산귀환"}).reply(200, mockdata1);
+        mock.onPost(`${API}/wuxiacommentlist`, { title : "화산귀환"}).reply(200,mockdata2);
+        const mockdata3 = {
+            ...mockdata1,
+            view : 11
+        };
+        mock.onPost(`${API}/view`, mockdata1).reply(200, mockdata3);
+
+        render(
+            <RenderWithProviders route="/detail/화산귀환">
+                <Routes>
+                    <Route
+                        path="/detail/:title"
+                        element={<Detail loginstate={true} nickname="팔협지" />}
+                    />
+                </Routes>
+            </RenderWithProviders>
+        );
+
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+
+        await waitFor(() => expect(screen.getByText('화산귀환')));
+
+        expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
+
+        expect(screen.getByText('안뇽하세요')).toBeInTheDocument();
     });
-
-    it('data Props가 있으며, rateToggle이 True라면 별점 등록 모달창이 보인다.', () => {
-        render(<Detail data={data} handleclicked={clicked} ratetoggle={true} />);
-        screen.getByText('별점 주기');
-        screen.getByTestId('star');
-    });
-
-    it('설명 더보기 버튼을 클릭하면 Text 모달창이 나타난다', () => {
-        render(<Detail data={data} texttoggle={true} />);
-        const btn = screen.getByText('설명 더보기');
-        fireEvent.click(btn);
-        const text = screen.getAllByText(data.content);
-        expect(text[1]).toBeInTheDocument();
-    });
-
-    it('별점 등록 창에서 적용하기 버튼을 클릭하면 handleSubmit 함수가 호출된다..', () => {
-
-        const handleSubmit = jest.fn();
-        render(<Detail data={data} handleclicked={clicked} ratetoggle={true} handleSubmit={handleSubmit} />);
-        const btn = screen.getByText('적용하기');
-        fireEvent.click(btn);
-        expect(handleSubmit).toBeCalledTimes(1);
-        
-    });
-
-
-
-
-
-})
+});
