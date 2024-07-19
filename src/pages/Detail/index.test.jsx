@@ -39,6 +39,7 @@ describe('Detail 컴포넌트 테스트', () => {
     it('Detail 컴포넌트 초기 로드 시 데이터가 정상적으로 로드된다.', async () => {
         const mockdata1 = product;
         const mockdata2 = comment;
+        
         mock.onPost(`${API}/product`, { title : "화산귀환"}).reply(200, mockdata1);
         mock.onPost(`${API}/wuxiacommentlist`, { title : "화산귀환"}).reply(200,mockdata2);
         const mockdata3 = {
@@ -60,10 +61,11 @@ describe('Detail 컴포넌트 테스트', () => {
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('화산귀환')));
+
+        expect(await screen.findByText('화산귀환', {}, { timeout: 3000 })).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
 
-        expect(screen.getByText('안뇽하세요')).toBeInTheDocument();
+        expect(await screen.findByText('안뇽하세요', {}, { timeout: 3000 })).toBeInTheDocument();
     });
 });

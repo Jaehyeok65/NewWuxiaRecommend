@@ -214,14 +214,15 @@ describe('List Component Test', () => {
         render(
             <RenderWithProviders route="/menu/조회순">
                 <Routes>
-                    <Route path="/menu/:title" element={<List />} />
+                    <Route path="/menu/:title" element={<List />
+                } />
                 </Routes>
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('조회순')));
+        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
     });
@@ -242,7 +243,7 @@ describe('List Component Test', () => {
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('조회순')));
+        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
 
@@ -250,9 +251,7 @@ describe('List Component Test', () => {
             target: { scrollY: 1000 },
         });
 
-        await waitFor(() => {
-            expect(screen.getByAltText('비뢰도')).toBeInTheDocument();
-        });
+        expect(await screen.findByAltText('비뢰도', {}, { timeout: 3000 })).toBeInTheDocument();
     });
 
     it('title의 값이 조회순일 경우 조회순 Text가 정상적으로 렌더링된다.', async() => {
@@ -269,7 +268,7 @@ describe('List Component Test', () => {
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('조회순')));
+        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
     });
 
     it('title의 값이 별점순일 경우 별점순 Text가 정상적으로 렌더링된다.', async() => {
@@ -286,7 +285,7 @@ describe('List Component Test', () => {
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('별점순')));
+        expect(await screen.findByText('별점순', {}, { timeout: 3000 })).toBeInTheDocument();
     });
 
     it('title의 값이 좋아요순일 경우 좋아요순 Text가 정상적으로 렌더링된다.', async() => {
@@ -303,6 +302,6 @@ describe('List Component Test', () => {
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        await waitFor(() => expect(screen.getByText('좋아요순')));
+        expect(await screen.findByText('좋아요순', {}, { timeout: 3000 })).toBeInTheDocument();
     })
 });
