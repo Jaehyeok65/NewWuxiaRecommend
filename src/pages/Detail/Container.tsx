@@ -18,8 +18,15 @@ import useDebounce from 'hook/useDebounceFuntion';
 import { showAlert } from 'redux/action';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { Wuxia } from 'type/type';
 
-const Container = ({ loginstate, nickname }: any) => {
+const Container = ({
+    loginstate,
+    nickname,
+}: {
+    loginstate: boolean;
+    nickname: string;
+}) => {
     const queryClient = useQueryClient();
     const { title } = useParams();
     const dispatch = useDispatch();
@@ -36,11 +43,11 @@ const Container = ({ loginstate, nickname }: any) => {
     const { data, isPending, error } = useSuspenseQuery({
         queryKey: ['product', title],
         queryFn: () => getWuxiaProduct(title),
-        staleTime : 600000,
+        staleTime: 600000,
     });
 
     const LikeMutation = useMutation({
-        mutationFn: () => {
+        mutationFn: (data: Wuxia) => {
             return setWuxiaProductLikes(data);
         },
         onSuccess: (data) => {
@@ -49,7 +56,7 @@ const Container = ({ loginstate, nickname }: any) => {
         },
     });
     const RateMutation = useMutation({
-        mutationFn: (data: any) => {
+        mutationFn: (data: Wuxia) => {
             return setWuxiaProductRate(data);
         },
         onSuccess: (data) => {
@@ -59,10 +66,10 @@ const Container = ({ loginstate, nickname }: any) => {
         },
     });
     const ViewMutation = useMutation({
-        mutationFn: () => {
+        mutationFn: (data: Wuxia) => {
             return setWuxiaProductView(data);
         },
-        onSuccess : (data) => {
+        onSuccess: (data) => {
             queryClient.setQueryData(['product', title], data);
         },
     });
@@ -98,7 +105,10 @@ const Container = ({ loginstate, nickname }: any) => {
         handleClose();
     };
 
-    const handleRate = useCallback((rate: number) => {
+    const handleRate = useCallback((rate: number | undefined) => {
+        if (!rate) {
+            return;
+        }
         setClicked(
             Array(5)
                 .fill(false)
@@ -131,7 +141,7 @@ const Container = ({ loginstate, nickname }: any) => {
         setClicked(() => {
             const clickStates = Array(5)
                 .fill(false)
-                .map((_, index) => index < data.rate);
+                .map((_, index) => index < (data?.rate ?? 0));
             return clickStates;
         });
     };

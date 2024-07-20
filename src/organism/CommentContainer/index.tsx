@@ -64,9 +64,9 @@ const CommentContainer = ({
                             }
                         >
                             {isShowReplyArea &&
-                                isShowReplyArea[item?.wuxiaCommentId]?.show && (
+                                isShowReplyArea[item?.id]?.show && (
                                     <WuxiaReComment
-                                        wuxiaCommentId={item?.wuxiaCommentId}
+                                        wuxiaCommentId={item?.id}
                                         loginstate={loginstate}
                                         nickname={nickname}
                                     />
