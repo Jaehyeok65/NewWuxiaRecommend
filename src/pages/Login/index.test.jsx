@@ -22,6 +22,8 @@ describe('Login Component Test', () => {
 
         const logintitle = screen.getByText('Login');
         expect(logintitle).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('이메일을 입력하세요...')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('비밀번호를 입력하세요...')).toBeInTheDocument();
 
         const signup = screen.getByText('회원가입 하러가기');
         expect(signup).toBeInTheDocument();
