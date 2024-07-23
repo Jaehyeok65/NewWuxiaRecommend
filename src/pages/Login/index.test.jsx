@@ -1,37 +1,36 @@
-import { render, screen, fireEvent } from "../../util/test";
-import Login from ".";
+import { RenderWithProviders } from "utill/RenderWtihQuery";
+import { render, screen, fireEvent } from "@testing-library/react";
+import Login from './index';
+import { Routes, Route } from "react-router-dom";
+import SignUp from "pages/SignUp";
 
 
 describe('Login Component Test', () => {
 
 
-    it('초기에 Login Title이 보이며, 클릭하면 Sign Up으로 바뀐다.', async() => {
+    it('Login 컴포넌트가 정상적으로 렌더링되며 회원가입 하러가기 버튼을 클릭 시 회원가입 페이지로 이동한다.', async() => {
 
-        render(<Login />);
+        render(
+            <RenderWithProviders route="/login">
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                </Routes>
+            </RenderWithProviders>
+        );
+
 
         const logintitle = screen.getByText('Login');
         expect(logintitle).toBeInTheDocument();
 
-        fireEvent.click(logintitle);
-        
-        const signuptitle = await screen.findByText('Sign Up');
-        expect(signuptitle).toBeInTheDocument();
-    });
-
-    it('초기에는 LoginForm Component로 렌더링 되며, isLogin State가 바뀌면 Sign Up Component로 렌더링이 된다.', async() => {
-
-        render(<Login />);
-
-        expect(screen.getByText('로그인')).toBeInTheDocument();
-
-        const logintitle = screen.getByText('Login');
-
-        fireEvent.click(logintitle); //logintitle을 클릭하면 isLogin state가 바뀜.
-
-        const signup = await screen.findByText('회원가입');
-        
+        const signup = screen.getByText('회원가입 하러가기');
         expect(signup).toBeInTheDocument();
 
+        fireEvent.click(signup);
+
+        expect(await screen.findByText('Sign Up')).toBeInTheDocument();
         
+
     });
+
 })
