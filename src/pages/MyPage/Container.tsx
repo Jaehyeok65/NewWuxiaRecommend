@@ -7,11 +7,13 @@ import MyPagePresentation from './Presentation';
 
 const MyPageContainer = ({ nickname, loginstate }: any) => {
     const [title, setTitle] = useState('방문'); //default는 최근 방문한 작품
+
     const { data, error, isError } = useSuspenseQuery({
         queryKey: ['mypage', title],
         queryFn: () => getWuxiaMyPage(title),
-        staleTime : 600000,
+        staleTime: 600000,
     });
+
 
     if (isError) return <Error error={error} />;
 
