@@ -45,7 +45,7 @@ const LoginFormstyle = {
     },
 };
 
-const Login = ({ setLoginstate, setNickname }) => {
+const Login = ({ setLoginstate, setNickname } : any) => {
     return (
         <MainFrame>
             <Title

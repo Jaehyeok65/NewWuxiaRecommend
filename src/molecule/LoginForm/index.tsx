@@ -2,12 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Button from '../../atoms/Button';
 import { Input } from '../../atoms/Input';
 import { getLogin } from '../../api/LoginAPI';
-import  Text  from '../../atoms/Text';
+import Text from '../../atoms/Text';
 import useDebounce from '../../hook/useDebounce';
 import { CheckEmail, CheckPassword } from '../../module/CheckValidation';
 import { useNavigate } from 'react-router-dom';
 import styleds from 'styled-components';
-
 
 const LoginForm = ({
     styled,
@@ -15,18 +14,18 @@ const LoginForm = ({
     userPassword,
     setNickname,
     setLoginstate,
-}) => {
+} : any) => {
     const [input, setInput] = useState({
         userEmail: '',
         userPassword: '',
     });
 
-    const [emailMessage, setEmailMessage] = useState({
+    const [emailMessage, setEmailMessage] = useState<any>({
         userEmail: '',
         effectiveness: false,
     }); //로그인시 아이디 유효성 메시지를 알려줌
 
-    const [passwordMessage, setPasswordMessage] = useState({
+    const [passwordMessage, setPasswordMessage] = useState<any>({
         userPassword: '',
         effectiveness: false,
     }); //로그인시 비밀번호 유효성 메시지를 알려줌
@@ -58,7 +57,7 @@ const LoginForm = ({
         });
     }, [PassworddebounceVal]);
 
-    const onChange = useCallback((e) => {
+    const onChange = useCallback((e : any) => {
         const { name, value } = e.target;
         setInput((prev) => ({
             ...prev,
@@ -87,14 +86,14 @@ const LoginForm = ({
     }, []);
 
     const onSubmit = useCallback(
-        async (e) => {
+        async (e : any) => {
             e.preventDefault();
             if (input.userEmail === '' || input.userPassword === '') {
                 alert('아이디와 비밀번호를 입력해주세요');
                 return;
             }
             const loginresult = await getLogin(input);
-            if(loginresult === "비밀번호가 다릅니다!") {
+            if (loginresult === '비밀번호가 다릅니다!') {
                 setPasswordMessage({
                     userPassword: loginresult,
                     effectiveness: false,
@@ -103,8 +102,7 @@ const LoginForm = ({
                     userEmail: '',
                     effectiveness: false,
                 });
-            }
-            else if(loginresult === "존재하지 않는 아이디입니다!") {
+            } else if (loginresult === '존재하지 않는 아이디입니다!') {
                 setPasswordMessage({
                     userPassword: '',
                     effectiveness: false,
@@ -113,8 +111,7 @@ const LoginForm = ({
                     userEmail: loginresult,
                     effectiveness: false,
                 });
-            }
-            else {
+            } else {
                 // 로그인 성공했을 경우
                 setNickname(loginresult);
                 setLoginstate();
@@ -192,6 +189,5 @@ const Form = styleds.form`
     width: 100%;
   }
 `;
-
 
 export default React.memo(LoginForm);
