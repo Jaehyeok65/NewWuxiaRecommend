@@ -110,17 +110,7 @@ const HeadTextstyle = {
     },
 };
 
-const Header = (
-    {
-        onClick,
-        onClickLoginModal,
-        onClickSignUpModal,
-        loginstate,
-        setLoginstate,
-        setNickname,
-    },
-    ref
-) => {
+const Header = ({ onClick, loginstate, setLoginstate, setNickname }, ref) => {
     const navigate = useNavigate();
     const [input, setInput] = useState('');
 
@@ -142,8 +132,8 @@ const Header = (
     };
 
     const onLogoutClick = () => {
-        setLoginstate();
-        setNickname();
+        setLoginstate((prev) => !prev);
+        setNickname(null);
         window.sessionStorage.clear();
     };
 
@@ -174,17 +164,14 @@ const Header = (
                 <LoginContainer>
                     {loginstate ? (
                         <Button
-                            onClick={onClickLoginModal}
-                            styled={loginbtnstyle}
-                        >
-                            <StyledLink to="/login">로그인</StyledLink>
-                        </Button>
-                    ) : (
-                        <Button
                             onClick={() => getLogout(onLogoutClick)}
                             styled={loginbtnstyle}
                         >
                             로그아웃
+                        </Button>
+                    ) : (
+                        <Button styled={loginbtnstyle}>
+                            <StyledLink to="/login" data-testid="loginbtn">로그인</StyledLink>
                         </Button>
                     )}
                 </LoginContainer>

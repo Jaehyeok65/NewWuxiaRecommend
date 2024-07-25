@@ -1,60 +1,167 @@
-import Navigate from ".";
-import { fireEvent, screen, render, waitFor } from "../../util/test";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import ReduxThunk from 'redux-thunk';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import Navigate from '.';
+import { Routes, Route } from 'react-router-dom';
+import Login from 'pages/Login';
+import Main from 'pages/Main';
+import { API } from 'api/LoginAPI';
 
+describe('Navigate Component Test', () => {
+    const mock = new MockAdapter(axios);
 
-describe('Navigate Test', () => {
-
-    const initialState = {
-        modal : {
-            login : {
-                data : false
-            }
-        }
-        
-    };
-
-    const middleware = [ReduxThunk];
-    const mockstore = configureStore(middleware);
-
-
-
-    it('사이드 메뉴 버튼을 누르면 Sidebar가 나타남', async() => {
-
-        const store = mockstore(initialState);
-        
-        render(
-        <Provider store={store}>
-            <Navigate />
-        </Provider>);
-
-        const sidebtn = screen.getByTestId("side");
-
-        fireEvent.click(sidebtn);
-
-        await screen.findByText("조회순"); //이벤트가 완료되기를 기다렸다가 find 수행
-        await screen.findByText("별점순");
-        await screen.findByText("좋아요순");
-        await screen.findByText("커뮤니티");
+    afterEach(() => {
+        mock.reset(); //테스트 케이스를 수행 후 mock 데이터를 초기화함
     });
 
-    it('로그인 버튼을 누르면 로그인 Modal이 Dispatch 됨', async() => {
+    const setNickname = jest.fn();
+    const setLoginstate = jest.fn();
 
-        const store = mockstore(initialState);
-
-        const expectedActions = [{ type : 'LOGIN', data : true }]; //실행되기로 예상되는 액션 정의
-        
+    it('초기 렌더링 시 loginstate가 true라면 헤더에 로그아웃 Text가 렌더링된다.', async () => {
         render(
-        <Provider store={store}>
-            <Navigate />
-        </Provider>);
+            <RenderWithProviders>
+                <Navigate
+                    loginstate={true}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
 
-        const loginbtn = screen.getByText("로그인");
+        expect(screen.getByTestId('side')).toBeInTheDocument();
+        expect(screen.getByText('로그아웃')).toBeInTheDocument();
+    });
+
+    it('초기 렌더링 시 loginstate가 false라면 헤더에 로그인 Text가 렌더링된다.', async () => {
+        render(
+            <RenderWithProviders>
+                <Navigate
+                    loginstate={false}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
+
+        expect(screen.getByTestId('side')).toBeInTheDocument();
+        expect(screen.getByText('로그인')).toBeInTheDocument();
+    });
+
+    it('SideBar 아이콘을 누르면 네비게이션 메뉴가 열린다.', async () => {
+        render(
+            <RenderWithProviders>
+                <Navigate
+                    loginstate={false}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
+
+        const sidebar = screen.getByTestId('side');
+
+        expect(sidebar).toBeInTheDocument();
+
+        fireEvent.click(sidebar);
+
+        expect(await screen.findByText('조회순')).toBeInTheDocument();
+        expect(screen.getByText('별점순')).toBeInTheDocument();
+        expect(screen.getByText('좋아요순')).toBeInTheDocument();
+        expect(screen.getByText('커뮤니티')).toBeInTheDocument();
+        expect(screen.getByText('마이페이지')).toBeInTheDocument();
+    });
+
+    it('SideBar 아이콘을 누르면 네비게이션 메뉴가 열리며 (x) 아이콘을 누르면 메뉴가 닫힌다.', async () => {
+        render(
+            <RenderWithProviders>
+                <Navigate
+                    loginstate={false}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
+
+        const sidebar = screen.getByTestId('side');
+
+        expect(sidebar).toBeInTheDocument();
+
+        fireEvent.click(sidebar);
+
+        expect(await screen.findByText('조회순')).toBeInTheDocument();
+        expect(screen.getByText('별점순')).toBeInTheDocument();
+        expect(screen.getByText('좋아요순')).toBeInTheDocument();
+        expect(screen.getByText('커뮤니티')).toBeInTheDocument();
+        expect(screen.getByText('마이페이지')).toBeInTheDocument();
+
+        const closebtn = screen.getByTestId('close');
+
+        expect(closebtn).toBeInTheDocument();
+
+        fireEvent.click(closebtn);
+
+        await waitFor(() => {
+            expect(screen.queryByText('조회순')).not.toBeInTheDocument();
+        });
+    });
+
+    it('로그인 버튼을 누르면 로그인 페이지로 이동한다.', async () => {
+        render(
+            <RenderWithProviders route="/">
+                <Navigate
+                    loginstate={false}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+                <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </RenderWithProviders>
+        ); //초기 렌더링은 메인페이지 로그인 버튼 클릭시 로그인 페이지로 이동하게끔
+
+        expect(screen.getByTestId('side')).toBeInTheDocument();
+
+        const loginbtn = screen.getByTestId('loginbtn');
+
+        expect(loginbtn).toBeInTheDocument();
+
+        expect(screen.queryByText(/Login/)).not.toBeInTheDocument();
+
         fireEvent.click(loginbtn);
-        
-        await waitFor(() => expect(store.getActions()).toEqual(expectedActions)); //예상되는 액션과 일치하는지 테스트
-    })
 
-})
+        expect(await screen.findByText(/Login/)).toBeInTheDocument();
+    });
+
+    it('로그아웃 버튼을 누르면 모킹한 setNickname, setLoginstate 함수가 호출된다.', async () => {
+        mock.onGet(`${API}/logout`).reply(200, { data: true });
+
+        window.confirm = jest.fn();
+        window.alert = jest.fn();
+
+        window.confirm.mockReturnValue(true);
+
+        render(
+            <RenderWithProviders route="/login">
+                <Navigate
+                    loginstate={true}
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        ); //초기 렌더링은 메인페이지 로그인 버튼 클릭시 로그인 페이지로 이동하게끔
+
+        expect(screen.getByTestId('side')).toBeInTheDocument();
+
+        const logout = screen.getByText('로그아웃');
+
+        expect(logout).toBeInTheDocument();
+
+        fireEvent.click(logout);
+
+        await waitFor(() => expect(setLoginstate).toHaveBeenCalled());
+
+        expect(setNickname).toHaveBeenCalledWith(null);
+    });
+});

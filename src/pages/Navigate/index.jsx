@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Header from '../../organism/Header';
 import Sidebar from '../../organism/Sidebar';
-import Navlist from '../../molecule/Navlist';
 
 const list = [
     {
@@ -21,18 +20,15 @@ const list = [
         path: '/community',
     },
     {
-        name : '마이페이지',
-        path : '/mypage'
+        name: '마이페이지',
+        path: '/mypage',
+    },
+    {
+        name : '관리자',
+        path: '/admin'
     }
 ];
 
-const styleds = {
-    btn: {
-        width: '10%',
-        padding: '12px',
-        border: 'none',
-    },
-};
 
 const Navigate = ({ loginstate, setLoginstate, setNickname }) => {
     const [sidetoggle, setSideToggle] = useState(false); //사이드바 관련 토글
@@ -41,11 +37,10 @@ const Navigate = ({ loginstate, setLoginstate, setNickname }) => {
         <React.Fragment>
             <Header
                 onClick={() => setSideToggle((prev) => !prev)}
-                loginstate={!loginstate}
-                setLoginstate={() => setLoginstate((prev) => !prev)}
-                setNickname={() => setNickname(null)}
+                loginstate={loginstate}
+                setLoginstate={setLoginstate}
+                setNickname={setNickname}
             />
-            <Navlist list={list} styled={styleds} nav={true} />
             <Sidebar
                 onClick={() => setSideToggle((prev) => !prev)}
                 toggle={sidetoggle}
