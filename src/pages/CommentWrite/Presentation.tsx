@@ -55,7 +55,7 @@ const SubmitButton = styled.input`
     }
 `;
 
-const CommentWrite = ({ comment, onSubmit, onChange } : any) => {
+const CommentWrite = ({ comment, onSubmit, onChange }: any) => {
     return (
         <MainFrame>
             <form onSubmit={onSubmit}>
@@ -64,13 +64,13 @@ const CommentWrite = ({ comment, onSubmit, onChange } : any) => {
                         name="title"
                         value={comment.title}
                         onChange={onChange}
-                        placeholder="제목을 입력하세요."
+                        placeholder="제목을 입력하세요..."
                     />
                     <ContentTextArea
                         name="content"
                         value={comment.content}
                         onChange={onChange}
-                        placeholder="내용을 입력하세요."
+                        placeholder="내용을 입력하세요..."
                     />
                     <SubmitButton type="submit" value="전송" />
                 </WriteArea>

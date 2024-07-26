@@ -6,7 +6,6 @@ import { saveComment, Formatting } from 'api/CommentAPI';
 
 const WriteContainer = ({ loginstate, nickname }: any) => {
     const [comment, setComment] = useState({
-        wuxia: '',
         title: '',
         content: '',
         writer: nickname,
@@ -38,7 +37,10 @@ const WriteContainer = ({ loginstate, nickname }: any) => {
     }, []);
 
     useEffect(() => {
-        setComment({ ...comment, writer: nickname });
+        setComment({
+            ...comment,
+            writer: nickname,
+        });
     }, [nickname]);
 
     const onSubmit = async (e: any) => {
@@ -52,7 +54,6 @@ const WriteContainer = ({ loginstate, nickname }: any) => {
             return;
         }
         WriteMutation.mutate(comment);
-        //console.log(comment);
         navigate(`/community`);
     };
 
