@@ -14,20 +14,16 @@ const CommentContainer = ({ loginstate, nickname }) => {
     const { data } = useSuspenseQuery({
         queryKey: ['comment', id],
         queryFn: () => getComment(id),
-        staleTime : 600000,
+        staleTime: 600000,
     });
     const navigate = useNavigate();
-
-    console.log(data);
 
     const CommentDeleteMutation = useMutation({
         mutationFn: () => {
             return deleteComment(id);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['commentlist'],
-            });
+        onSuccess: (data) => {
+            return queryClient.setQueryData(['commentlist', '최신순'], data);
         },
     });
 
@@ -35,10 +31,8 @@ const CommentContainer = ({ loginstate, nickname }) => {
         mutationFn: () => {
             return getCommentRecommend(id);
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({
-                queryKey: ['comment', id],
-            });
+        onSuccess: (data) => {
+            queryClient.setQueryData(['comment', id], data);
         },
     });
 
