@@ -158,17 +158,20 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
             mockdata
         );
 
-        const updatedMockData = [...mockdata, {
-            id : 3,
-            content : '댓글 입력',
-            user : {
-                userNickname : '팔협지'
+        const updatedMockData = [
+            ...mockdata,
+            {
+                id: 3,
+                content: '댓글 입력',
+                user: {
+                    userNickname: '팔협지',
+                },
+                recommendationcount: 0,
+                createdAt: '2024-07-30',
             },
-            recommendationcount : 0,
-            createdAt : '2024-07-30'
-        }]
+        ];
 
-        mock.onPost(`${API}/wxiarecommentsave`).reply(200, updatedMockData);
+        mock.onPost(`${API}/wuxiarecommentsave`).reply(200, updatedMockData);
 
         render(
             <RenderWithProvider>
@@ -188,9 +191,7 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
             await screen.findByText('내용', {}, { timeout: 3000 })
         ).toBeInTheDocument();
 
-        const commentbox = screen.getByPlaceholderText(
-            '댓글을 입력하세요...'
-        );
+        const commentbox = screen.getByPlaceholderText('댓글을 입력하세요...');
 
         expect(commentbox).toBeInTheDocument();
 
@@ -200,6 +201,7 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
 
         fireEvent.click(submitbtn);
 
+        expect(await screen.findByText('댓글 입력')).toBeInTheDocument();
     });
 
     it('loginstate가 true 일 때 추천 아이콘을 클릭할 시 데이터 Fetch가 발생한다.', async () => {
