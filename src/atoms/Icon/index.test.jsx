@@ -1,5 +1,5 @@
-import { render, screen } from "../../util/test";
-import Icon from ".";
+import { render, screen } from "@testing-library/react";
+import Icon from "./index";
 
 
 

@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "../../util/test";
-import { Input } from ".";
+import { render, screen, fireEvent } from "@testing-library/react";
+import Input from "./index";
 
 
 

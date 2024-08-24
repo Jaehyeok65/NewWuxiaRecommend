@@ -1,5 +1,5 @@
-import { render, screen } from "../../util/test";
-import { Text } from ".";
+import { render, screen } from "@testing-library/react";
+import Text from "./index";
 
 
 
