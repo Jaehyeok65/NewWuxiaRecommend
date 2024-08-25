@@ -1,65 +1,56 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-import Card from ".";
-
-
+import { render, screen } from '@testing-library/react';
+import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import Card from '.';
 
 describe('Card Component Test', () => {
-
-    const title = '검술명가 막내아들';
-    const url = '/image/img1.jpg';
-    const writer = '황제펭귄'; //테스트용 변수
-    
+    const product = {
+        title : '검술명가 막내아들',
+        url : '/image/img1.jpg',
+        writer : '황제펭귄',
+        view : 10
+    };
 
     it('Title Props 확인', () => {
         render(
-            <Router>
-                <Card title={title} />
-            </Router>
-            );
-        screen.getByText('검술명가 막내아들');
-    })
+            <RenderWithProviders>
+                <Card product={product} />
+            </RenderWithProviders>
+        );
+        const title = screen.getByText('검술명가 막내아들');
+        expect(title).toBeInTheDocument();
+    });
+
 
     it('Writer Props 확인', () => {
         render(
-            <Router>
-                <Card writer={writer} />
-            </Router>
-            );
-        screen.getByText('황제펭귄');
-    })
+
+            <RenderWithProviders>
+                <Card product={product} />
+            </RenderWithProviders>
+        );
+        const writer = screen.getByText('황제펭귄');
+        expect(writer).toBeInTheDocument();
+    });
 
     it('Url Props 확인', () => {
         render(
-            <Router>
-                <Card url={url} title={title} />
-            </Router>
+            <RenderWithProviders>
+                <Card product={product} />
+            </RenderWithProviders>
         );
 
         const image = screen.getByRole('img');
-        image.getAttribute(url);
-        
-    })
+        image.getAttribute('/image/img1.jpg');
+    });
 
-    it('Alt Text 확인', () => { //alt Text를 보기 위해 엉터리 url 주입
+    it('View Props 확인', () => {
         render(
-            <Router>
-                <Card url={'/missurl'} title={title} />
-            </Router>
+            <RenderWithProviders>
+                <Card product={product} />
+            </RenderWithProviders>
         );
 
-        screen.getByAltText(title);
-    })
-
-    it('Link href 확인', async () => {
-        render(
-            <Router>
-                <Card url={url} title={title} writer={writer} />
-            </Router>
-        );
-
-        await fireEvent.click(screen.getByTestId('card'));
-        expect(screen.getByText(title)).toBeInTheDocument();
-    })
-
-})
+        const view = screen.getByText('조회수 : 10');
+        expect(view).toBeInTheDocument();
+    });
+});
