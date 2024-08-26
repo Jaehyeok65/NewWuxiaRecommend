@@ -1,4 +1,4 @@
-import { render, screen } from "../../util/test";
+import { render, screen } from "@testing-library/react";
 import CommentLists from ".";
 
 
@@ -10,9 +10,13 @@ describe('CommentLists Component Test', () => {
 
         const writer = '작가';
 
-        const title = '제목'
+        const title = '제목';
 
-        render(<CommentLists writer={writer} title={title}/>);
+        const date='2024-08-26';
+
+        const recommend='10';
+
+        render(<CommentLists writer={writer} title={title} date={date} recommend={recommend}/>);
 
         const writertest = screen.getByText(writer);
 
@@ -21,6 +25,14 @@ describe('CommentLists Component Test', () => {
         const titletest = screen.getByText(title);
 
         expect(titletest).toBeInTheDocument();
+
+        const datetest = screen.getByText(date);
+
+        expect(datetest).toBeInTheDocument();
+
+        const recommendtest = screen.getByText(recommend);
+
+        expect(recommendtest).toBeInTheDocument();
 
     });
 })
