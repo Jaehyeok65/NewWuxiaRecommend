@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "../../util/test";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Pagination from ".";
 
 
@@ -34,7 +34,7 @@ describe('Pagination Component Test', () => {
 
         fireEvent.click(num);
 
-        expect(setPage).toBeCalled();
+        expect(setPage).toHaveBeenCalled();
     });
 
     it('> 버튼을 클릭하면 setPage 이벤트 핸들러가 작동한다.', async() => {
@@ -47,7 +47,7 @@ describe('Pagination Component Test', () => {
 
         fireEvent.click(right);
 
-        expect(setPage).toBeCalled();
+        expect(setPage).toHaveBeenCalled();
     });
 
     it('page가 1일 때  < 버튼을 클릭하면 disabled이므로 이벤트 핸들러가 작동하지 않는다.', async() => {
@@ -60,7 +60,7 @@ describe('Pagination Component Test', () => {
 
         fireEvent.click(left);
 
-        expect(setPage).not.toBeCalled();
+        expect(setPage).not.toHaveBeenCalled();
     });
 
     it('page가 2일 때  < 버튼을 클릭하면 disabled가 아니므로 이벤트 핸들러가 작동한다.', async() => {
@@ -73,7 +73,7 @@ describe('Pagination Component Test', () => {
 
         fireEvent.click(left);
 
-        expect(setPage).toBeCalled();
+        expect(setPage).toHaveBeenCalled();
         
     });
 
