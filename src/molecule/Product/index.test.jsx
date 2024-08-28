@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "../../util/test";
+import { render, fireEvent, screen } from "@testing-library/react";
 import Product from ".";
 
 
@@ -48,13 +48,13 @@ describe('Product Component Test', () => {
         
         fireEvent.click(btn1);
 
-        expect(setTextToggle).toBeCalled();
+        expect(setTextToggle).toHaveBeenCalled();
 
         const btn2 = screen.getByText("별점주기");
 
         fireEvent.click(btn2);
 
-        expect(setRateToggle).toBeCalled();
+        expect(setRateToggle).toHaveBeenCalled();
     });
 
     it('clicked Props가 있으면 StarRate Component가 렌더링 되며 init 함수가 마운트시 실행된다.', () => {
@@ -67,7 +67,7 @@ describe('Product Component Test', () => {
 
         expect(star).toBeInTheDocument();
 
-        expect(init).toBeCalled();
+        expect(init).toHaveBeenCalled();
 
     });
 
