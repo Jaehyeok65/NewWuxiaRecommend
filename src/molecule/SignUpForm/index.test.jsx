@@ -1,59 +1,69 @@
-import { render, screen, fireEvent, API } from "../../util/test";
-import SignUpForm from ".";
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import SignUpForm from '.';
+import { getSignUp } from '../../api/LoginAPI';
+import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import {
+    CheckPassword,
+    CheckId,
+    CheckNickname,
+    CheckRePassword,
+} from 'module/CheckValidation';
+
+jest.mock('../../api/LoginAPI'); // 모듈 전체를 모킹
+
+jest.mock('module/CheckValidation'); // 모듈 전체를 모킹
+
+const alertMock = jest.fn();
+window.alert = alertMock;
+
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+}));
 
 const LoginFormstyle = {
-    input1 : {
-        margin : '15% 0px 0px 18%',
-        padding : '12px',
-        width : '60%'
+    input1: {
+        margin: '15% 0px 0px 18%',
+        padding: '12px',
+        width: '60%',
     },
-    input2 : {
-        margin : '3% 0px 0px 18%',
-        padding : '12px',
-        width : '60%'
+    input2: {
+        margin: '3% 0px 0px 18%',
+        padding: '12px',
+        width: '60%',
     },
-    button : {
-        margin : '3% 0px 0px 18%',
-        padding : '12px',
-        width : '66%',
-        borderRadius : '4px',
-        marginTop : '2%'
-    }
+    button: {
+        margin: '3% 0px 0px 18%',
+        padding: '12px',
+        width: '66%',
+        borderRadius: '4px',
+        marginTop: '2%',
+    },
 };
-
-const input = {
-    userEmail : 'www@naver.com',
-    userPassword : 'aaa1234',
-    userNickname : '닉네임'
-};
-
 
 describe('Sign Up Form Component Test', () => {
-
-    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
-
-
-    afterEach(() => {
-        mock.reset(); // 각 테스트 커버리지마다 정확성을 높이기 위해 mock 데이터를 리셋함
-    })
-
     it('styled Props나 input Props가 없다면 에러 발생 텍스트가 화면에 보인다.', () => {
-        
-        render(<SignUpForm />);
+        render(
+            <RenderWithProviders>
+                <SignUpForm />
+            </RenderWithProviders>
+        );
 
         const error = screen.getByText('에러 발생');
 
         expect(error).toBeInTheDocument();
-
     });
 
     it('stlyed Props나 input Props가 있다면 컴포넌트가 정상적으로 화면에 보인다.', () => {
-
         const onChange = jest.fn();
 
-        render(<SignUpForm styled={LoginFormstyle} input={input} onChange={onChange} />);
+        render(
+            <RenderWithProviders>
+                <SignUpForm styled={LoginFormstyle} onChange={onChange} />
+            </RenderWithProviders>
+        );
 
         const inputs = screen.getByPlaceholderText('이메일을 입력하세요...');
 
@@ -64,29 +74,18 @@ describe('Sign Up Form Component Test', () => {
         expect(btn).toBeInTheDocument();
     });
 
-    it('onSubmit 호출 시 데이터가 정상적으로 전달된다.', async() => {
-
-        const data = true;
-
-        mock.onPost(`${API}/signup`, {
-            userEmail : 'www@naver.com',
-            userPassword : 'aaa1234',
-            userNickname : '닉네임'
-        }).reply(200, data);
-
-        window.alert = jest.fn();
-
+    it('입력 필드에 아무것도 입력하지 않고 회원가입 버튼을 누르면 아이디와 비밀번호 또는 닉네임을 입력해주세요라는 알림창이 나타난다.', async() => {
         const onChange = jest.fn();
 
-        const onClose = jest.fn();
+        render(
+            <RenderWithProviders>
+                <SignUpForm styled={LoginFormstyle} onChange={onChange} />
+            </RenderWithProviders>
+        );
 
-        const init = jest.fn();
+        const inputs = screen.getByPlaceholderText('이메일을 입력하세요...');
 
-        const setIsLogin = jest.fn();
-
-        render(<SignUpForm styled={LoginFormstyle} input={input} onChange={onChange} onClose={onClose} init={init}
-             setIsLogin={setIsLogin}
-        />);
+        expect(inputs).toBeInTheDocument();
 
         const btn = screen.getByText('회원가입');
 
@@ -94,8 +93,77 @@ describe('Sign Up Form Component Test', () => {
 
         fireEvent.click(btn);
 
-        expect(init).toBeCalled(); //Sign Up이 실행된 후 init 함수가 실행되므로 init함수가 정상적으로 호출이 된다면 회원가입도 정상적으로 호출될 것
+        await waitFor(() => {
+            expect(alertMock).toHaveBeenCalledWith('아이디와 비밀번호 또는 닉네임을 입력해주세요')
+        })
 
     });
+
+    it('입력 필드에 값을 입력하면 상태가 업데이트된다.', () => {
+        render(
+            <SignUpForm
+                styled={LoginFormstyle}
+                userEmail="userEmail"
+                userPassword="userPassword"
+                userNickname="userNickname"
+                userPasswordCheck="userPasswordCheck"
+            />
+        );
+
+        const emailInput = screen.getByPlaceholderText('이메일을 입력하세요...');
+        const passwordInput = screen.getByPlaceholderText('비밀번호를 입력하세요...');
+        const passwordCheckInput = screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
+        const nicknameInput = screen.getByPlaceholderText('닉네임을 입력하세요...');
+
+        fireEvent.change(emailInput, { target: { value: 'vkfguqwl@naver.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'aaaa1234' } });
+        fireEvent.change(passwordCheckInput, { target: { value: 'aaaa1234' } });
+        fireEvent.change(nicknameInput, { target: { value: '팔협지' } });
+
+        expect(emailInput).toHaveValue('vkfguqwl@naver.com');
+        expect(passwordInput).toHaveValue('aaaa1234');
+        expect(passwordCheckInput).toHaveValue('aaaa1234');
+        expect(nicknameInput).toHaveValue('팔협지');
+    });
+
+
+    it('입력필드에 값을 입력하고 회원가입 버튼을 누르면 성공적으로 API 호출이 된다.', async () => {
+        getSignUp.mockResolvedValue(true);
+
+        render(
+            <SignUpForm
+                styled={LoginFormstyle}
+                userEmail="userEmail"
+                userPassword="userPassword"
+                userNickname="userNickname"
+                userPasswordCheck="userPasswordCheck"
+            />
+        );
+
+       
+        const submitButton = screen.getByText('회원가입');
+        const emailInput = screen.getByPlaceholderText('이메일을 입력하세요...');
+        const passwordInput = screen.getByPlaceholderText('비밀번호를 입력하세요...');
+        const passwordCheckInput = screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
+        const nicknameInput = screen.getByPlaceholderText('닉네임을 입력하세요...');
+
+        fireEvent.change(emailInput, { target: { value: 'vkfguqwl@naver.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'aaaa1234' } });
+        fireEvent.change(passwordCheckInput, { target: { value: 'aaaa1234' } });
+        fireEvent.change(nicknameInput, { target: { value: '팔협지' } });
+
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            expect(getSignUp).toHaveBeenCalledWith({
+                userEmail: 'vkfguqwl@naver.com',
+                userPassword: 'aaaa1234',
+                userNickname: '팔협지',
+                userPasswordCheck: 'aaaa1234',
+            });
+        });
+    });
+
+
     
 });
