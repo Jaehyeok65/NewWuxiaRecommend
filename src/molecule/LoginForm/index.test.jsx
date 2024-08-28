@@ -1,109 +1,211 @@
-import { render, screen, API, fireEvent } from "../../util/test";
-import LoginForm from ".";
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import LoginForm from '.';
+import { getLogin } from '../../api/LoginAPI';
+
+jest.mock('../../api/LoginAPI'); // 모듈 전체를 모킹
+
+const alertMock = jest.fn();
+window.alert = alertMock;
+const setNickname = jest.fn();
+const setLoginstate = jest.fn();
+
+const mockNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+}));
 
 const LoginFormstyle = {
-    input1 : {
-        margin : '15% 0px 0px 18%',
-        padding : '12px',
-        width : '60%'
+    input1: {
+        margin: '15% 0px 0px 18%',
+        padding: '12px',
+        width: '60%',
     },
-    input2 : {
-        margin : '3% 0px 0px 18%',
-        padding : '12px',
-        width : '60%'
+    input2: {
+        margin: '3% 0px 0px 18%',
+        padding: '12px',
+        width: '60%',
     },
-    button : {
-        margin : '3% 0px 0px 18%',
-        padding : '12px',
-        width : '66%',
-        borderRadius : '4px',
-        marginTop : '2%'
-    }
+    button: {
+        margin: '3% 0px 0px 18%',
+        padding: '12px',
+        width: '66%',
+        borderRadius: '4px',
+        marginTop: '2%',
+    },
 };
-
-const input = {
-    userEmail : 'www@naver.com',
-    userPassword : 'aaa1234'
-};
-
 
 describe('Login Form Component Test', () => {
-
-    const mock = new MockAdapter(axios, { delayResponse: 200 }); // 200ms 가짜 딜레이 설정
-
-
-    afterEach(() => {
-        mock.reset(); // 각 테스트 커버리지마다 정확성을 높이기 위해 mock 데이터를 리셋함
-    })
-
     it('styled Props나 input Props가 없다면 에러 발생 텍스트가 화면에 보인다.', () => {
-        
-        render(<LoginForm />);
+        render(
+            <RenderWithProviders>
+                <LoginForm />
+            </RenderWithProviders>
+        );
 
         const error = screen.getByText('에러 발생');
 
         expect(error).toBeInTheDocument();
-
     });
 
-    it('stlyed Props나 input Props가 있다면 컴포넌트가 정상적으로 화면에 보인다.', () => {
+    it('styled Props나 input Props가 있다면 정상적으로 렌더링된다.', () => {
+        render(
+            <RenderWithProviders>
+                <LoginForm styled={LoginFormstyle} />
+            </RenderWithProviders>
+        );
 
-        const onChange = jest.fn();
+        const userEmailInput =
+            screen.getByPlaceholderText('이메일을 입력하세요...');
+        expect(userEmailInput).toBeInTheDocument();
 
-        render(<LoginForm styled={LoginFormstyle} input={input} onChange={onChange} />);
-
-        const inputs = screen.getByPlaceholderText('이메일을 입력하세요...');
-
-        expect(inputs).toBeInTheDocument();
-
-        const btn = screen.getByText('로그인');
-
-        expect(btn).toBeInTheDocument();
+        const userPasswordInput =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+        expect(userPasswordInput).toBeInTheDocument();
     });
 
-    it('onSubmit 호출 시 데이터가 정상적으로 전달된다.', async() => {
-
-        const data = true;
-
-        mock.onPost(`${API}/login`, {
-            userEmail : 'www@naver.com',
-            userPassword : 'aaa1234'
-        }).reply(200, data);
-
-        window.alert = jest.fn();
-
-        const onChange = jest.fn();
-
-        const onClose = jest.fn();
-
-        const init = jest.fn();
-
-        const setLoginstate = jest.fn();
-
-        const setNickname = jest.fn();
-
-
-        render(<LoginForm styled={LoginFormstyle} input={input} onChange={onChange} onClose={onClose} init={init}
-             setLoginstate={setLoginstate} setNickname={setNickname}
-        />);
-
-        const btn = screen.getByText('로그인');
-
-        expect(btn).toBeInTheDocument();
-
-        fireEvent.click(btn);
-
-        expect(init).toBeCalled(); //Login이 실행된 후 init 함수가 실행되므로 init함수가 정상적으로 호출이 된다면 로그인도 정상적으로 호출될 것
-
-
+    it('아이디와 비밀번호를 입력하지 않은 상태에서 로그인 버튼을 누르면 아이디와 비밀번호를 입력해주세요 알림창이 나타난다.', async () => {
+        render(
+            <RenderWithProviders>
+                <LoginForm
+                    styled={LoginFormstyle}
+                    userName="userEmail"
+                    userPassword="userPassword"
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
 
         
+        const LoginBtn = screen.getByText('로그인');
+
+        fireEvent.click(LoginBtn);
+
+        await waitFor(() => {
+            expect(alertMock).toHaveBeenCalledWith('아이디와 비밀번호를 입력해주세요');
+        })
+
     });
 
+    it('비밀번호가 다를 경우 로그인 버튼을 클릭하면 화면에 비밀번호가 다릅니다! 텍스트가 렌더링된다.', async () => {
+        render(
+            <RenderWithProviders>
+                <LoginForm
+                    styled={LoginFormstyle}
+                    userName="userEmail"
+                    userPassword="userPassword"
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
 
+        getLogin.mockReturnValue('비밀번호가 다릅니다!');
 
+        const userEmail = screen.getByPlaceholderText('이메일을 입력하세요...');
 
-    
-})
+        expect(userEmail).toBeInTheDocument();
+
+        const userPassword =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+
+        expect(userPassword).toBeInTheDocument();
+
+        fireEvent.change(userEmail, {
+            target: { value: 'vkfguqwl@naver.com' },
+        });
+
+        fireEvent.change(userPassword, { target: { value: 'aaaa1234' } });
+
+        const LoginBtn = screen.getByText('로그인');
+
+        fireEvent.click(LoginBtn);
+
+        const text = await screen.findByText('비밀번호가 다릅니다!');
+
+        expect(text).toBeInTheDocument();
+    });
+
+    it('아이디가 존재하지 않을 경우 로그인 버튼을 클릭하면 화면에 존재하지 않는 아이디입니다! 텍스트가 렌더링된다.', async () => {
+        render(
+            <RenderWithProviders>
+                <LoginForm
+                    styled={LoginFormstyle}
+                    userName="userEmail"
+                    userPassword="userPassword"
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
+
+        getLogin.mockReturnValue('존재하지 않는 아이디입니다!');
+
+        const userEmail = screen.getByPlaceholderText('이메일을 입력하세요...');
+
+        expect(userEmail).toBeInTheDocument();
+
+        const userPassword =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+
+        expect(userPassword).toBeInTheDocument();
+
+        fireEvent.change(userEmail, {
+            target: { value: 'vkfguqwl@naver.com' },
+        });
+
+        fireEvent.change(userPassword, { target: { value: 'aaaa1234' } });
+
+        const LoginBtn = screen.getByText('로그인');
+
+        fireEvent.click(LoginBtn);
+
+        const text = await screen.findByText('존재하지 않는 아이디입니다!');
+
+        expect(text).toBeInTheDocument();
+    });
+
+    it('로그인 버튼을 클릭하여 로그인에 성공한다면 Navigate 함수가 호출되어 이전 페이지로 이동한다.', async () => {
+        render(
+            <RenderWithProviders>
+                <LoginForm
+                    styled={LoginFormstyle}
+                    userName="userEmail"
+                    userPassword="userPassword"
+                    setNickname={setNickname}
+                    setLoginstate={setLoginstate}
+                />
+            </RenderWithProviders>
+        );
+
+        getLogin.mockReturnValue('로그인에 성공하였습니다!');
+
+        const userEmail = screen.getByPlaceholderText('이메일을 입력하세요...');
+
+        expect(userEmail).toBeInTheDocument();
+
+        const userPassword =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+
+        expect(userPassword).toBeInTheDocument();
+
+        fireEvent.change(userEmail, {
+            target: { value: 'vkfguqwl@naver.com' },
+        });
+
+        fireEvent.change(userPassword, { target: { value: 'aaaa1234' } });
+
+        const LoginBtn = screen.getByText('로그인');
+
+        fireEvent.click(LoginBtn);
+
+         // waitFor로 비동기 작업이 끝날 때까지 기다린 후 Navigate가 호출되었는지 확인
+         await waitFor(() => {
+            expect(mockNavigate).toHaveBeenCalledWith(-1);
+        });
+
+    });
+});

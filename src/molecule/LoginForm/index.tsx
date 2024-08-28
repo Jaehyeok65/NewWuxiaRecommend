@@ -89,7 +89,7 @@ const LoginForm = ({
         async (e : any) => {
             e.preventDefault();
             if (input.userEmail === '' || input.userPassword === '') {
-                alert('아이디와 비밀번호를 입력해주세요');
+                window.alert('아이디와 비밀번호를 입력해주세요');
                 return;
             }
             const loginresult = await getLogin(input);
@@ -118,7 +118,6 @@ const LoginForm = ({
                 init();
                 Textinit();
                 memoizedNavigate(-1);
-                console.log(loginresult);
             }
         },
         [input, setNickname, setLoginstate]
