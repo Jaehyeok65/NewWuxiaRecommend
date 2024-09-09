@@ -1,6 +1,6 @@
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Routes, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Admin from './index';
 import MockAdapter from 'axios-mock-adapter';
 import { API } from 'api/LoginAPI';
@@ -13,8 +13,6 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockNavigate,
 }));
 
-
-
 describe('CommentWrite Component Test', () => {
     const mock = new MockAdapter(axios);
 
@@ -25,9 +23,7 @@ describe('CommentWrite Component Test', () => {
     it('초기 렌더링 시 요소들이 정상적으로 렌더링된다.', async () => {
         render(
             <RenderWithProviders route="/admin">
-                <Routes>
-                    <Route path="/admin" element={<Admin />} />
-                </Routes>
+                <Route path="/admin" element={<Admin />} />
             </RenderWithProviders>
         );
 
@@ -37,10 +33,6 @@ describe('CommentWrite Component Test', () => {
 
         expect(
             screen.getByPlaceholderText('작가 이름을 입력해주세요...')
-        ).toBeInTheDocument();
-
-        expect(
-            screen.getByPlaceholderText('이미지 주소를 입력해주세요...')
         ).toBeInTheDocument();
 
         expect(
@@ -57,9 +49,7 @@ describe('CommentWrite Component Test', () => {
 
         render(
             <RenderWithProviders route="/admin">
-                <Routes>
-                    <Route path="/admin" element={<Admin />} />
-                </Routes>
+                <Route path="/admin" element={<Admin />} />
             </RenderWithProviders>
         );
 
@@ -71,11 +61,6 @@ describe('CommentWrite Component Test', () => {
             screen.getByPlaceholderText('작가 이름을 입력해주세요...');
 
         expect(writer).toBeInTheDocument();
-
-        const img =
-            screen.getByPlaceholderText('이미지 주소를 입력해주세요...');
-
-        expect(img).toBeInTheDocument();
 
         const content =
             screen.getByPlaceholderText('작품 설명을 입력해주세요...');
@@ -93,8 +78,6 @@ describe('CommentWrite Component Test', () => {
         fireEvent.change(writer, { target: { value: '작가이름' } });
 
         fireEvent.change(content, { target: { value: '내용' } });
-
-        fireEvent.change(img, { target: { value: '이미지 주소' } });
 
         fireEvent.change(link, { target: { value: '바로가기 주소' } });
 

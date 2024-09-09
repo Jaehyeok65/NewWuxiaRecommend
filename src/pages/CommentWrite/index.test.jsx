@@ -16,17 +16,12 @@ describe('CommentWrite Component Test', () => {
     it('초기 렌더링 시 요소들이 정상적으로 렌더링된다.', async () => {
         render(
             <RenderWithProviders route="/commentwrite">
-                <Routes>
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={true}
-                                nickname="은사해탈"
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={true} nickname="은사해탈" />
+                    }
+                />
             </RenderWithProviders>
         );
 
@@ -65,17 +60,12 @@ describe('CommentWrite Component Test', () => {
 
         render(
             <RenderWithProviders route="/commentwrite">
-                <Routes>
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={true}
-                                nickname="은사해탈"
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={true} nickname="은사해탈" />
+                    }
+                />
             </RenderWithProviders>
         );
 
@@ -112,17 +102,12 @@ describe('CommentWrite Component Test', () => {
 
         render(
             <RenderWithProviders route="/commentwrite">
-                <Routes>
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={false}
-                                nickname="은사해탈"
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={false} nickname="은사해탈" />
+                    }
+                />
             </RenderWithProviders>
         );
 
@@ -135,17 +120,12 @@ describe('CommentWrite Component Test', () => {
 
         render(
             <RenderWithProviders route="/commentwrite">
-                <Routes>
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={true}
-                                nickname="은사해탈"
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={true} nickname="은사해탈" />
+                    }
+                />
             </RenderWithProviders>
         );
 
@@ -162,17 +142,12 @@ describe('CommentWrite Component Test', () => {
 
         render(
             <RenderWithProviders route="/commentwrite">
-                <Routes>
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={true}
-                                nickname="은사해탈"
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={true} nickname="은사해탈" />
+                    }
+                />
             </RenderWithProviders>
         );
 

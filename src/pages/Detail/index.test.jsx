@@ -3,7 +3,7 @@ import { screen, fireEvent, render } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { API } from 'api/LoginAPI';
 import { Formatting } from 'api/CommentAPI';
 
@@ -71,12 +71,10 @@ describe('Detail 컴포넌트 테스트', () => {
 
         render(
             <RenderWithProviders route="/detail/화산귀환">
-                <Routes>
-                    <Route
-                        path="/detail/:title"
-                        element={<Detail loginstate={true} nickname="팔협지" />}
-                    />
-                </Routes>
+                <Route
+                    path="/detail/:title"
+                    element={<Detail loginstate={true} nickname="팔협지" />}
+                />
             </RenderWithProviders>
         );
 
@@ -118,12 +116,10 @@ describe('Detail 컴포넌트 테스트', () => {
 
         render(
             <RenderWithProviders route="/detail/화산귀환">
-                <Routes>
-                    <Route
-                        path="/detail/:title"
-                        element={<Detail loginstate={true} nickname="팔협지" />}
-                    />
-                </Routes>
+                <Route
+                    path="/detail/:title"
+                    element={<Detail loginstate={true} nickname="팔협지" />}
+                />
             </RenderWithProviders>
         );
 
@@ -176,12 +172,10 @@ describe('Detail 컴포넌트 테스트', () => {
 
         render(
             <RenderWithProviders route="/detail/화산귀환">
-                <Routes>
-                    <Route
-                        path="/detail/:title"
-                        element={<Detail loginstate={true} nickname="팔협지" />}
-                    />
-                </Routes>
+                <Route
+                    path="/detail/:title"
+                    element={<Detail loginstate={true} nickname="팔협지" />}
+                />
             </RenderWithProviders>
         );
 
@@ -246,12 +240,10 @@ describe('Detail 컴포넌트 테스트', () => {
 
         render(
             <RenderWithProviders route="/detail/화산귀환">
-                <Routes>
-                    <Route
-                        path="/detail/:title"
-                        element={<Detail loginstate={true} nickname="팔협지" />}
-                    />
-                </Routes>
+                <Route
+                    path="/detail/:title"
+                    element={<Detail loginstate={true} nickname="팔협지" />}
+                />
             </RenderWithProviders>
         );
 

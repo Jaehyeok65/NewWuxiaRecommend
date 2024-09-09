@@ -24,7 +24,6 @@ jest.mock('react-router-dom', () => ({
     useNavigate: () => mockNavigate,
 }));
 
-
 describe('CommentUpdate Test', () => {
     const mock = new MockAdapter(axios); // 200ms 가짜 딜레이 설정
 
@@ -35,18 +34,15 @@ describe('CommentUpdate Test', () => {
     const alertMock = jest.fn();
     window.alert = alertMock;
 
-
     it('Comment가 있다면, Comment 입력창이 보이며, 정상적으로 value가 업데이트 되어있다.', async () => {
         mock.onPost(`${API}/comment`).reply(200, data);
 
         render(
             <RenderWithProviders route="/commentupdate/2">
-                <Routes>
-                    <Route
-                        path="/commentupdate/:id"
-                        element={<CommentUpdate loginstate={true} />}
-                    />
-                </Routes>
+                <Route
+                    path="/commentupdate/:id"
+                    element={<CommentUpdate loginstate={true} />}
+                />
             </RenderWithProviders>
         );
 
@@ -62,25 +58,20 @@ describe('CommentUpdate Test', () => {
 
         render(
             <RenderWithProviders route="/commentupdate/2">
-                <Routes>
-                    <Route
-                        path="/commentupdate/:id"
-                        element={<CommentUpdate loginstate={false} />}
-                    />
-                </Routes>
+                <Route
+                    path="/commentupdate/:id"
+                    element={<CommentUpdate loginstate={false} />}
+                />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
         await waitFor(() =>
-            expect(alertMock).toHaveBeenCalledWith(
-                '로그인이 필요합니다.'
-            )
+            expect(alertMock).toHaveBeenCalledWith('로그인이 필요합니다.')
         );
 
         expect(mockNavigate).toHaveBeenCalledWith('/login');
-
     });
 
     it('제목을 입력하지 않고 전송 버튼을 누를 시 경고메시지가 발생한다.', async () => {
@@ -88,12 +79,10 @@ describe('CommentUpdate Test', () => {
 
         render(
             <RenderWithProviders route="/commentupdate/2">
-                <Routes>
-                    <Route
-                        path="/commentupdate/:id"
-                        element={<CommentUpdate loginstate={true} />}
-                    />
-                </Routes>
+                <Route
+                    path="/commentupdate/:id"
+                    element={<CommentUpdate loginstate={true} />}
+                />
             </RenderWithProviders>
         );
 
@@ -105,7 +94,7 @@ describe('CommentUpdate Test', () => {
 
         const titleinput = screen.getByTestId('titleinput');
 
-        fireEvent.change(titleinput, { target : { value : ''}});
+        fireEvent.change(titleinput, { target: { value: '' } });
 
         const submitbtn = screen.getByText('전송');
 
@@ -114,10 +103,8 @@ describe('CommentUpdate Test', () => {
         fireEvent.click(submitbtn);
 
         await waitFor(() =>
-            expect(alertMock).toHaveBeenCalledWith(
-                '제목을 입력하세요'
-            )
-        );   
+            expect(alertMock).toHaveBeenCalledWith('제목을 입력하세요')
+        );
     });
 
     it('내용을 입력하지 않고 전송 버튼을 누를 시 경고메시지가 발생한다.', async () => {
@@ -125,12 +112,10 @@ describe('CommentUpdate Test', () => {
 
         render(
             <RenderWithProviders route="/commentupdate/2">
-                <Routes>
-                    <Route
-                        path="/commentupdate/:id"
-                        element={<CommentUpdate loginstate={true} />}
-                    />
-                </Routes>
+                <Route
+                    path="/commentupdate/:id"
+                    element={<CommentUpdate loginstate={true} />}
+                />
             </RenderWithProviders>
         );
 
@@ -142,7 +127,7 @@ describe('CommentUpdate Test', () => {
 
         const contentinput = screen.getByTestId('contentinput');
 
-        fireEvent.change(contentinput, { target : { value : ''}});
+        fireEvent.change(contentinput, { target: { value: '' } });
 
         const submitbtn = screen.getByText('전송');
 
@@ -151,10 +136,8 @@ describe('CommentUpdate Test', () => {
         fireEvent.click(submitbtn);
 
         await waitFor(() =>
-            expect(alertMock).toHaveBeenCalledWith(
-                '내용을 입력하세요'
-            )
-        );   
+            expect(alertMock).toHaveBeenCalledWith('내용을 입력하세요')
+        );
     });
 
     it('내용과 제목을 모두 입력하고 전송 버튼을 누를 시 데이터 fetch가 성공하면 comment 페이지로 이동된다.', async () => {
@@ -162,12 +145,10 @@ describe('CommentUpdate Test', () => {
 
         render(
             <RenderWithProviders route="/commentupdate/2">
-                <Routes>
-                    <Route
-                        path="/commentupdate/:id"
-                        element={<CommentUpdate loginstate={true} />}
-                    />
-                </Routes>
+                <Route
+                    path="/commentupdate/:id"
+                    element={<CommentUpdate loginstate={true} />}
+                />
             </RenderWithProviders>
         );
 
@@ -183,7 +164,8 @@ describe('CommentUpdate Test', () => {
 
         fireEvent.click(submitbtn);
 
-        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/comment/2'));
+        await waitFor(() =>
+            expect(mockNavigate).toHaveBeenCalledWith('/comment/2')
+        );
     });
-
 });

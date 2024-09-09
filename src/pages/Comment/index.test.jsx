@@ -39,14 +39,12 @@ describe('Comment Component Test', () => {
 
         render(
             <RenderWithProviders route="/comment/2">
-                <Routes>
                     <Route
                         path="/comment/:id"
                         element={
                             <Comment loginstate={true} nickname="팔협지" />
                         }
                     />
-                </Routes>
             </RenderWithProviders>
         );
 
@@ -64,14 +62,12 @@ describe('Comment Component Test', () => {
 
         render(
             <RenderWithProviders route="/comment/2">
-                <Routes>
                     <Route
                         path="/comment/:id"
                         element={
                             <Comment loginstate={false} nickname="팔협지" />
                         }
                     />
-                </Routes>
             </RenderWithProviders>
         );
 
@@ -111,14 +107,12 @@ describe('Comment Component Test', () => {
 
         render(
             <RenderWithProviders route="/comment/2">
-                <Routes>
                     <Route
                         path="/comment/:id"
                         element={
                             <Comment loginstate={true} nickname="팔협지" />
                         }
                     />
-                </Routes>
             </RenderWithProviders>
         );
 
@@ -149,14 +143,12 @@ describe('Comment Component Test', () => {
 
         render(
             <RenderWithProviders route="/comment/2">
-                <Routes>
                     <Route
                         path="/comment/:id"
                         element={
                             <Comment loginstate={false} nickname="호돌맨" />
                         }
                     />
-                </Routes>
             </RenderWithProviders>
         );
 

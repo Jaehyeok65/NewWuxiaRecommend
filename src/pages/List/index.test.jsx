@@ -3,7 +3,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
 import List from './index';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { API } from 'api/LoginAPI';
 
 const list = [
@@ -213,16 +213,15 @@ describe('List Component Test', () => {
 
         render(
             <RenderWithProviders route="/menu/조회순">
-                <Routes>
-                    <Route path="/menu/:title" element={<List />
-                } />
-                </Routes>
+                <Route path="/menu/:title" element={<List />} />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
+        expect(
+            await screen.findByText('조회순', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
     });
@@ -235,15 +234,15 @@ describe('List Component Test', () => {
 
         render(
             <RenderWithProviders route="/menu/조회순">
-                <Routes>
-                    <Route path="/menu/:title" element={<List />} />
-                </Routes>
+                <Route path="/menu/:title" element={<List />} />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
+        expect(
+            await screen.findByText('조회순', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();
 
@@ -251,57 +250,62 @@ describe('List Component Test', () => {
             target: { scrollY: 1000 },
         });
 
-        expect(await screen.findByAltText('비뢰도', {}, { timeout: 3000 })).toBeInTheDocument();
+        expect(
+            await screen.findByAltText('비뢰도', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
     });
 
-    it('title의 값이 조회순일 경우 조회순 Text가 정상적으로 렌더링된다.', async() => {
+    it('title의 값이 조회순일 경우 조회순 Text가 정상적으로 렌더링된다.', async () => {
         const mockdata1 = list;
         mock.onGet(`${API}/page?pg=1&sz=12&title=조회순`).reply(200, mockdata1);
 
         render(
             <RenderWithProviders route="/menu/조회순">
-                <Routes>
-                    <Route path="/menu/:title" element={<List />} />
-                </Routes>
+                <Route path="/menu/:title" element={<List />} />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        expect(await screen.findByText('조회순', {}, { timeout: 3000 })).toBeInTheDocument();
+        expect(
+            await screen.findByText('조회순', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
     });
 
-    it('title의 값이 별점순일 경우 별점순 Text가 정상적으로 렌더링된다.', async() => {
+    it('title의 값이 별점순일 경우 별점순 Text가 정상적으로 렌더링된다.', async () => {
         const mockdata1 = list;
         mock.onGet(`${API}/page?pg=1&sz=12&title=별점순`).reply(200, mockdata1);
 
         render(
             <RenderWithProviders route="/menu/별점순">
-                <Routes>
-                    <Route path="/menu/:title" element={<List />} />
-                </Routes>
+                <Route path="/menu/:title" element={<List />} />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        expect(await screen.findByText('별점순', {}, { timeout: 3000 })).toBeInTheDocument();
+        expect(
+            await screen.findByText('별점순', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
     });
 
-    it('title의 값이 좋아요순일 경우 좋아요순 Text가 정상적으로 렌더링된다.', async() => {
+    it('title의 값이 좋아요순일 경우 좋아요순 Text가 정상적으로 렌더링된다.', async () => {
         const mockdata1 = list;
-        mock.onGet(`${API}/page?pg=1&sz=12&title=좋아요순`).reply(200, mockdata1);
+        mock.onGet(`${API}/page?pg=1&sz=12&title=좋아요순`).reply(
+            200,
+            mockdata1
+        );
 
         render(
             <RenderWithProviders route="/menu/좋아요순">
-                <Routes>
-                    <Route path="/menu/:title" element={<List />} />
-                </Routes>
+                <Route path="/menu/:title" element={<List />} />
             </RenderWithProviders>
         );
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
-        expect(await screen.findByText('좋아요순', {}, { timeout: 3000 })).toBeInTheDocument();
-    })
+        expect(
+            await screen.findByText('좋아요순', {}, { timeout: 3000 })
+        ).toBeInTheDocument();
+    });
 });

@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { showAlert } from 'redux/action';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-
+import FileResizer from 'react-image-file-resizer';
 
 const Form = styled.form`
     display: flex;
@@ -60,7 +60,7 @@ const Admin = () => {
         url: '',
         content: '',
         link: '',
-        rate : 0,
+        rate: 0,
     });
 
     const saveWuxiaMutation = useMutation({
@@ -72,10 +72,10 @@ const Admin = () => {
                 queryKey: ['webtoon'],
             });
         },
-        onSuccess : () => {
+        onSuccess: () => {
             dispatch(showAlert('작품 등록 완료!', uuidv4(), 4000));
             navigate('/');
-        }
+        },
     });
 
     const onChange = (
@@ -91,9 +91,28 @@ const Admin = () => {
 
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         saveWuxiaMutation.mutate(wuxia);
         // 폼 제출 처리 로직
+    };
+
+    const handleFileChange = (event: any) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            FileResizer.imageFileResizer(
+                file, // 파일 객체
+                300, // 새로운 너비 (픽셀)
+                300, // 새로운 높이 (픽셀)
+                'WEBP', // 파일 형식 (JPEG, PNG, WEBP)
+                75, // 품질 (0에서 100 사이)
+                0, // 회전 (0, 90, 180, 270 중 선택)
+                (uri) => {
+                    console.log(uri);
+                },
+                'base64' // 출력 형식 (base64, blob)
+            );
+        }
     };
 
     return (
@@ -113,11 +132,10 @@ const Admin = () => {
                 placeholder="작가 이름을 입력해주세요..."
             />
             <Input
-                type="text"
-                name="url"
-                value={wuxia.url}
-                onChange={onChange}
-                placeholder="이미지 주소를 입력해주세요..."
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleFileChange}
             />
             <Textarea
                 name="content"
@@ -136,5 +154,4 @@ const Admin = () => {
         </Form>
     );
 };
-
 export default React.memo(Admin);

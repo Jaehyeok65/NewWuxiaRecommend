@@ -1,6 +1,6 @@
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Routes, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Community from './index';
 import MockAdapter from 'axios-mock-adapter';
 import { API } from 'api/LoginAPI';
@@ -43,12 +43,10 @@ describe('Community Component Test', () => {
 
         render(
             <RenderWithProviders route="/community">
-                <Routes>
-                    <Route
-                        path="/community"
-                        element={<Community loginstate={false} />}
-                    />
-                </Routes>
+                <Route
+                    path="/community"
+                    element={<Community loginstate={false} />}
+                />
             </RenderWithProviders>
         );
 
@@ -81,22 +79,16 @@ describe('Community Component Test', () => {
 
         render(
             <RenderWithProviders route="/community">
-                <Routes>
-                    <Route
-                        path="/community"
-                        element={<Community loginstate={true} />}
-                    />
-                    <Route
-                        path="/commentwrite"
-                        element={
-                            <CommentWrite
-                                loginstate={true}
-                                nickname="팔협지"
-                                지
-                            />
-                        }
-                    />
-                </Routes>
+                <Route
+                    path="/community"
+                    element={<Community loginstate={true} />}
+                />
+                <Route
+                    path="/commentwrite"
+                    element={
+                        <CommentWrite loginstate={true} nickname="팔협지" 지 />
+                    }
+                />
             </RenderWithProviders>
         );
 
@@ -136,15 +128,12 @@ describe('Community Component Test', () => {
             commentdata
         );
 
-
         render(
             <RenderWithProviders route="/community">
-                <Routes>
-                    <Route
-                        path="/community"
-                        element={<Community loginstate={true} />}
-                    />
-                </Routes>
+                <Route
+                    path="/community"
+                    element={<Community loginstate={true} />}
+                />
             </RenderWithProviders>
         );
 
@@ -155,9 +144,8 @@ describe('Community Component Test', () => {
         ).toBeInTheDocument();
 
         const selection = screen.getByDisplayValue('최신순');
-        fireEvent.change(selection, { target : { value : '추천순' }});
+        fireEvent.change(selection, { target: { value: '추천순' } });
 
         expect(await screen.findByText('1')).toBeInTheDocument();
-
     });
 });

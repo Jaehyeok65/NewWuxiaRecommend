@@ -1,12 +1,16 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import {
+    RenderWithProviders,
+    RenderWithProvidersNoRoutes,
+} from 'utill/RenderWtihQuery';
 import Navigate from '.';
-import { Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from 'pages/Login';
 import Main from 'pages/Main';
 import { API } from 'api/LoginAPI';
+import React from 'react';
 
 describe('Navigate Component Test', () => {
     const mock = new MockAdapter(axios);
@@ -20,13 +24,13 @@ describe('Navigate Component Test', () => {
 
     it('초기 렌더링 시 loginstate가 true라면 헤더에 로그아웃 Text가 렌더링된다.', async () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={true}
                     setNickname={setNickname}
                     setLoginstate={setLoginstate}
                 />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(screen.getByTestId('side')).toBeInTheDocument();
@@ -35,13 +39,13 @@ describe('Navigate Component Test', () => {
 
     it('초기 렌더링 시 loginstate가 false라면 헤더에 로그인 Text가 렌더링된다.', async () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={false}
                     setNickname={setNickname}
                     setLoginstate={setLoginstate}
                 />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(screen.getByTestId('side')).toBeInTheDocument();
@@ -50,13 +54,13 @@ describe('Navigate Component Test', () => {
 
     it('SideBar 아이콘을 누르면 네비게이션 메뉴가 열린다.', async () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={false}
                     setNickname={setNickname}
                     setLoginstate={setLoginstate}
                 />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const sidebar = screen.getByTestId('side');
@@ -74,13 +78,13 @@ describe('Navigate Component Test', () => {
 
     it('SideBar 아이콘을 누르면 네비게이션 메뉴가 열리며 (x) 아이콘을 누르면 메뉴가 닫힌다.', async () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={false}
                     setNickname={setNickname}
                     setLoginstate={setLoginstate}
                 />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const sidebar = screen.getByTestId('side');
@@ -108,7 +112,7 @@ describe('Navigate Component Test', () => {
 
     it('로그인 버튼을 누르면 로그인 페이지로 이동한다.', async () => {
         render(
-            <RenderWithProviders route="/">
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={false}
                     setNickname={setNickname}
@@ -118,8 +122,8 @@ describe('Navigate Component Test', () => {
                     <Route path="/" element={<Main />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>
-            </RenderWithProviders>
-        ); //초기 렌더링은 메인페이지 로그인 버튼 클릭시 로그인 페이지로 이동하게끔
+            </RenderWithProvidersNoRoutes>
+        );
 
         expect(screen.getByTestId('side')).toBeInTheDocument();
 
@@ -143,13 +147,13 @@ describe('Navigate Component Test', () => {
         window.confirm.mockReturnValue(true);
 
         render(
-            <RenderWithProviders route="/login">
+            <RenderWithProvidersNoRoutes>
                 <Navigate
                     loginstate={true}
                     setNickname={setNickname}
                     setLoginstate={setLoginstate}
                 />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         ); //초기 렌더링은 메인페이지 로그인 버튼 클릭시 로그인 페이지로 이동하게끔
 
         expect(screen.getByTestId('side')).toBeInTheDocument();

@@ -1,9 +1,9 @@
-import { screen, fireEvent, render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
 import Main from './index';
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { API } from 'api/LoginAPI';
 
 const mockdata = [
@@ -157,9 +157,7 @@ describe('MainPage Component Test', () => {
     it('초기 렌더링 시 응답이 없으면 에러 메시지가 렌더링된다.', async () => {
         render(
             <RenderWithProviders route="/">
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                </Routes>
+                <Route path="/" element={<Main />} />
             </RenderWithProviders>
         );
 
@@ -173,9 +171,7 @@ describe('MainPage Component Test', () => {
 
         render(
             <RenderWithProviders route="/">
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                </Routes>
+                <Route path="/" element={<Main />} />
             </RenderWithProviders>
         );
 
