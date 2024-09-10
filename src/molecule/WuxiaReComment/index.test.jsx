@@ -163,6 +163,7 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
                 createdAt: '2024-07-30',
             },
         ];
+        
 
         mock.onPost(`${API}/wuxiarecommentsave`).reply(200, updatedMockData);
 

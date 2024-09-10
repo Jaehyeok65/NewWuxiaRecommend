@@ -1,4 +1,4 @@
-import { waitFor, screen, fireEvent, render } from '@testing-library/react';
+import { screen, fireEvent, render } from '@testing-library/react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { RenderWithProviders } from 'utill/RenderWtihQuery';
