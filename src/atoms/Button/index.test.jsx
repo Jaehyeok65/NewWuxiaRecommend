@@ -20,6 +20,7 @@ describe('Button Component Test', () => {
         expect(btn).toBeInTheDocument();
 
         fireEvent.click(btn);
+        
 
         expect(onClick).toBeCalled();
     });
