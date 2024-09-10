@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SignUpForm from '.';
 import { getSignUp } from '../../api/LoginAPI';
-import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
 import {
     CheckPassword,
     CheckId,
@@ -46,9 +46,9 @@ const LoginFormstyle = {
 describe('Sign Up Form Component Test', () => {
     it('styled Props나 input Props가 없다면 에러 발생 텍스트가 화면에 보인다.', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <SignUpForm />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const error = screen.getByText('에러 발생');
@@ -60,9 +60,9 @@ describe('Sign Up Form Component Test', () => {
         const onChange = jest.fn();
 
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <SignUpForm styled={LoginFormstyle} onChange={onChange} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const inputs = screen.getByPlaceholderText('이메일을 입력하세요...');
@@ -74,13 +74,13 @@ describe('Sign Up Form Component Test', () => {
         expect(btn).toBeInTheDocument();
     });
 
-    it('입력 필드에 아무것도 입력하지 않고 회원가입 버튼을 누르면 아이디와 비밀번호 또는 닉네임을 입력해주세요라는 알림창이 나타난다.', async() => {
+    it('입력 필드에 아무것도 입력하지 않고 회원가입 버튼을 누르면 아이디와 비밀번호 또는 닉네임을 입력해주세요라는 알림창이 나타난다.', async () => {
         const onChange = jest.fn();
 
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <SignUpForm styled={LoginFormstyle} onChange={onChange} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const inputs = screen.getByPlaceholderText('이메일을 입력하세요...');
@@ -94,9 +94,10 @@ describe('Sign Up Form Component Test', () => {
         fireEvent.click(btn);
 
         await waitFor(() => {
-            expect(alertMock).toHaveBeenCalledWith('아이디와 비밀번호 또는 닉네임을 입력해주세요')
-        })
-
+            expect(alertMock).toHaveBeenCalledWith(
+                '아이디와 비밀번호 또는 닉네임을 입력해주세요'
+            );
+        });
     });
 
     it('입력 필드에 값을 입력하면 상태가 업데이트된다.', () => {
@@ -110,12 +111,18 @@ describe('Sign Up Form Component Test', () => {
             />
         );
 
-        const emailInput = screen.getByPlaceholderText('이메일을 입력하세요...');
-        const passwordInput = screen.getByPlaceholderText('비밀번호를 입력하세요...');
-        const passwordCheckInput = screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
-        const nicknameInput = screen.getByPlaceholderText('닉네임을 입력하세요...');
+        const emailInput =
+            screen.getByPlaceholderText('이메일을 입력하세요...');
+        const passwordInput =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+        const passwordCheckInput =
+            screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
+        const nicknameInput =
+            screen.getByPlaceholderText('닉네임을 입력하세요...');
 
-        fireEvent.change(emailInput, { target: { value: 'vkfguqwl@naver.com' } });
+        fireEvent.change(emailInput, {
+            target: { value: 'vkfguqwl@naver.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'aaaa1234' } });
         fireEvent.change(passwordCheckInput, { target: { value: 'aaaa1234' } });
         fireEvent.change(nicknameInput, { target: { value: '팔협지' } });
@@ -125,7 +132,6 @@ describe('Sign Up Form Component Test', () => {
         expect(passwordCheckInput).toHaveValue('aaaa1234');
         expect(nicknameInput).toHaveValue('팔협지');
     });
-
 
     it('입력필드에 값을 입력하고 회원가입 버튼을 누르면 성공적으로 API 호출이 된다.', async () => {
         getSignUp.mockResolvedValue(true);
@@ -140,14 +146,19 @@ describe('Sign Up Form Component Test', () => {
             />
         );
 
-       
         const submitButton = screen.getByText('회원가입');
-        const emailInput = screen.getByPlaceholderText('이메일을 입력하세요...');
-        const passwordInput = screen.getByPlaceholderText('비밀번호를 입력하세요...');
-        const passwordCheckInput = screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
-        const nicknameInput = screen.getByPlaceholderText('닉네임을 입력하세요...');
+        const emailInput =
+            screen.getByPlaceholderText('이메일을 입력하세요...');
+        const passwordInput =
+            screen.getByPlaceholderText('비밀번호를 입력하세요...');
+        const passwordCheckInput =
+            screen.getByPlaceholderText('비밀번호를 다시 입력하세요...');
+        const nicknameInput =
+            screen.getByPlaceholderText('닉네임을 입력하세요...');
 
-        fireEvent.change(emailInput, { target: { value: 'vkfguqwl@naver.com' } });
+        fireEvent.change(emailInput, {
+            target: { value: 'vkfguqwl@naver.com' },
+        });
         fireEvent.change(passwordInput, { target: { value: 'aaaa1234' } });
         fireEvent.change(passwordCheckInput, { target: { value: 'aaaa1234' } });
         fireEvent.change(nicknameInput, { target: { value: '팔협지' } });
@@ -163,7 +174,4 @@ describe('Sign Up Form Component Test', () => {
             });
         });
     });
-
-
-    
 });

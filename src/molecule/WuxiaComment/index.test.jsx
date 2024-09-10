@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { RenderWithProvider } from 'utill/RenderWithProvider';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { API } from 'api/LoginAPI';
@@ -55,18 +54,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={true}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={true}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -81,18 +78,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={false}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={false}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -134,18 +129,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         }).reply(200, updatedMockData);
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={true}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={true}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -170,20 +163,17 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={false}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={false}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
-
         expect(
             await screen.findByText('내용', {}, { timeout: 3000 })
         ).toBeInTheDocument();
@@ -216,18 +206,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         }).reply(200, []);
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={true}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={true}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -253,18 +241,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
             mockdata
         );
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={false}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={false}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -314,18 +300,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         mock.onPost(`${API}/wuxiacommentsave`).reply(200, updatedMockData);
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={true}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={true}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -369,18 +353,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         }).reply(200, replymockdata);
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaComment
-                            title="백련성신"
-                            data={data}
-                            nickname="팔협지"
-                            loginstate={true}
-                        />
-                    </MemoryRouter>
+                    <WuxiaComment
+                        title="백련성신"
+                        data={data}
+                        nickname="팔협지"
+                        loginstate={true}
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(

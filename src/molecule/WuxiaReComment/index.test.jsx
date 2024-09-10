@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WuxiaReComment from './index';
 import { MemoryRouter } from 'react-router-dom';
-import { RenderWithProvider } from 'utill/RenderWithProvider';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { API } from 'api/LoginAPI';
@@ -44,17 +44,15 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={true}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={true}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -71,17 +69,15 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={false}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={false}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -110,19 +106,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
             200,
             mockdata
         );
-
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={false}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={false}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -174,17 +167,15 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         mock.onPost(`${API}/wuxiarecommentsave`).reply(200, updatedMockData);
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={true}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={true}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -221,17 +212,15 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={true}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={true}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(
@@ -254,19 +243,16 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={false}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={false}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
-
         expect(
             await screen.findByText('내용', {}, { timeout: 3000 })
         ).toBeInTheDocument();
@@ -302,17 +288,15 @@ describe('WuxiaRecomment 컴포넌트 테스트', () => {
         );
 
         render(
-            <RenderWithProvider>
+            <RenderWithProvidersNoRoutes>
                 <Suspense>
-                    <MemoryRouter>
-                        <WuxiaReComment
-                            wuxiaCommentId={2}
-                            loginstate={true}
-                            nickname="팔협지"
-                        />
-                    </MemoryRouter>
+                    <WuxiaReComment
+                        wuxiaCommentId={2}
+                        loginstate={true}
+                        nickname="팔협지"
+                    />
                 </Suspense>
-            </RenderWithProvider>
+            </RenderWithProvidersNoRoutes>
         );
 
         expect(

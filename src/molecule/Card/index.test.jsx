@@ -1,32 +1,30 @@
 import { render, screen } from '@testing-library/react';
-import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
 import Card from '.';
 
 describe('Card Component Test', () => {
     const product = {
-        title : '검술명가 막내아들',
-        url : '/image/img1.jpg',
-        writer : '황제펭귄',
-        view : 10
+        title: '검술명가 막내아들',
+        url: '/image/img1.jpg',
+        writer: '황제펭귄',
+        view: 10,
     };
 
     it('Title Props 확인', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Card product={product} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
         const title = screen.getByText('검술명가 막내아들');
         expect(title).toBeInTheDocument();
     });
 
-
     it('Writer Props 확인', () => {
         render(
-
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Card product={product} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
         const writer = screen.getByText('황제펭귄');
         expect(writer).toBeInTheDocument();
@@ -34,9 +32,9 @@ describe('Card Component Test', () => {
 
     it('Url Props 확인', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Card product={product} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const image = screen.getByRole('img');
@@ -45,9 +43,9 @@ describe('Card Component Test', () => {
 
     it('View Props 확인', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Card product={product} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const view = screen.getByText('조회수 : 10');

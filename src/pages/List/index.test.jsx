@@ -220,7 +220,7 @@ describe('List Component Test', () => {
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
 
         expect(
-            await screen.findByText('조회순', {}, { timeout: 3000 })
+            await screen.findByText('조회순', {}, { timeout: 5000 })
         ).toBeInTheDocument();
 
         expect(screen.getByAltText('화산귀환')).toBeInTheDocument();

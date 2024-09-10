@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { RenderWithProviders } from 'utill/RenderWtihQuery';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
 import Carusel from '.';
 
 export const list = [
@@ -151,9 +151,9 @@ export const list = [
 describe('Carusel Component Test', () => {
     it('list Props가 없으면 에러 발생 텍스트가 화면에 출력된다.', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Carusel />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const error = screen.getByText('에러 발생');
@@ -163,9 +163,9 @@ describe('Carusel Component Test', () => {
 
     it('list Props가 있으면 Carusel 컴포넌트가 정상적으로 화면에 출력된다.', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Carusel list={list} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         const title = screen.getAllByAltText(list[0].title);

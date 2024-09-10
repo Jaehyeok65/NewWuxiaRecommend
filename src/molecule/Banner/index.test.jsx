@@ -1,17 +1,18 @@
-import { render, screen } from "@testing-library/react";
-import { RenderWithProviders } from "utill/RenderWtihQuery";
-import Banner from ".";
-
-
+import { render, screen } from '@testing-library/react';
+import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
+import Banner from '.';
 
 describe('Banner Component Test', () => {
     it('product Props가 주어지면 Banner 컴포넌트가 정상적으로 렌더링된다.', () => {
-        const product = { title: 'Test Product', url: 'https://example.com/image.jpg' };
+        const product = {
+            title: 'Test Product',
+            url: 'https://example.com/image.jpg',
+        };
 
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Banner product={product} />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         // 이미지가 올바르게 렌더링되었는지 확인
@@ -26,12 +27,12 @@ describe('Banner Component Test', () => {
 
     it('product Props가 주어지지 않으면 에러 화면이 렌더링된다.', () => {
         render(
-            <RenderWithProviders>
+            <RenderWithProvidersNoRoutes>
                 <Banner />
-            </RenderWithProviders>
+            </RenderWithProvidersNoRoutes>
         );
 
         // 에러 메시지가 표시되는지 확인
         expect(screen.getByText('에러 발생')).toBeInTheDocument();
     });
-})
+});
