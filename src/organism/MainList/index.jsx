@@ -12,7 +12,7 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: ${(props) =>
         props.styled ? props.styled.pcgrid : 'repeat(2,1fr)'};
-    gap: ${(props) => (props.styled ? props.styled.gap : '20px 20px')};
+    gap: ${(props) => (props.styled ? props.styled.gap : '10px 10px')};
 
     @media screen and (max-width: 1400px) {
         grid-template-columns: ${(props) =>
@@ -39,13 +39,7 @@ const MainList = ({ list, title, styled }) => {
                     list
                         .slice(0, 12)
                         .map((item, index) => (
-                            <Card
-                                key={index}
-                                url={item.url}
-                                title={item.title}
-                                writer={item.writer}
-                                styled={cardstyle}
-                            />
+                            <Card key={index} product={item} styled={cardstyle} />
                         ))}
             </Grid>
         </Main>

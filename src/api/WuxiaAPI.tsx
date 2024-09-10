@@ -95,6 +95,6 @@ export const getWuxiaMyPage = async (title: string) => {
     return;
 };
 
-export const saveWuxiaProduct = async(wuxia : Wuxia) => {
-        await axios.post(`${API}/wuxiasave`, wuxia);
-}
+export const saveWuxiaProduct = async (wuxia: Wuxia) => {
+    await axios.post(`${API}/wuxiasave`, wuxia);
+};

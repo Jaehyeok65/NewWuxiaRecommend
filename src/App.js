@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Main from './pages/Main';
-import Detail from './pages/Detail/Container';
+import Detail from './pages/Detail/index';
 import List from './pages/List';
 import SearchList from './pages/SearchList';
 import { getSessionCheck } from './api/LoginAPI';
-import Community from './pages/Community/Container';
+import Community from './pages/Community/index';
 import CommentWrite from 'pages/CommentWrite';
 import Comment from 'pages/Comment';
 import CommentUpdate from './pages/CommentUpdate';
@@ -13,6 +13,8 @@ import Navigate from './pages/Navigate';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import MyPage from './pages/MyPage';
+import AlertBoxContainer from 'module/AlertBoxContainer';
+import Admin from 'pages/Admin';
 
 function App() {
     const [loginstate, setLoginstate] = useState(
@@ -31,6 +33,7 @@ function App() {
                 setNickname={setNickname}
                 setLoginstate={setLoginstate}
             />
+            <AlertBoxContainer />
             <Routes>
                 <Route exact path="/" element={<Main />} />
                 <Route
@@ -82,7 +85,14 @@ function App() {
                     }
                 />
                 <Route exact path="/signup" element={<SignUp />} />
-                <Route exact path="/mypage" element={<MyPage loginstate={loginstate} />} />
+                <Route
+                    exact
+                    path="/mypage"
+                    element={
+                        <MyPage loginstate={loginstate} nickname={nickname} />
+                    }
+                />
+                <Route exact path="/admin" element={<Admin />} />
             </Routes>
         </Router>
     );

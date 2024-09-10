@@ -2,11 +2,11 @@ import { SHOW_ALERT, HIDE_ALERT } from "redux/actionType";
 
 export const showAlert = (
     message: string,
-    title : string,
+    id : string,
     duration: number
 ) => ({
     type: SHOW_ALERT,
-    payload: { message, title, duration },
+    payload: { message, id, duration },
 });
 
 export const hideAlert = (title: string) => ({

@@ -5,7 +5,7 @@ import Card from '../molecule/Card';
 const Lists = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px 20px;
+    gap: 15px 15px;
     margin-top: 5%;
     margin-bottom: 10%;
     @media screen and (max-width: 1200px) {

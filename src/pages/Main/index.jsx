@@ -12,7 +12,7 @@ const liststyle = {
     pcgrid: 'repeat(4,1fr)',
     tabletgrid: 'repeat(3,1fr)',
     mobilegrid: 'repeat(2,1fr)',
-    gap: '20px 40px',
+    gap: '15px 15px',
 };
 
 const Main = () => {

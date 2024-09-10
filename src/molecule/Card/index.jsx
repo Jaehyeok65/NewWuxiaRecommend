@@ -90,7 +90,7 @@ const Card = ({ styled, product }) => {
     const init = () => {
         let clickStates = [...clicked];
         for (let i = 0; i < 5; i++) {
-            clickStates[i] = i < product.rate ? true : false;
+            clickStates[i] = i < product?.rate ? true : false;
         }
         setClicked(clickStates);
     };
@@ -117,7 +117,7 @@ const Card = ({ styled, product }) => {
                         init={init}
                     />
                     <Text styled={{ fontSize: '12px', color: 'inherit' }}>
-                        조회수 : {product.view}
+                        조회수 : {product?.view}
                     </Text>
                 </TextOverlay>
             </Cards>
