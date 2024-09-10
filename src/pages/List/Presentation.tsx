@@ -7,7 +7,6 @@ import Loading from '../../module/Loading';
 interface ListProps {
     title: string | undefined;
     data: any;
-    ref: React.RefObject<HTMLDivElement>;
     isFetchingNextPage: boolean;
     isError: boolean;
     error: any;

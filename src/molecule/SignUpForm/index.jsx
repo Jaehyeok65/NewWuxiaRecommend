@@ -9,7 +9,7 @@ import {
     CheckNickname,
     CheckRePassword,
 } from '../../module/CheckValidation';
-import { Text } from '../../atoms/Text';
+import  Text  from '../../atoms/Text';
 import { useNavigate } from 'react-router-dom';
 import styleds from 'styled-components';
 
