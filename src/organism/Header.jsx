@@ -47,7 +47,6 @@ const FirstGridContainer = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
-    margin-left: 4%;
 `;
 
 const SecondGridContainer = styled.div`
@@ -56,7 +55,6 @@ const SecondGridContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
-    margin: 5px 10px;
 `;
 const ThirdGridContainer = styled.div`
     display: flex;
@@ -89,24 +87,6 @@ const SearchInputstyle = {
         pcwidth: '50%',
         mobilewidth: '30%',
         textAlign: 'right',
-    },
-};
-
-const HeadTextstyle = {
-    text: {
-        fontSize: '16px',
-    },
-    icon: {
-        fontSize: '50px',
-        margin: '4px 8px',
-    },
-    btn: {
-        border: 'none',
-        padding: '12px 20px',
-    },
-    head: {
-        pcwidth: '70%',
-        mobilewidth: '100%',
     },
 };
 
@@ -171,7 +151,9 @@ const Header = ({ onClick, loginstate, setLoginstate, setNickname }, ref) => {
                         </Button>
                     ) : (
                         <Button styled={loginbtnstyle}>
-                            <StyledLink to="/login" data-testid="loginbtn">로그인</StyledLink>
+                            <StyledLink to="/login" data-testid="loginbtn">
+                                로그인
+                            </StyledLink>
                         </Button>
                     )}
                 </LoginContainer>
