@@ -61,7 +61,7 @@ const WuxiaCommentList = ({
             <ListTitle>
                 <div>{user?.userNickname}</div>
                 {nickname === user?.userNickname && (
-                    <FaTrashAlt onClick={() => onRemoveComment(commentId)} />
+                    <FaTrashAlt onClick={() => onRemoveComment(commentId)} data-testid='commentdelete'/>
                 )}
             </ListTitle>
             <Content>{commentText && commentText}</Content>
@@ -76,6 +76,7 @@ const WuxiaCommentList = ({
                     <div>
                         <FaThumbsUp
                             onClick={() => onRecommendComment(commentId)}
+                            data-testid='commentrecommend'
                         />
                         {' ' + recommendation}
                     </div>
