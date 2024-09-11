@@ -83,18 +83,28 @@ export const setWuxiaProductRate = async (wuxia: Wuxia) => {
 };
 
 export const getWuxiaMyPage = async (title: string) => {
-    if (title === '방문') {
-        return getRecentView();
-    } else if (title === '좋아요') {
-        const data = await axios.get(`${API}/mylike`);
-        return data.data;
-    } else if (title === '별점') {
-        const data = await axios.get(`${API}/myrate`);
-        return data.data;
+    try {
+        if (title === '방문') {
+            return getRecentView();
+        } else if (title === '좋아요') {
+            const data = await axios.get(`${API}/mylike`);
+            return data.data;
+        } else if (title === '별점') {
+            const data = await axios.get(`${API}/myrate`);
+            return data.data;
+        }
+    } catch (error) {
+        console.log(error);
+        throw error;
     }
-    return;
 };
 
 export const saveWuxiaProduct = async (wuxia: Wuxia) => {
-    await axios.post(`${API}/wuxiasave`, wuxia);
+    try {
+        const data = await axios.post(`${API}/wuxiasave`, wuxia);
+        return data.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 };
