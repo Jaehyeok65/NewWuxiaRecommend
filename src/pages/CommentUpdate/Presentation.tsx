@@ -66,11 +66,13 @@ const CommentUpdatePresentation = ({ comment, onSubmit, onChange }: any) => {
                                 name="title"
                                 value={comment.title}
                                 onChange={onChange}
+                                data-testid='titleinput'
                             />
                             <ContentTextArea
                                 name="content"
                                 value={comment.content}
                                 onChange={onChange}
+                                data-testid='contentinput'
                             />
                             <SubmitButton type="submit" value="전송" />
                         </WriteArea>

@@ -73,7 +73,7 @@ const CommentPresentation = ({
                                         to={`/commentupdate/${data.id}`}
                                     >
                                         <Icon styled={{ fontSize: '15px' }}>
-                                            <FaPen />
+                                            <FaPen data-testid='update'/>
                                         </Icon>
                                     </StyledLink>{' '}
                                     &nbsp;
@@ -81,7 +81,7 @@ const CommentPresentation = ({
                                         styled={{ fontSize: '15px' }}
                                         setIcon={onRemoveClick}
                                     >
-                                        <FaTrashAlt />
+                                        <FaTrashAlt data-testid='remove'/>
                                     </Icon>
                                 </span>
                             ) : null}
@@ -98,7 +98,7 @@ const CommentPresentation = ({
                             }}
                             onClick={onRecommendClick}
                         >
-                            <FaThumbsUp /> {data.recommend}
+                            <FaThumbsUp data-testid='recommend'/> {data.recommend}
                         </Button>
                     </Flex>
                 </Content>
