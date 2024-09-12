@@ -132,7 +132,6 @@ export const recommendWuxiaComment = async (
         return data.data;
     } catch (error) {
         console.log(error);
-        console.log(error);
         throw error;
     }
 };
