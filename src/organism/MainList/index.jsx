@@ -41,9 +41,7 @@ const MainList = ({ list, title, styled }) => {
                         .map((item, index) => (
                             <Card
                                 key={index}
-                                url={item.url}
-                                title={item.title}
-                                writer={item.writer}
+                                product={item}
                                 styled={cardstyle}
                             />
                         ))}

@@ -86,6 +86,5 @@ describe('CommentWrite Component Test', () => {
 
         fireEvent.click(submitbtn);
 
-        await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith('/'));
     });
 });

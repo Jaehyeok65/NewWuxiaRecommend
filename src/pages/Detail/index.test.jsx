@@ -259,7 +259,7 @@ describe('Detail 컴포넌트 테스트', () => {
             await screen.findByText('안뇽하세요', {}, { timeout: 5000 })
         ).toBeInTheDocument();
 
-        const commentBox = screen.getByLabelText('comment-box');
+        const commentBox = screen.getByPlaceholderText('댓글을 입력하세요...');
 
         expect(commentBox).toBeInTheDocument();
 
