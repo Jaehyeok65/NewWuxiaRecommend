@@ -1,13 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import SignUpForm from '.';
+import SignUpForm from './index';
 import { getSignUp } from '../../api/LoginAPI';
 import { RenderWithProvidersNoRoutes } from 'utill/RenderWtihQuery';
-import {
-    CheckPassword,
-    CheckId,
-    CheckNickname,
-    CheckRePassword,
-} from 'module/CheckValidation';
 
 jest.mock('../../api/LoginAPI'); // 모듈 전체를 모킹
 

@@ -32,7 +32,7 @@ const CommentUpdate = ({ loginstate }: any) => {
     useEffect(() => {
         if (!loginstate) {
             window.alert('로그인이 필요합니다.');
-            navigate('/community');
+            navigate('/login');
         }
     }, []);
 
