@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { API } from 'api/LoginAPI';
 import axios from 'axios';
 
+
 const mockNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
