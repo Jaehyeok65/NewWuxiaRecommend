@@ -34,7 +34,7 @@ jobs:
       - name: Create Pull Request to main
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PULL_REQUEST }}
           commit-message: "Merge develop into main"
           branch: main  # PR의 대상 브랜치
           title: "Auto-PR: Merge develop into main"
