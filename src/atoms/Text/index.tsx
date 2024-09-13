@@ -6,6 +6,7 @@ interface TextProps {
 }
 
 const Text = forwardRef<HTMLDivElement, TextProps>(({ children, styled }, ref) => {
+  
   return (
     <div style={styled} ref={ref}>
       {children}
