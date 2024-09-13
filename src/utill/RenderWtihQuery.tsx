@@ -20,7 +20,7 @@ export const RenderWithProviders = ({ children, route = '/' }: any) => {
         <Provider store={store}>
             <MemoryRouter initialEntries={[route]}>
                 <QueryClientProvider client={queryClient}>
-                    {children}
+                    <Routes>{children}</Routes>
                 </QueryClientProvider>
             </MemoryRouter>
         </Provider>
