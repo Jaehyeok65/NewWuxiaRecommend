@@ -37,10 +37,7 @@ describe('List Component Test', () => {
 
         render(
             <RenderWithProviders route="/search/검색결과/검술명가 막내아들">
-                    <Route
-                        path="/search/:title/:input"
-                        element={<SearchList />}
-                    />
+                <Route path="/search/:title/:input" element={<SearchList />} />
             </RenderWithProviders>
         );
 
@@ -58,10 +55,7 @@ describe('List Component Test', () => {
 
         render(
             <RenderWithProviders route="/search/검색결과/화산">
-                    <Route
-                        path="/search/:title/:input"
-                        element={<SearchList />}
-                    />
+                <Route path="/search/:title/:input" element={<SearchList />} />
             </RenderWithProviders>
         );
 

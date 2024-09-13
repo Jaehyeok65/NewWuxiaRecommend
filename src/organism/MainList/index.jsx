@@ -39,7 +39,11 @@ const MainList = ({ list, title, styled }) => {
                     list
                         .slice(0, 12)
                         .map((item, index) => (
-                            <Card key={index} product={item} styled={cardstyle} />
+                            <Card
+                                key={index}
+                                product={item}
+                                styled={cardstyle}
+                            />
                         ))}
             </Grid>
         </Main>

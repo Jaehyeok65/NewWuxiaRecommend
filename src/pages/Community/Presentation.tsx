@@ -62,7 +62,7 @@ const CommunityPresentation = ({
                 {loginstate ? (
                     <StyledLink to="/commentwrite">
                         <Icon styled={{ fontSize: '18px' }}>
-                            <FaPen data-testid='loginwrite'/>
+                            <FaPen data-testid="loginwrite"/>
                         </Icon>
                     </StyledLink>
                 ) : (

@@ -12,6 +12,7 @@ describe('Login Component Test', () => {
         );
 
         const signuptitle = screen.getByText('Sign Up');
+        
         expect(signuptitle).toBeInTheDocument();
 
         expect(
