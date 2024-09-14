@@ -62,7 +62,7 @@ const Product = ({
                     icon={icon}
                     setIcon={setIcon}
                 >
-                    <FaHeart data-testid='heart'/>
+                    <FaHeart data-testid="heart" />
                 </Icon>
                 <span
                     style={{
