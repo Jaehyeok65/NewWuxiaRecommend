@@ -14,7 +14,7 @@ const LoginForm = ({
     userPassword,
     setNickname,
     setLoginstate,
-} : any) => {
+}: any) => {
     const [input, setInput] = useState({
         userEmail: '',
         userPassword: '',
@@ -57,7 +57,7 @@ const LoginForm = ({
         });
     }, [PassworddebounceVal]);
 
-    const onChange = useCallback((e : any) => {
+    const onChange = useCallback((e: any) => {
         const { name, value } = e.target;
         setInput((prev) => ({
             ...prev,
@@ -86,7 +86,7 @@ const LoginForm = ({
     }, []);
 
     const onSubmit = useCallback(
-        async (e : any) => {
+        async (e: any) => {
             e.preventDefault();
             if (input.userEmail === '' || input.userPassword === '') {
                 window.alert('아이디와 비밀번호를 입력해주세요');
