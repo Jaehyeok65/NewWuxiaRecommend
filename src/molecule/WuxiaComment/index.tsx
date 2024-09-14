@@ -18,15 +18,19 @@ import { showAlert } from 'redux/action';
 import { useNavigate } from 'react-router-dom';
 import { WuxiaComment, Wuxia } from 'type/type';
 
-
 interface WuxiaCommentProps {
-    title : string | undefined;
-    data : Wuxia;
-    nickname : string;
-    loginstate : boolean;
+    title: string | undefined;
+    data: Wuxia;
+    nickname: string;
+    loginstate: boolean;
 }
 
-const WuxiaComments = ({ title, data, nickname, loginstate }: WuxiaCommentProps) => {
+const WuxiaComments = ({
+    title,
+    data,
+    nickname,
+    loginstate,
+}: WuxiaCommentProps) => {
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -52,7 +56,7 @@ const WuxiaComments = ({ title, data, nickname, loginstate }: WuxiaCommentProps)
     }>({}); //각각의 Id를 통해 state 관리
 
     const SaveWuxiaCommentMutation = useMutation({
-        mutationFn: (wuxiacomment : WuxiaComment) => {
+        mutationFn: (wuxiacomment: WuxiaComment) => {
             return saveWuxiaComment(wuxiacomment);
         },
         onSuccess: (data) => {
