@@ -30,12 +30,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        with:
+          ref: main
+      - name: Reset master branch
+        run: |
+          git fetch origin develop:develop
+          git reset --hard develop
+        
       - name: Create Pull Request to main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.PULL_REQUEST }}
           commit-message: "Merge develop into main"
-          branch: main  # PR의 대상 브랜치
+          branch: temp
+          delete-branch: true
           title: "Auto-PR: Merge develop into main"
           body: "This PR was automatically created by GitHub Actions after a successful test run on the develop branch."
