@@ -120,6 +120,7 @@ const WuxiaComments = ({ title, data, nickname, loginstate }: WuxiaCommentProps)
             memoizedNavigate('/login');
             return;
         }
+        
 
         RecommendWuxiaCommentMutation.mutate(commentId);
     };
