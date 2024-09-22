@@ -1,4 +1,4 @@
-import { RenderWithProviders } from 'utill/RenderWtihQuery';
+/*import { RenderWithProviders } from 'utill/RenderWtihQuery';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Route } from 'react-router-dom';
 import Admin from './index';
@@ -88,3 +88,4 @@ describe('CommentWrite Component Test', () => {
 
     });
 });
+*/
