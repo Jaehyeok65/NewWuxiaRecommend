@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+/*import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { Wuxia } from 'type/type';
 import { saveWuxiaProduct } from 'api/WuxiaAPI';
@@ -155,3 +155,4 @@ const Admin = () => {
     );
 };
 export default React.memo(Admin);
+*/
