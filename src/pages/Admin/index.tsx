@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { Wuxia } from 'type/type';
-import { saveWuxiaProduct } from 'api/WuxiaAPI';
+//import { saveWuxiaProduct } from 'api/WuxiaAPI';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { showAlert } from 'redux/action';
@@ -51,7 +51,7 @@ const Button = styled.button`
 `;
 
 const Admin = () => {
-    const queryClient = useQueryClient();
+   /* const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [wuxia, setWuxia] = useState<Wuxia>({
@@ -113,9 +113,13 @@ const Admin = () => {
                 'base64' // 출력 형식 (base64, blob)
             );
         }
-    };
+    };*/
 
     return (
+        <>안녕하세요</>
+    );
+
+    /*return (
         <Form onSubmit={onSubmit}>
             <Input
                 type="text"
@@ -152,6 +156,6 @@ const Admin = () => {
             />
             <Button type="submit">제출</Button>
         </Form>
-    );
+    );*/
 };
 export default React.memo(Admin);
