@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API = 'http://localhost:8088';
+export const API = 'http://15.164.194.103:8088';
 
 axios.defaults.withCredentials = true;
 
